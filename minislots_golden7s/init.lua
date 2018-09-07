@@ -8,7 +8,7 @@
 
 minislots.register_machine({
 	name = "golden7s",  -- becomes the node name e.g. "minislots:golden7s"
-	description = "Golden 7's",
+	description = "Golden 7's slot machine",
 	machine_shape = "standard",
 	lines = {           -- reel symbol pay line positions: 0 = center, -1 = top, +1 = bottom
 		{  0,  0,  0 }, -- pay line 1: center symbol on each reel
