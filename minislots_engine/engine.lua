@@ -1,4 +1,5 @@
---  Minislots game engine
+-- Minislots game engine
+-- by Vanessa "VanessaE" Dannenberg
 
 math.randomseed(os.time())
 

@@ -1,7 +1,7 @@
  
 -- Golden 7's example machine
 --
--- By Vanessa Dannenberg
+-- By Vanessa "VanessaE" Dannenberg
 --
 -- Most symbol images taken from clker.com
 -- others drawn or rendered by me.
