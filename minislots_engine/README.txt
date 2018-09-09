@@ -69,7 +69,7 @@ A colon or parenthesis is 24x80 pixels, displayed at 50% digit width	--> 0.188 x
 The "Scatter Win" is 384x80 px, should be displayed at 50% width		--> 3.0 x screen_line_height_3 IU
 The "Bonus Win" label is 352x80 px, should be displayed at 50% width	--> 2.75 x screen_line_height 3 IU
 The cash slot is 320x128 px and is normally shown at full-size			--> 5.0 x 2.0 IU
-The "screen" in the lower overlay is 384x112 px							--> or 6.0 x 0.875 IU.
+The "screen" in the lower overlay is 426x112 px							--> or 6.0 x 0.875 IU.
 The Scatter and Bonus highlight boxes are 512x768 px					--> 2.667 x 4.0 IU
 
 

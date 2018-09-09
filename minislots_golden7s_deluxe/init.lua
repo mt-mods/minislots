@@ -116,7 +116,7 @@ minislots.register_machine({
 		reel_sizey = 9,						-- spacing of 1.3333 times their width (creates a 1 IU gap in this
 											-- machine), centered and leaving a 1 IU space at the far left/right.
 
-		button_rows_posx = 6.25,			-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
+		button_rows_posx = 6.9,				-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
 		spin_cashout_posx = 12.75,			-- X pos for Spin and Cash-out/Quit buttons
 		button_rows_posy = 11.14,			-- Y pos for "n Lines" row, and Cash Out/Quit button
 

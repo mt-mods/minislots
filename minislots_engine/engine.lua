@@ -49,10 +49,15 @@ function minislots.spin_reels(def)
 		local n = math.random(2, def.constants.numsymbols*2+1)/2
 		if math.random(1, 100) >= def.half_stops_weight then n = math.floor(n) end
 
--- force the all-wilds win shown in the cabinet graphics
+-- force the all-wilds win shown in the cabinet graphics, 3-reel
 --		local n = 10
 --		if reel == 2 then n = 9 end
 --		if reel == 3 then n = 8 end
+
+-- force the all-wilds win shown in the cabinet graphics, 3-reel
+--		local n = 10
+--		if reel == 3 then n = 9 end
+--		if reel == 4 or reel == 5 then n = 8 end
 
 -- force a no-win spin
 --		local n = 1
