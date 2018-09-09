@@ -1,8 +1,10 @@
-NOTES
-=====
+###########
+## NOTES ##
+###########
 
-Geometry:
----------
+
+Image Geometry:
+===============
 
 "IU" = the size of an item in inventory units.  For most things, scaling is done such that 64 pixels in the image fits exactly 1 IU, though 1 IU in the formspec doesn't necessarily correspond with any specific number of screen pixels (but that's not important here).
 
@@ -22,7 +24,7 @@ The "Win" label, if printed, will appear half a digit glyph's width after the Be
 
 Balance, Bet, Win, Scatter Win, and Bonus Win amounts are printed immediately next to their labels.  Be sure you leave a little space on the right in the images, as needed.
 
-The scatter and bonus highlight boxes are displayed at 1.333 times the width of the reel, and positioned 1/6 of the reel width above and left, thus centering it over the symbol.  This is to allow some kind of "glow" or other effect to appear just outside of the highlight box itself.  The nominal size of the image is 1.333 times the width of the reel, square, but because Minetest does not support full alpha on overlaid images in a formspec, you'll have to fake it by dithering the alpha.  Draw this image large enough and the downscaling will blur the dithering, making it look like real alpha, mostly. Hence, the images used in these example machines are considerably over-sized.
+The scatter and bonus highlight boxes are displayed at a size relative to the reel image - 1.3333 times its width, by 0.4444 times its height, and positioned 0.1667 times the reel width above and left, thus centering it over the symbol area.  This extra space is to allow one to draw a "box" around the reel symbol, and some kind of "glow" just outside of it, as in the example machines' images.  The nominal size of the images is thus 1.3333 times the reel image width by 0.4444 times its height, but because Minetest does not support full alpha on overlaid images in a formspec (that is, when placing via "image[" rather than compositing with "^[combine"), you'll have to fake it by dithering the alpha.  Draw these images large enough, and the downscaling will blur the dithering, making it look like real alpha, mostly.  Hence, the images used in these example machines are three times their nominal size.
 
 The various labels, parenthesis, and colon were drawn with The GIMP using the "Liberation Sans Narrow Bold Condensed" font, 85 point height, with the inter-character spacing set as small as the wording would allow (usually -4.0).  Anti-aliasing enabled, "Full" hinting.  Text positioned two pixels from the left, baseline at 60 (so the lower left corner of the "B" in "Bal:" is at (2,60) according to GIMP).
 
@@ -32,6 +34,7 @@ Reels always show three symbols' of height, not counting the overlap at the top 
 
 
 Geometry for the 3-reel "Golden 7's" machine:
+---------------------------------------------
 
 The upper overlay, reel underlay, and line win overlays are 832x704 px	--> 13 x 11 IU
 The lower overlay image is 832x128 px									--> 13 x 2 IU
@@ -49,7 +52,9 @@ The cash slot is 320x128 px and is normally shown at full-size			--> 5.0 x 2.0 I
 The "screen" in the lower overlay is 384x112 px							--> 6.0 x 0.875 IU.
 The Scatter and Bonus highlight boxes are 768x768px						--> 4.0 x 4.0 IU
 
-Geometry or the 5-reel "Golden 7's Deluxe" machine:
+
+Geometry for the 5-reel "Golden 7's Deluxe" machine:
+----------------------------------------------------
 
 The upper overlay, reel underlay, and line win overlays are 939x704 px	--> 14.667 x 11 IU
 The lower overlay image is 939x128 px									--> 13 x 2 IU
@@ -65,11 +70,11 @@ The "Scatter Win" is 384x80 px, should be displayed at 50% width		--> 3.0 x scre
 The "Bonus Win" label is 352x80 px, should be displayed at 50% width	--> 2.75 x screen_line_height 3 IU
 The cash slot is 320x128 px and is normally shown at full-size			--> 5.0 x 2.0 IU
 The "screen" in the lower overlay is 384x112 px							--> or 6.0 x 0.875 IU.
-The Scatter and Bonus highlight boxes are 512x512 px					--> 2.667 x 2.667 IU
+The Scatter and Bonus highlight boxes are 512x768 px					--> 2.667 x 4.0 IU
 
 
 How wild cards work:
---------------------
+====================
 
 [WILD!] is basically "don't care", as far as the engine's concerned, and will match the highest entry in the table that can theoretically form a match, regardless of how many symbols actually match.
 
