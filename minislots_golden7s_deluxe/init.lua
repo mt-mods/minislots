@@ -43,14 +43,14 @@ minislots.register_machine({
 		1,
 		3,
 		5,
-		9        -- there's room for one more, if desired
+		9		-- there's room for two more, if desired
 	},
 	betbuttons = { -- line bet amount on each button, from left to right
 		1,
 		2,
 		5,
 		10,
-		25
+		25		-- there's room for one more, if desired
 	},
 	matches = { -- nil == don't care about that reel in a given match
 		{   2, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  "lemon"   },
