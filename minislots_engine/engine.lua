@@ -59,7 +59,7 @@ function minislots.spin_reels(def)
 --		if reel == 2 then n = 4 end
 --		if reel == 3 then n = 10 end
 
---		local n = 12 -- force a scatter win
+		local n = 12 -- force a scatter win
 
 --		local n = 16 -- force a bonus win + 3 line wins
 
@@ -166,7 +166,10 @@ function minislots.register_machine(mdef)
 	def.constants.spincoutbtnszy = def.constants.spincoutsizey * 1.05
 
 	def.constants.reelspc = def.geometry.reel_sizex*1.3333
-	def.constants.highlightboxsz = def.geometry.reel_sizex*1.3333
+	def.constants.highlightboxszx = def.geometry.reel_sizex*1.3333
+	def.constants.highlightboxszy = def.geometry.reel_sizey/3*1.3333
+	def.constants.highlightboxoffsx = 1-(def.geometry.reel_sizex/6)
+	def.constants.highlightboxoffsy = 1-(def.geometry.reel_sizey/18)
 
 	def.constants.screenlnht2 = def.geometry.screen_line_height * 0.6667
 	def.constants.screenlnht3 = def.geometry.screen_line_height * 0.3333
@@ -195,9 +198,9 @@ function minislots.register_machine(mdef)
 
 	def.constants.reelimg 			= def.constants.basename.."reel_background.png"
 	def.constants.reelshadowimg		= ":0,0="..def.constants.basename.."reel_shadow.png]"
-	def.constants.scatterhlimg		= def.constants.highlightboxsz..","..def.constants.highlightboxsz..";"..
+	def.constants.scatterhlimg		= def.constants.highlightboxszx..","..def.constants.highlightboxszy..";"..
 										def.constants.basename.."highlight_scatter.png]"
-	def.constants.bonushlimg		= def.constants.highlightboxsz..","..def.constants.highlightboxsz..";"..
+	def.constants.bonushlimg		= def.constants.highlightboxszx..","..def.constants.highlightboxszy..";"..
 										def.constants.basename.."highlight_bonus.png]"
 	def.constants.cashslotscrnbg	= def.constants.basename.."cash_slot_screen_background.png"
 
@@ -258,13 +261,14 @@ function minislots.register_machine(mdef)
 										def.constants.emptyimg..";cslot;]"
 	def.constants.button_cslot_close = def.constants.basename.."cash_slot_screen_close_button.png"
 
-	def.constants.reelsymsize		= def.geometry.reel_sizex*64 -- assumes square symbols
+	def.constants.reelsymsizex		= def.geometry.reel_sizex*64
+	def.constants.reelsymsizey		= def.geometry.reel_sizey/3*64
 
 	def.constants.reelcombinepref	= ","..(vertscale-vanchor)..";"..
 										(def.geometry.reel_sizex)..","..(def.geometry.reel_sizey)..";"..
 										def.constants.reelimg..
-										"^[combine:"..def.constants.reelsymsize.."x"..
-										def.geometry.reel_sizey*64
+										"^[combine:"..def.constants.reelsymsizex.."x"..
+										def.constants.reelsymsizey
 
 	def.constants.reelunderlightpref = def.constants.basename.."reel_underlight_"
 	def.constants.overlaylinepref	= def.constants.basename.."overlay_line_"
@@ -708,7 +712,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			local t = {}
 			for row = 0, 2 do
 				if spin[row+1][reel][2] == "scatter" then
-					t[#t+1] = ":0,"..(row*def.constants.reelsymsize).."="
+					t[#t+1] = ":0,"..(row*def.constants.reelsymsizey).."="
 							..def.constants.reelunderlightpref..(row+1)..".png"
 				end
 			end
@@ -721,7 +725,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			local t = {}
 			for row = 0, 2 do
 				if spin[row+1][reel][2] == "bonus" then
-					t[#t+1] = ":0,"..(row*def.constants.reelsymsize).."="
+					t[#t+1] = ":0,"..(row*def.constants.reelsymsizey).."="
 							..def.constants.reelunderlightpref..(row+1)..".png"
 				end
 			end
@@ -735,7 +739,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	if string.find(state, "spinning_fast_") then
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
-			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsize
+			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
 			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsfast..
@@ -745,7 +749,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	elseif string.find(state, "spinning_medm_") then
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
-			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsize
+			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
 			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsmedium..
@@ -755,7 +759,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	elseif string.find(state, "spinning_slow_") then
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
-			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsize
+			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
 			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsslow..
@@ -766,13 +770,13 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
 			if i > ((statenum-61)/def.inter_reel_steps) then -- state machine enters the "reels_stopping_*" state at 60.
-				local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsize
+				local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
 				t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 					def.constants.reelcombinepref..
 					":0,"..rs.."="..def.constants.symbolsslow..
 					def.constants.reelshadowimg
 			else
-				local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsize
+				local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsizey
 				t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 					def.constants.reelcombinepref..
 					underlights[i+1]..":0,"..rs.."="..def.constants.symbolsstopped..
@@ -783,7 +787,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	elseif state == "stopped" or state == "start" or string.find(state, "win") then
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
-			local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsize
+			local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsizey
 			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				underlights[i+1]..":0,"..rs.."="..def.constants.symbolsstopped..
@@ -809,8 +813,8 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	local t = {}
 	if state == "scatter_win" and allwins.scatter.count > 0 then
 		for i,pos in ipairs(allwins.scatter.pos) do
- 			t[i] = "image["..(((pos[1]-1)*def.constants.reelspc+0.5)*horizscale-hanchor)..","..
-				(((pos[2]-1)*(def.geometry.reel_sizey/3)+0.5)*vertscale-vanchor)..";"..
+ 			t[i] = "image["..(((pos[1]-1)*def.constants.reelspc+def.constants.highlightboxoffsx)*horizscale-hanchor)..","..
+				(((pos[2]-1)*(def.geometry.reel_sizey/3)+def.constants.highlightboxoffsy)*vertscale-vanchor)..";"..
 				def.constants.scatterhlimg
 		end
 		scatters = table.concat(t)
@@ -819,8 +823,8 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	local t = {}
 	if state == "bonus_win" and allwins.bonus.count > 0 then
 		for i,pos in ipairs(allwins.bonus.pos) do
- 			t[i] = "image["..(((pos[1]-1)*def.constants.reelspc+0.5)*horizscale-hanchor)..","..
-				(((pos[2]-1)*(def.geometry.reel_sizey/3)+0.5)*vertscale-vanchor)..";"..
+ 			t[i] = "image["..(((pos[1]-1)*def.constants.reelspc+def.constants.highlightboxoffsx)*horizscale-hanchor)..","..
+				(((pos[2]-1)*(def.geometry.reel_sizey/3)+def.constants.highlightboxoffsy)*vertscale-vanchor)..";"..
 				def.constants.bonushlimg
 		end
 		bonuses = table.concat(t)

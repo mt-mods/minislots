@@ -1,5 +1,5 @@
  
--- Golden 7's example machine
+-- Golden 7's Deluxe example machine
 --
 -- By Vanessa Dannenberg
 --
@@ -7,23 +7,23 @@
 -- others drawn or rendered by me.
 
 minislots.register_machine({
-	name = "golden7s",  -- becomes the node name e.g. "minislots:golden7s"
-	description = "Golden 7's slot machine",
+	name = "golden7s_deluxe",
+	description = "Golden 7's Deluxe slot machine",
 	machine_shape = "standard",
 	lines = {           -- reel symbol pay line positions: 0 = center, -1 = top, +1 = bottom
-		{  0,  0,  0 }, -- pay line 1: center symbol on each reel
-		{ -1, -1, -1 }, -- pay line 2: top symbol on each reel
-		{  1,  1,  1 }, -- pay line 3: bottom symbol on each reel
-		{ -1,  0,  1 }, -- pay line 4: top of reel 1, center of 2, bottom of 3
-		{  1,  0, -1 },
-		{ -1, -1,  0 },
-		{  1,  1,  0 },
-		{  0, -1, -1 },
-		{  0,  1,  1 }
+		{  0,  0,  0,  0,  0 }, -- pay line 1: center symbol on each reel
+		{ -1, -1, -1, -1, -1 }, -- 2: top symbol on each reel
+		{  1,  1,  1,  1,  1 }, -- 3: bottom symbol on each reel
+		{ -1, -1,  0,  1,  1 }, -- 4: top of reels 1 and 2, center of 3, bottom of 4 and 5
+		{  1,  1,  0, -1, -1 }, -- 5: bottom of reels 1, 2, center 3, top 4, 5
+		{ -1, -1, -1,  0,  1 }, -- 6: top of 1, 2, 3, center 4, bottom 5
+		{  1,  1,  1,  0, -1 }, -- 7: bottom of 1, 2, 3, center 4, top 5
+		{ -1,  0,  1,  1,  1 }, -- 8: top of 1, center 2, bottom 3, 4, 5
+		{  1,  0, -1, -1, -1 }, -- 9: bottom of 1, center 2, top 3, 4, 5
 	},
-	symbols = {			-- must be in the same order as the symbols in the reel image
-		"bar",			-- but ignore the first one and last two in the image, they're wrap-
-		"lemon",		-- arounds/repeats and are handled specially.
+	symbols = {
+		"bar",
+		"lemon",
 		"77",
 		"cherry",
 		"jackpot",
@@ -53,42 +53,37 @@ minislots.register_machine({
 		25
 	},
 	matches = { -- nil == don't care about that reel in a given match
-		{   1, "lemon"   ,  "lemon"   ,  "lemon"   },
+		{   2, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  "lemon"   },
 
-		{   2, "melon"   ,  "melon"   ,  "melon"   },
+		{   4, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  "melon"   },
 
-		{   2, "cherry"  ,  "cherry"  ,  nil       },
-		{   3, "cherry"  ,  "cherry"  ,  "cherry"  },
+		{   5, "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       ,  nil       },
+		{   6, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       },
+		{   7, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  },
 
-		{   5, "bell"    ,  "bell"    ,  nil       },
-		{   6, "bell"    ,  "bell"    ,  "bell"    },
+		{  10, "bell"    ,  "bell"    ,  "bell"    ,  nil       ,  nil       },
+		{  15, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  nil       },
+		{  20, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  "bell"    },
 
-		{   8, "bar"     ,  "bar"     ,  nil       },
-		{   9, "bar"     ,  "bar"     ,  "bar"     },
-		{  10, "2bar"    ,  "bar"     ,  nil       },
-		{  11, "2bar"    ,  "2bar"    ,  nil       },
-		{  12, "2bar"    ,  "2bar"    ,  "2bar"    },
-		{  12, "3bar"    ,  "2bar"    ,  nil       },
-		{  14, "3bar"    ,  "2bar"    ,  "bar"     },
-		{  15, "3bar"    ,  "3bar"    ,  nil       },
-		{  17, "3bar"    ,  "3bar"    ,  "bar"     },
-		{  18, "3bar"    ,  "3bar"    ,  "2bar"    },
-		{  20, "3bar"    ,  "3bar"    ,  "3bar"    },
+		{  30, "bar"     ,  "bar"     ,  "bar"     ,  nil       ,  nil       },
+		{  35, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  nil       },
+		{  40, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  "bar"     },
 
-		{  20, "7"       ,  "7"       ,  "7"       },
-		{  21, "77"      ,  "77"      ,  "7"       },
-		{  21, "77"      ,  "7"       ,  "77"      },
-		{  25, "77"      ,  "77"      ,  "77"      },
-		{  30, "777"     ,  "7"       ,  "7"       },
-		{  35, "777"     ,  "77"      ,  "7"       },
-		{  35, "777"     ,  "7"       ,  "77"      },
-		{  40, "777"     ,  "77"      ,  "77"      },
-		{  40, "777"     ,  "777"     ,  "7"       },
-		{  45, "777"     ,  "777"     ,  "77"      },
-		{  50, "777"     ,  "777"     ,  "77"      },
-		{  60, "777"     ,  "777"     ,  "777"     },
+		{  50, "2bar"    ,  "2bar"    ,  "2bar"    ,  nil       ,  nil       },
+		{  55, "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    ,  nil       },
+		{  60, "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    },
 
-		{ 200, "jackpot" ,  "jackpot" ,  "jackpot" },
+		{  70, "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       ,  nil       },
+		{  75, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       },
+		{  80, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    },
+
+		{  90, "7"       ,  "7"       ,  "7"       ,  "7"       ,  "7"       },
+
+		{ 100, "77"      ,  "77"      ,  "77"      ,  "77"      ,  "77"      },
+
+		{ 150, "777"     ,  "777"     ,  "777"     ,  "777"     ,  "777"     },
+
+		{ 300, "jackpot" ,  "jackpot" ,  "jackpot" , "jackpot"  ,  "jackpot" },
 
 	},
 	maxbalance = 3260000,			-- 65535 50 Mg notes, minus maximum possible payout, minus a fudge amount
@@ -101,28 +96,28 @@ minislots.register_machine({
 	reel_slow_timeout = 0.1,
 	win_delay = 0.5,				-- time to wait after reels stop before showing winning lines
 	line_timeout = 1,				-- time to wait between cycling among winning lines
-	inter_reel_steps = 4,			-- number of "frames" between stopping reels (using slow timeout)
-	half_stops_weight = 25,			-- likelihood that a reel will stop between symbols, max 100 (if you want to
+	inter_reel_steps = 3,			-- number of "frames" between stopping reels (using slow timeout)
+	half_stops_weight = 5,			-- likelihood that a reel will stop between symbols, max 100 (if you want to
 									-- disable that behavior and always land on a symbol, set this to 1).
-	min_scatter = 2,				-- minimum number of scatter symbols needed before computing a scatter win
+	min_scatter = 3,				-- minimum number of scatter symbols needed before computing a scatter win
 	scatter_value = 3,				-- value of the scatter symbol, will be multiplied by number visible * line bet
-	min_bonus = 3,					-- minimum number of symbols needed to trigger the bonus round
+	min_bonus = 4,					-- minimum number of symbols needed to trigger the bonus round
 	initiate_bonus = function(spin, def)
 		print("[minislots] Bonus round triggered.")
-		return 123
+		return 400
 	end,
 	geometry = {							-- all measures are in Minetest formspec "inventory slots" units
 
-		base_user_interface_width = 13,		-- width of the user interface
+		base_user_interface_width = 14.667,	-- width of the user interface
 		upper_section_height = 11,			-- height of the upper section (the reels et. al)
 		lower_section_height = 2,			-- height of lower section (screen, buttons)
 
-		reel_sizex = 3,						-- Nominal X/Y size of one reel.  Note that reels are drawn with a
+		reel_sizex = 2,						-- Nominal X/Y size of one reel.  Note that reels are drawn with a
 		reel_sizey = 9,						-- spacing of 1.3333 times their width (creates a 1 IU gap in this
 											-- machine), centered and leaving a 1 IU space at the far left/right.
 
 		button_rows_posx = 6.25,			-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
-		spin_cashout_posx = 11.25,			-- X pos for Spin and Cash-out/Quit buttons
+		spin_cashout_posx = 12.75,			-- X pos for Spin and Cash-out/Quit buttons
 		button_rows_posy = 11.14,			-- Y pos for "n Lines" row, and Cash Out/Quit button
 
 		main_button_size = 0.8,				-- X/Y size of Lines/Bet buttons; X*2 x Y for Spin and Cash Out
@@ -144,7 +139,7 @@ minislots.register_machine({
 
 		cash_slot_sizex = 5.0,				-- X/Y size and position of the cash slot
 		cash_slot_sizey = 0.8125,
-		cash_slot_posx = 7.9063,
+		cash_slot_posx = 9.5781,
 		cash_slot_posy = 10.0938,
 		cash_slot_cin_posx = 1.9,			-- X/Y position within the "cash intake" form (uses the same size as
 		cash_slot_cin_posy = 2.27			-- above)
@@ -181,9 +176,9 @@ The Minislots display engine will position the imagery to such that there's a
 thin shaded border around the machine's graphics, and it will correct for the
 above-mentioned legacy scaling and positioning where it can.
 
-The upper overlay, reel underlay, and line win overlays are 832x704 px	--> 13 x 11 IU
-The lower overlay image is 832x128 px									--> 13 x 2 IU
-A single reel image is 192x576 px										--> 3 x 9  IU
+The upper overlay, reel underlay, and line win overlays are 939x704 px	--> 14.6667 x 11 IU
+The lower overlay image is 939x128 px									--> 13 x 2 IU
+A single reel image is 128x576 px										--> 2 x 9  IU
 
 A digit glyph is 48x80 px, or 0.75 IU, but will be displayed at 75%, 45% or 40%
 of that IU size, depending on line height (to fit in large values)		--> 0.563, 0.338, or 0.30 IU
@@ -216,14 +211,14 @@ next to their labels.  Be sure you leave a little space on the right in the
 images, as needed.
 
 The scatter and bonus highlight boxes are displayed at 1.333 times the width
-of the reel, and positioned 0.5 IU above and left, thus centering it over the
-symbol.  This is to allow some kind of "glow" or other effect to appear just
-outside of the highlight box itself.  The nominal size of the image is 256 px
-square, but because Minetest does not support full alpha on overlaid images in
-a formspec, you'll have to fake it by dithering the alpha.  Draw this image
-large enough and the downscaling will blur the dithering, making it look like
-real alpha, mostly.  That is why the images in this machine are drawn at
-768 px square.
+of the reel, and positioned 1/6 reel width above and left, thus centering it
+over the symbol.  This is to allow some kind of "glow" or other effect to
+appear just outside of the highlight box itself.  The nominal size of the
+image is 171 px square, but because Minetest does not support full alpha on
+overlaid images in a formspec, you'll have to fake it by dithering the alpha.
+Draw this image large enough and the downscaling will blur the dithering,
+making it look like real alpha, mostly.  That is why the images in this
+machine are drawn at 512 px square.
 
 The various labels, parenthesis, and colon were drawn with The GIMP using the
 "Liberation Sans Narrow Bold Condensed" font, 85 point height, with the inter-
@@ -246,15 +241,15 @@ How wild cards work:
 match the highest entry in the table that can theoretically form a match,
 regardless of how many symbols actually match.
 
-For example, suppose you get a normal-looking spin showing [WILD!][77][lemon]
-on a line.  That won't match anything, because there's no match line that only
-needs one symbol, nor any match lines that allow for a match consisting of
-only two [77] symbols or only [777][77].
+For example, suppose you get a normal-looking spin showing
+[WILD!][77][77][lemon][cherry] on a line.  That won't match anything, because
+there's no match line that only needs one symbol, nor any match lines that
+allow for a match consisting of only three "7" symbols of any kind.
 
-On the other hand, suppose you get [wild][2bar][cherry].  Sounds like it
-should match the {"2bar", "2bar", nil} entry, but it'll pick the
-{"3bar", "2bar", nil} entry, because that one also matches, but it's worth
-more.
+On the other hand, suppose you get [WILD!][WILD!][WILD!][2bar][cherry].  Sounds
+like it should match the {"2bar", "2bar", "2bar", "2bar", nil} entry, but
+it'll pick the {"3bar", "3bar", "3bar", nil, nil} entry, because that one also
+matches, but it's worth more.
 
 This extends to as many reels as the machine has, and as many [WILD!]'s as
 there are in a pay line, regardless of where in the line they appear (so long
@@ -262,6 +257,6 @@ as the symbols that precede and follow the [WILD!]'s can form valid matches,
 of course).
 
 A pay line consisting of all [WILD!]'s is equivalent to whatever the highest
-winning combination is in your machine (three [JACKPOT]'s here).
+winning combination is in your machine (five [JACKPOT]'s here).
 
 ]]--
