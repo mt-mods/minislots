@@ -98,12 +98,12 @@ alpha anyway (it's odd that you can exploit this "fake" alpha, but can't use
 real alpha).  Hence, the images used in these example machines are three times
 their nominal size.
 
-The various labels, parenthesis, and colon were drawn with The GIMP using the
-"Liberation Sans Narrow Bold Condensed" font, 85 point height, with the
-inter-character spacing set as small as the wording would allow (usually
--4.0).  Anti-aliasing enabled, "Full" hinting.  Text positioned two pixels
-from the left, baseline at 60 (so the lower left corner of the "B" in "Bal:"
-is at (2,60) according to GIMP).
+The various labels, parenthesis, and colon in the example machines were drawn
+with The GIMP using the "Liberation Sans Narrow Bold Condensed" font, 85 point
+height, with the inter-character spacing set as small as the wording would
+allow (usually -4.0).  Anti-aliasing enabled, "Full" hinting.  Text is
+positioned two pixels from the left, with the baseline at 60 (so the lower
+left corner of the "B" in "Bal:" is at (2,60) according to GIMP).
 
 The numerals use "Century Schoolbook L Bold" font, same size, settings, etc.
 Same vertical positioning, and horizontally-centered.
@@ -115,38 +115,38 @@ top and bottom to allow for symbols to be positioned "off-screen".
 Geometry for the 3-reel "Golden 7's" machine:
 ---------------------------------------------
 
-The upper overlay, reel underlay, and line win overlays are 832x704 px	--> 13 x 11 IU
-The lower overlay image is 832x128 px									--> 13 x 2 IU
-A single reel image is 192x576 px										--> 3 x 9  IU
+The upper overlay, reel underlay, and line win overlays are 832x704 px  --> 13 x 11 IU
+The lower overlay image is 832x128 px                                   --> 13 x 2 IU
+A single reel image is 192x576 px                                       --> 3 x 9  IU
 A digit glyph is 48x80 px, or 0.75 IU, but is displayed at 75%, 45% or
-40 %% of that size, depending on line height (to fit in large values)	--> 0.563, 0.338, or 0.30 IU
-The currency label is 96x80 px											--> 0.4 x screen_line_height_3 IU
-The "Bal", "Bet" and "Win" labels are 128x80 px, but should be narrower	--> 1.125 x line_height IU
-The "Line Win" label is 256x80 px, should be displayed at 50% width		--> 3.0 x screen_line_height_3 IU
-A colon or parenthesis is 24x80 pixels, displayed at 50% digit width	--> 0.188 x screen_line_height_3 IU
-The "Scatter Win" is 384x80 px, should be displayed at 50% width		--> 3.0 x screen_line_height_3 IU
-The "Bonus Win" label is 352x80 px, should be displayed at 50% width	--> 2.75 x screen_line_height 3 IU
-The cash slot is 320x128 px and is normally shown at full-size			--> 5.0 x 2.0 IU
-The "screen" in the lower overlay is 384x112 px							--> 6.0 x 0.875 IU.
-The Scatter and Bonus highlight boxes are 768x768px						--> 4.0 x 4.0 IU
+40 %% of that size, depending on line height (to fit in large values)   --> 0.563, 0.338, or 0.30 IU
+The currency label is 96x80 px                                          --> 0.4 x screen_line_height_3 IU
+The "Bal", "Bet" and "Win" labels are 128x80 px, but should be narrower --> 1.125 x line_height IU
+The "Line Win" label is 256x80 px, should be displayed at 50% width     --> 3.0 x screen_line_height_3 IU
+A colon or parenthesis is 24x80 pixels, displayed at 50% digit width    --> 0.188 x screen_line_height_3 IU
+The "Scatter Win" is 384x80 px, should be displayed at 50% width        --> 3.0 x screen_line_height_3 IU
+The "Bonus Win" label is 352x80 px, should be displayed at 50% width    --> 2.75 x screen_line_height 3 IU
+The cash slot is 320x128 px and is normally shown at full-size          --> 5.0 x 2.0 IU
+The "screen" in the lower overlay is 384x112 px                         --> 6.0 x 0.875 IU.
+The Scatter and Bonus highlight boxes are 768x768px                     --> 4.0 x 4.0 IU
 
 
 Geometry for the 5-reel "Golden 7's Deluxe" machine:
 ----------------------------------------------------
 
-The upper overlay, reel underlay, and line win overlays are 939x704 px	--> 14.667 x 11 IU
-The lower overlay image is 939x128 px									--> 13 x 2 IU
-A single reel image is 128x576 px										--> 2 x 9  IU
-A digit glyph is 48x80 px												--> 0.563, 0.338, or 0.30 IU
-The currency label is 96x80 px											--> 0.4 x screen_line_height_3 IU
-The "Bal", "Bet" and "Win" labels are 128x80 px							--> 1.125 x line_height IU
-The "Line Win" label is 256x80 px										--> 3.0 x screen_line_height_3 IU
-A colon or parenthesis is 24x80 pixels									--> 0.188 x screen_line_height_3 IU
-The "Scatter Win" label is 384x80 px									--> 3.0 x screen_line_height_3 IU
-The "Bonus Win" label is 352x80 px										--> 2.75 x screen_line_height 3 IU
-The cash slot is 320x128 px												--> 5.0 x 2.0 IU
-The "screen" in the lower overlay is 426x112 px							--> 6.656 x 0.875 IU.
-The Scatter and Bonus highlight boxes are 512x768 px					--> 2.667 x 4.0 IU
+The upper overlay, reel underlay, and line win overlays are 939x704 px  --> 14.667 x 11 IU
+The lower overlay image is 939x128 px                                   --> 13 x 2 IU
+A single reel image is 128x576 px                                       --> 2 x 9  IU
+A digit glyph is 48x80 px                                               --> 0.563, 0.338, or 0.30 IU
+The currency label is 96x80 px                                          --> 0.4 x screen_line_height_3 IU
+The "Bal", "Bet" and "Win" labels are 128x80 px                         --> 1.125 x line_height IU
+The "Line Win" label is 256x80 px                                       --> 3.0 x screen_line_height_3 IU
+A colon or parenthesis is 24x80 pixels                                  --> 0.188 x screen_line_height_3 IU
+The "Scatter Win" label is 384x80 px                                    --> 3.0 x screen_line_height_3 IU
+The "Bonus Win" label is 352x80 px                                      --> 2.75 x screen_line_height 3 IU
+The cash slot is 320x128 px                                             --> 5.0 x 2.0 IU
+The "screen" in the lower overlay is 426x112 px                         --> 6.656 x 0.875 IU.
+The Scatter and Bonus highlight boxes are 512x768 px                    --> 2.667 x 4.0 IU
 
 
 How wild cards work:
