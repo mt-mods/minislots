@@ -59,7 +59,7 @@ function minislots.spin_reels(def)
 --		if reel == 2 then n = 4 end
 --		if reel == 3 then n = 10 end
 
-		local n = 12 -- force a scatter win
+--		local n = 12 -- force a scatter win
 
 --		local n = 16 -- force a bonus win + 3 line wins
 
