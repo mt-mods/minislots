@@ -1,6 +1,8 @@
 -- Minislots game engine
 -- by Vanessa "VanessaE" Dannenberg
 
+local mtver = minetest.get_version()
+
 math.randomseed(os.time())
 
 local words_numbers = {  -- image widths, in pixels
@@ -142,9 +144,18 @@ local hanchor = 0.23		-- the position of (0,0) relative to the upper-left formsp
 local vanchor = 0.24
 
 function minislots.register_machine(mdef)
-
 	local def = table.copy(mdef)
 	def.constants = {}
+
+
+	if string.sub(mtver.string, 1, 4) == "5.0." then
+		print("[Minislots] 5.0.x engine detected, Adjusting display to compensate.")
+		horizscale = 0.800
+	end
+
+	def.constants.cashout_screen_hposscale = 0.0175
+	def.constants.cashout_screen_ctrx = (def.geometry.base_user_interface_width/2)*horizscale - hanchor
+	def.constants.cashoutticketimg_posx = (def.geometry.base_user_interface_width/2 - 3.75)*horizscale - hanchor
 
 	def.constants.form_header = "size["..(def.geometry.base_user_interface_width*0.785)..","..
 								((def.geometry.upper_section_height+def.geometry.lower_section_height)*0.823).."]"
@@ -284,7 +295,7 @@ function minislots.register_machine(mdef)
 
 	def.constants.upperbezel		= def.constants.mainpref.."minislots_golden7s_overlay_upper_bezel.png]"
 	def.constants.cashoutbackground	= def.constants.mainpref.."minislots_blue_img.png]"
-	def.constants.cashoutticketimg	= "image["..(2.25-hanchor)..","..(3.5-vanchor)..
+	def.constants.cashoutticketimg	= "image["..def.constants.cashoutticketimg_posx..","..(3.5-vanchor)..
 										";8,3;minislots_cashout_ticket.png]"
 						
 
@@ -1002,9 +1013,6 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	else
 
 		local posy = 5 - vanchor
-		local ctrx = 6.5
-
-		local cohscale = 0.0175
 		local words = minislots.number_to_words(last_cashout)
 		local spwidth = 10
 
@@ -1021,8 +1029,8 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		cashoutlen = cashoutlen + (#words-1)*spwidth
 
 		local wordswidth = cashoutlen < 300 and cashoutlen or 300
-		local cashoutstr_pref = "image["..((ctrx - wordswidth*cohscale/2)*horizscale)..","..(posy)..
-							";"..(wordswidth*cohscale)..",0.25;"
+		local cashoutstr_pref = "image["..(def.constants.cashout_screen_ctrx - wordswidth*def.constants.cashout_screen_hposscale/2*horizscale)..","..(posy)..
+							";"..(wordswidth*def.constants.cashout_screen_hposscale)..",0.25;"
 
 		local cashoutstr = cashoutstr_pref..
 					minetest.formspec_escape(
@@ -1030,7 +1038,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 					).."]"
 
 		local scale = 0.5
-		local posx = ctrx - string.len(tostring(last_cashout)+1.3333)*scale/2
+		local posx = def.constants.cashout_screen_ctrx - (string.len(tostring(last_cashout))+1.3333)*scale*horizscale/2
 
 		upper_screen =
 			def.constants.cashoutbackground..
