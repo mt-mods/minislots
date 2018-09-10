@@ -1134,3 +1134,5 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		minetest.close_formspec(player:get_player_name(), formname)
 	end
 end)
+
+print("[Minislots] Loaded!")
