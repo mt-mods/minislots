@@ -53,13 +53,19 @@ minislots.register_machine({
 		25		-- there's room for one more, if desired
 	},
 	matches = { -- nil == don't care about that reel in a given match
-		{   2, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  "lemon"   },
+		{   1, "lemon"   ,  "lemon"   ,  nil       ,   nil      ,  nil       },
+		{   2, "lemon"   ,  "lemon"   ,  "lemon"   ,   nil      ,  nil       },
+		{   3, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  nil       },
+		{   5, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  "lemon"   },
 
-		{   4, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  "melon"   },
+		{   5, "melon"   ,  "melon"   ,  "melon"   ,   nil      ,  nil       },
+		{   6, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  nil       },
+		{   7, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  "melon"   },
 
-		{   5, "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       ,  nil       },
-		{   6, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       },
-		{   7, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  },
+		{   7, "cherry"  ,  "cherry"  ,  nil       ,  nil       ,  nil       },
+		{   8, "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       ,  nil       },
+		{   9, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       },
+		{  10, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  },
 
 		{  10, "bell"    ,  "bell"    ,  "bell"    ,  nil       ,  nil       },
 		{  15, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  nil       },
@@ -77,9 +83,16 @@ minislots.register_machine({
 		{  75, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       },
 		{  80, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    },
 
+		{  80, "7"       ,  "7"       ,  "7"       ,  nil       ,  nil       },
+		{  85, "7"       ,  "7"       ,  "7"       ,  "7"       ,  nil       },
 		{  90, "7"       ,  "7"       ,  "7"       ,  "7"       ,  "7"       },
 
+		{  90, "77"      ,  "77"      ,  "77"      ,  nil       ,  nil       },
+		{  95, "77"      ,  "77"      ,  "77"      ,  "77"      ,  nil       },
 		{ 100, "77"      ,  "77"      ,  "77"      ,  "77"      ,  "77"      },
+
+		{ 100, "777"     ,  "777"     ,  "777"     ,  nil       ,  nil       },
+		{ 125, "777"     ,  "777"     ,  "777"     ,  "777"     ,  nil       },
 
 		{ 150, "777"     ,  "777"     ,  "777"     ,  "777"     ,  "777"     },
 
