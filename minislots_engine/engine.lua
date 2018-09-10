@@ -55,10 +55,10 @@ function minislots.spin_reels(def)
 --		if reel == 2 then n = 9 end
 --		if reel == 3 then n = 8 end
 
--- force the all-wilds win shown in the cabinet graphics, 3-reel
+-- force the all-wilds win shown in the cabinet graphics, 5-reel
 --		local n = 10
 --		if reel == 3 then n = 9 end
---		if reel == 4 or reel == 5 then n = 8 end
+--		if reel > 3 then n = 8 end
 
 -- force a no-win spin
 --		local n = 1
