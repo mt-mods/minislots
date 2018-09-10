@@ -108,7 +108,6 @@ minislots.register_machine({
 	scatter_value = 3,				-- value of the scatter symbol, will be multiplied by number visible * line bet
 	min_bonus = 3,					-- minimum number of symbols needed to trigger the bonus round
 	initiate_bonus = function(spin, def)
-		print("[minislots] Bonus round triggered.")
 		return 123
 	end,
 	geometry = {							-- all measures are in Minetest formspec "inventory slots" units

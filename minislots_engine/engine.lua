@@ -409,7 +409,6 @@ function minislots.register_machine(mdef)
 			timer:stop()
 			local inv = meta:get_inventory()
 			inv:remove_item("main", stack)
-			print("[minislots] Received "..stack:get_name())
 			local state = "stopped"
 			meta:set_string("state", state)
 			meta:set_int("last_cashout", balance)
@@ -470,9 +469,6 @@ function minislots.register_machine(mdef)
 					local tens = math.floor((last_cashout - fifties*50)/10)
 					local fives = math.floor((last_cashout - fifties*50 - tens*10)/5)
 					local ones = math.floor(last_cashout - fifties*50 - tens*10 - fives*5)
-
-					print(last_cashout, fifties, tens, fives, ones)
-
 					local inv = sender:get_inventory()
 					if (fifties == 0 or inv:room_for_item("main", "currency:minegeld_50 "..fifties))
 					  and (tens == 0 or inv:room_for_item("main", "currency:minegeld_10 "..tens))
@@ -675,7 +671,6 @@ function minislots.cycle_states(pos)
 		end
 	end
 
-	print("[minislots] state machine cycle: "..state)
 	meta:set_string("state", state)
 	meta:set_string("formspec", minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines))
 
