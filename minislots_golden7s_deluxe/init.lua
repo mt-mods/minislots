@@ -20,6 +20,12 @@ minislots.register_machine({
 		{  1,  1,  1,  0, -1 }, -- 7: bottom of 1, 2, 3, center 4, top 5
 		{ -1,  0,  1,  1,  1 }, -- 8: top of 1, center 2, bottom 3, 4, 5
 		{  1,  0, -1, -1, -1 }, -- 9: bottom of 1, center 2, top 3, 4, 5
+		{  1,  0, -1,  0,  1 }, -- 10: bottom 1, center 2, top 3, center 4, bottom 5
+		{ -1,  0,  1,  0, -1 }, -- 11: top 1, center 2, bottom 3, center 4, top 5
+		{  0, -1, -1, -1, -1 }, -- 12: center 1, top 2, 3, 4, 5
+		{  0,  1,  1,  1,  1 }, -- 13: center 1, bottom 2, 3, 4, 5
+		{ -1, -1, -1, -1,  0 }, -- 14: top 1, 2, 3, 4, center 5
+		{  1,  1,  1,  1,  0 }, -- 15: bottom 1, 2, 3, 4, center 5
 	},
 	symbols = {
 		"bar",
@@ -43,14 +49,15 @@ minislots.register_machine({
 		1,
 		3,
 		5,
-		9		-- there's room for two more, if desired
+		9,
+		15
 	},
 	betbuttons = { -- line bet amount on each button, from left to right
 		1,
 		2,
 		5,
 		10,
-		25		-- there's room for one more, if desired
+		25
 	},
 	matches = { -- nil == don't care about that reel in a given match
 		{   1, "lemon"   ,  "lemon"   ,  nil       ,   nil      ,  nil       },
