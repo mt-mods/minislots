@@ -375,8 +375,8 @@ function minislots.register_machine(mdef)
 			local meta = minetest.get_meta(pos)
 			local resetspin = minislots.reset_reels(def)
 			local balance = 0
-			local linebet = 5
-			local maxlines = 9
+			local linebet = 1
+			local maxlines = 1
 			local emptywins = {
 				scatter = { count = 0, pos = {} },
 				bonus = { value = -1, count = 0, pos = {} }
