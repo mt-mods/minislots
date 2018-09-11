@@ -212,7 +212,8 @@ as the symbols that precede and follow the [WILD!]'s can form valid matches,
 of course).
 
 A pay line consisting of all [WILD!]'s is equivalent to whatever the highest
-winning combination is in your machine (five [JACKPOT]'s here).
+winning combination is in your machine (three or five [JACKPOT]'s in the
+example machines).
 
 
 DISCLAIMER:
