@@ -23,7 +23,8 @@ expanded-on in time.
 License: CC-By-NC-SA 4.0 (all parts, all files, all machines)
 
 Depends:  Minetest 0.4.17.1 and corresponding minetest_game, and Dan
-Duncombe's currency mod (my fork, which has 50 Mg notes).
+Duncombe's currency mod (my fork, which has 50 Mg notes,
+https://gitlab.com/VanessaE/currency ).
 
 
 
