@@ -147,7 +147,6 @@ function minislots.register_machine(mdef)
 	local def = table.copy(mdef)
 	def.constants = {}
 
-
 	if string.sub(mtver.string, 1, 4) == "5.0." then
 		print("[Minislots] 5.0.x engine detected, Adjusting display to compensate.")
 		horizscale = 0.800
@@ -206,7 +205,10 @@ function minislots.register_machine(mdef)
 	def.symbols[#def.symbols+1] = def.symbols[1]
 	def.symbols[0] = def.symbols[def.constants.numsymbols]
 
-	def.constants.last_step = def.inter_reel_steps * (def.constants.numreels-1) + 60
+	def.constants.fast_med_cutover = def.cutover_frames*2
+	def.constants.med_slow_cutover = def.constants.fast_med_cutover + def.cutover_frames*2
+	def.constants.slow_stop_cutover = def.constants.med_slow_cutover + def.cutover_frames*2
+	def.constants.last_step = def.inter_reel_steps * (def.constants.numreels-1) + def.constants.slow_stop_cutover
 	def.constants.reel_wraparound_buf = def.constants.numsymbols*10
 
 	def.constants.basename			= "minislots_"..def.name.."_"
@@ -571,6 +573,7 @@ function minislots.cycle_states(pos)
 	local numbonus = (allwins and allwins.bonus and allwins.bonus.count) or 0
 
 	local timeout = 0
+	print("[Minislots] state machine is at "..state)
 
 	if state == "start" then
 		balance = meta:get_int("balance") - linebet*maxlines
@@ -580,8 +583,8 @@ function minislots.cycle_states(pos)
 	elseif string.find(state, "spinning_fast_") then
 		local c = tonumber(string.sub(state, 15))
 		c = c + 2
-		if c > 19 then
-			state = "spinning_medm_20"
+		if c >= def.constants.fast_med_cutover then
+			state = "spinning_medm_"..def.constants.fast_med_cutover
 			timeout = def.reel_medium_timeout
 		else
 			state = "spinning_fast_"..c
@@ -590,8 +593,8 @@ function minislots.cycle_states(pos)
 	elseif string.find(state, "spinning_medm_") then
 		local c = tonumber(string.sub(state, 15))
 		c = c + 2
-		if c > 39 then
-			state = "spinning_slow_40"
+		if c >= def.constants.med_slow_cutover then
+			state = "spinning_slow_"..def.constants.med_slow_cutover
 			timeout = def.reel_slow_timeout
 		else
 			state = "spinning_medm_"..c
@@ -600,8 +603,8 @@ function minislots.cycle_states(pos)
 	elseif string.find(state, "spinning_slow_") then
 		local c = tonumber(string.sub(state, 15))
 		c = c + 2
-		if c > 59 then
-			state = "reels_stopping_60"
+		if c >= def.constants.slow_stop_cutover then
+			state = "reels_stopping_"..def.constants.slow_stop_cutover
 			timeout = def.reel_slow_timeout
 		else
 			state = "spinning_slow_"..c
@@ -781,7 +784,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	elseif string.find(state, "reels_stopping_") then
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
-			if i > ((statenum-61)/def.inter_reel_steps) then -- state machine enters the "reels_stopping_*" state at 60.
+			if i > ((statenum-def.constants.slow_stop_cutover-1)/def.inter_reel_steps) then
 				local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
 				t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
 					def.constants.reelcombinepref..

@@ -114,9 +114,11 @@ minislots.register_machine({
 	reel_fast_timeout = 0.2,		-- time between "frames" while spinning fast, medium speed, or slow
 	reel_medium_timeout = 0.1,
 	reel_slow_timeout = 0.1,
+	cutover_frames = 5,				-- number of frames to run for each fast, medium, and slow cycle
+	inter_reel_steps = 3,			-- number of frames between stopping reels (using slow timeout)
+
 	win_delay = 0.5,				-- time to wait after reels stop before showing winning lines
 	line_timeout = 1,				-- time to wait between cycling among winning lines
-	inter_reel_steps = 3,			-- number of "frames" between stopping reels (using slow timeout)
 	half_stops_weight = 5,			-- likelihood that a reel will stop between symbols, max 100 (if you want to
 									-- disable that behavior and always land on a symbol, set this to 1).
 	min_scatter = 3,				-- minimum number of scatter symbols needed before computing a scatter win
