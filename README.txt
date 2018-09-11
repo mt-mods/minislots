@@ -149,6 +149,46 @@ The "screen" in the lower overlay is 426x112 px                         --> 6.65
 The Scatter and Bonus highlight boxes are 512x768 px                    --> 2.667 x 4.0 IU
 
 
+Matching:
+=========
+
+In most cases, line matches are pretty straightforward.  If you specify a
+line in your match table reading:
+
+{123, "cherry", "lemon", "melon", "bell", "bar"}
+
+...then any pay line with those five symbols in exactly that order will be
+considered a win, and the player will be awarded 123 times their line bet.
+
+If an entry in the list is nil, for example:
+
+{ 99, "cherry", "lemon", "melon", "bell", nil}
+
+...then the corresponding reel will be ignored when checking if that entry is
+a match (reel 5 in this case).  This can be used for various effects, but
+mainly, it's intended to let you specify a match that only needs a few
+matching symbols on the first few reels, rather than requiring all five (or
+whatever) reels to match on a pay line, such as a match of three of some
+symbol on a five reel machine (one assumes that such a machine would have
+matches programmed for four or five of that symbol as well, at progressively
+higher values).
+
+If an entry in the list is itself a list, then the the items in that sub-list
+mean "any of these can match".  So if you have a match entry like:
+
+{100, "777", "777", "777", "777", {"7", "77", "777"} }
+
+...then reels 1, 2, 3, and 4 would need to show a [777] symbol, and reel 5
+would need to have one of [7], [77], or [777] also to complete the match
+(which would pay 100 times the line bet).
+
+You can do this for any reels you want, as many as you want (well, up to
+however many the machine has, of course).  For example, the Golden 7's Deluxe
+machine has an entry in its pay table that pays out on a line win consisting
+of five assorted [7], [77], and/or [777] symbols (it also has one for assorted
+[bar], [2bar], and/or [3bar] symbols).
+
+
 How wild cards work:
 ====================
 
