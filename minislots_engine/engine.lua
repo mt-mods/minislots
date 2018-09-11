@@ -593,7 +593,6 @@ function minislots.cycle_states(pos)
 	local numbonus = (allwins and allwins.bonus and allwins.bonus.count) or 0
 
 	local timeout = 0
-	print("[Minislots] state machine is at "..state)
 
 	if state == "start" then
 		balance = meta:get_int("balance") - linebet*maxlines
