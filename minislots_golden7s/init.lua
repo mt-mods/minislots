@@ -118,9 +118,12 @@ minislots.register_machine({
 		upper_section_height = 11,			-- height of the upper section (the reels et. al)
 		lower_section_height = 2,			-- height of lower section (screen, buttons)
 
+		reel_posx = 1,						-- X/Y position of first reel, others drawn as indicated below
+		reel_posy = 1,
+
 		reel_sizex = 3,						-- Nominal X/Y size of one reel.  Note that reels are drawn with a
 		reel_sizey = 9,						-- spacing of 1.3333 times their width (creates a 1 IU gap in this
-											-- machine), centered and leaving a 1 IU space at the far left/right.
+											-- machine).
 
 		button_rows_posx = 6.25,			-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
 		spin_cashout_posx = 11.25,			-- X pos for Spin and Cash-out/Quit buttons

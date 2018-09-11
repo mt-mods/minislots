@@ -303,7 +303,7 @@ function minislots.register_machine(mdef)
 	def.constants.reelsymsizex		= def.geometry.reel_sizex*64
 	def.constants.reelsymsizey		= def.geometry.reel_sizey/3*64
 
-	def.constants.reelcombinepref	= ","..(vertscale-vanchor)..";"..
+	def.constants.reelcombinepref	= ","..(def.geometry.reel_posy*vertscale-vanchor)..";"..
 										(def.geometry.reel_sizex)..","..(def.geometry.reel_sizey)..";"..
 										def.constants.reelimg..
 										"^[combine:"..def.constants.reelsymsizex.."x"..
@@ -774,7 +774,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
 			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
-			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+			t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsfast..
 				def.constants.reelshadowimg
@@ -784,7 +784,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
 			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
-			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+			t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsmedium..
 				def.constants.reelshadowimg
@@ -794,7 +794,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
 			local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
-			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+			t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				":0,"..rs.."="..def.constants.symbolsslow..
 				def.constants.reelshadowimg
@@ -805,13 +805,13 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		for i = 0, def.constants.numreels-1 do
 			if i > ((statenum-def.constants.slow_stop_cutover-1)/def.inter_reel_steps) then
 				local rs = calcrp(def, spin, i, statenum) * -def.constants.reelsymsizey
-				t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+				t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 					def.constants.reelcombinepref..
 					":0,"..rs.."="..def.constants.symbolsslow..
 					def.constants.reelshadowimg
 			else
 				local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsizey
-				t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+				t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 					def.constants.reelcombinepref..
 					underlights[i+1]..":0,"..rs.."="..def.constants.symbolsstopped..
 					def.constants.reelshadowimg
@@ -822,7 +822,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local t = {}
 		for i = 0, def.constants.numreels-1 do
 			local rs = (spin[2][i+1][1]-1) * -def.constants.reelsymsizey
-			t[i+1] = "image["..((i*def.constants.reelspc+1)*horizscale-hanchor)..
+			t[i+1] = "image["..((i*def.constants.reelspc+def.geometry.reel_posx)*horizscale-hanchor)..
 				def.constants.reelcombinepref..
 				underlights[i+1]..":0,"..rs.."="..def.constants.symbolsstopped..
 				def.constants.reelshadowimg
