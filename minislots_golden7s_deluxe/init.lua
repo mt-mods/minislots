@@ -78,6 +78,14 @@ minislots.register_machine({
 		{  15, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  nil       },
 		{  20, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  "bell"    },
 
+		{  25,
+			{"bar", "2bar", "3bar"},
+			{"bar", "2bar", "3bar"},
+			{"bar", "2bar", "3bar"},
+			{"bar", "2bar", "3bar"},
+			{"bar", "2bar", "3bar"}
+		},
+
 		{  30, "bar"     ,  "bar"     ,  "bar"     ,  nil       ,  nil       },
 		{  35, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  nil       },
 		{  40, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  "bar"     },
@@ -87,11 +95,19 @@ minislots.register_machine({
 		{  60, "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    },
 
 		{  70, "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       ,  nil       },
-		{  75, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       },
-		{  80, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    },
+		{  73, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       },
+		{  75, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    },
 
-		{  80, "7"       ,  "7"       ,  "7"       ,  nil       ,  nil       },
-		{  85, "7"       ,  "7"       ,  "7"       ,  "7"       ,  nil       },
+		{  80,
+			{"7", "77", "777"},
+			{"7", "77", "777"},
+			{"7", "77", "777"},
+			{"7", "77", "777"},
+			{"7", "77", "777"}
+		},
+
+		{  85, "7"       ,  "7"       ,  "7"       ,  nil       ,  nil       },
+		{  88, "7"       ,  "7"       ,  "7"       ,  "7"       ,  nil       },
 		{  90, "7"       ,  "7"       ,  "7"       ,  "7"       ,  "7"       },
 
 		{  90, "77"      ,  "77"      ,  "77"      ,  nil       ,  nil       },

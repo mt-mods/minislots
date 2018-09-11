@@ -52,6 +52,13 @@ function minislots.spin_reels(def)
 		local n = math.random(2, def.constants.numsymbols*2+1)/2
 		if math.random(1, 100) >= def.half_stops_weight then n = math.floor(n) end
 
+-- force a mixed-7's win, 5-reel
+--		local n = 3
+--		if reel == 2 then n = 10 end
+--		if reel == 3 then n = 3 end
+--		if reel == 4 then n = 10 end
+--		if reel == 5 then n = 14 end
+
 -- force the all-wilds win shown in the cabinet graphics, 3-reel
 --		local n = 10
 --		if reel == 2 then n = 9 end
@@ -99,15 +106,28 @@ function minislots.check_win(spin, def, maxlines)
 		if payline > maxlines then break end
 		paylinecontent[payline] = {}
 		for _,m in ipairs(def.matches) do
+
 			local matchwin = true
 			for reel = 1, def.constants.numreels do
 				local row = paylineoffsets[reel]+2
-				paylinecontent[payline][reel] = spin[row][reel][2]
-				if m[reel+1] and (spin[row][reel][2] ~= m[reel+1]) and spin[row][reel][2] ~= "wild" then
-					matchwin = false
-					break
+				if not m[reel+1] or type(m[reel+1]) == "string" then
+					paylinecontent[payline][reel] = spin[row][reel][2]
+					if m[reel+1] and (spin[row][reel][2] ~= m[reel+1]) and spin[row][reel][2] ~= "wild" then
+						matchwin = false
+						break
+					end
+				else 
+					local matchlistwin = false
+					for e in ipairs(m[reel+1]) do
+						paylinecontent[payline][reel] = spin[row][reel][2]
+						if not m[reel+1][e] or spin[row][reel][2] == m[reel+1][e] then
+							matchlistwin = true
+						end
+					end
+					if not matchlistwin then matchwin = false break end
 				end
 			end
+
 			if matchwin then
 				highestwin = m[1]
 			end
