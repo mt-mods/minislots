@@ -5,45 +5,144 @@ local mtver = minetest.get_version()
 
 math.randomseed(os.time())
 
+local char_widths = {
+	[32]  = { regular = 16, condensed = 12, bold = 24 },
+	[33]  = { regular = 22, condensed = 18, bold = 28 },
+	[34]  = { regular = 29, condensed = 23, bold = 40 },
+	[35]  = { regular = 48, condensed = 39, bold = 47 },
+	[36]  = { regular = 47, condensed = 39, bold = 47 },
+	[37]  = { regular = 74, condensed = 60, bold = 75 },
+	[38]  = { regular = 56, condensed = 46, bold = 61 },
+	[39]  = { regular = 15, condensed = 12, bold = 20 },
+	[40]  = { regular = 29, condensed = 24, bold = 29 },
+	[41]  = { regular = 27, condensed = 22, bold = 28 },
+	[42]  = { regular = 33, condensed = 27, bold = 34 },
+	[43]  = { regular = 48, condensed = 39, bold = 49 },
+	[44]  = { regular = 22, condensed = 18, bold = 23 },
+	[45]  = { regular = 27, condensed = 22, bold = 28 },
+	[46]  = { regular = 22, condensed = 18, bold = 23 },
+	[47]  = { regular = 25, condensed = 21, bold = 24 },
+	[48]  = { regular = 46, condensed = 37, bold = 47 },
+	[49]  = { regular = 46, condensed = 37, bold = 47 },
+	[50]  = { regular = 46, condensed = 37, bold = 47 },
+	[51]  = { regular = 46, condensed = 37, bold = 47 },
+	[52]  = { regular = 46, condensed = 38, bold = 48 },
+	[53]  = { regular = 46, condensed = 37, bold = 47 },
+	[54]  = { regular = 46, condensed = 37, bold = 47 },
+	[55]  = { regular = 46, condensed = 37, bold = 47 },
+	[56]  = { regular = 46, condensed = 37, bold = 47 },
+	[57]  = { regular = 46, condensed = 37, bold = 47 },
+	[58]  = { regular = 22, condensed = 18, bold = 28 },
+	[59]  = { regular = 22, condensed = 18, bold = 28 },
+	[60]  = { regular = 48, condensed = 39, bold = 49 },
+	[61]  = { regular = 48, condensed = 39, bold = 49 },
+	[62]  = { regular = 48, condensed = 39, bold = 49 },
+	[63]  = { regular = 46, condensed = 37, bold = 51 },
+	[64]  = { regular = 84, condensed = 69, bold = 82 },
+	[65]  = { regular = 57, condensed = 47, bold = 61 },
+	[66]  = { regular = 55, condensed = 45, bold = 61 },
+	[67]  = { regular = 60, condensed = 49, bold = 61 },
+	[68]  = { regular = 60, condensed = 49, bold = 61 },
+	[69]  = { regular = 55, condensed = 45, bold = 56 },
+	[70]  = { regular = 50, condensed = 41, bold = 51 },
+	[71]  = { regular = 64, condensed = 53, bold = 65 },
+	[72]  = { regular = 60, condensed = 49, bold = 61 },
+	[73]  = { regular = 22, condensed = 18, bold = 23 },
+	[74]  = { regular = 41, condensed = 33, bold = 47 },
+	[75]  = { regular = 57, condensed = 47, bold = 61 },
+	[76]  = { regular = 46, condensed = 38, bold = 51 },
+	[77]  = { regular = 69, condensed = 56, bold = 70 },
+	[78]  = { regular = 60, condensed = 49, bold = 61 },
+	[79]  = { regular = 64, condensed = 53, bold = 65 },
+	[80]  = { regular = 55, condensed = 45, bold = 56 },
+	[81]  = { regular = 64, condensed = 53, bold = 65 },
+	[82]  = { regular = 60, condensed = 49, bold = 61 },
+	[83]  = { regular = 55, condensed = 45, bold = 56 },
+	[84]  = { regular = 51, condensed = 42, bold = 52 },
+	[85]  = { regular = 60, condensed = 49, bold = 61 },
+	[86]  = { regular = 57, condensed = 47, bold = 57 },
+	[87]  = { regular = 80, condensed = 66, bold = 81 },
+	[88]  = { regular = 56, condensed = 46, bold = 57 },
+	[89]  = { regular = 56, condensed = 46, bold = 56 },
+	[90]  = { regular = 50, condensed = 41, bold = 51 },
+	[91]  = { regular = 24, condensed = 20, bold = 28 },
+	[92]  = { regular = 25, condensed = 21, bold = 24 },
+	[93]  = { regular = 22, condensed = 18, bold = 28 },
+	[94]  = { regular = 40, condensed = 33, bold = 49 },
+	[95]  = { regular = 49, condensed = 41, bold = 49 },
+	[96]  = { regular = 27, condensed = 22, bold = 28 },
+	[97]  = { regular = 48, condensed = 40, bold = 49 },
+	[98]  = { regular = 46, condensed = 37, bold = 51 },
+	[99]  = { regular = 41, condensed = 34, bold = 47 },
+	[100] = { regular = 46, condensed = 37, bold = 51 },
+	[101] = { regular = 46, condensed = 37, bold = 47 },
+	[102] = { regular = 25, condensed = 21, bold = 30 },
+	[103] = { regular = 46, condensed = 37, bold = 51 },
+	[104] = { regular = 46, condensed = 37, bold = 51 },
+	[105] = { regular = 18, condensed = 14, bold = 23 },
+	[106] = { regular = 18, condensed = 14, bold = 23 },
+	[107] = { regular = 44, condensed = 36, bold = 48 },
+	[108] = { regular = 18, condensed = 14, bold = 23 },
+	[109] = { regular = 69, condensed = 56, bold = 75 },
+	[110] = { regular = 46, condensed = 37, bold = 51 },
+	[111] = { regular = 46, condensed = 37, bold = 51 },
+	[112] = { regular = 46, condensed = 37, bold = 51 },
+	[113] = { regular = 46, condensed = 37, bold = 51 },
+	[114] = { regular = 28, condensed = 23, bold = 33 },
+	[115] = { regular = 41, condensed = 33, bold = 47 },
+	[116] = { regular = 24, condensed = 20, bold = 28 },
+	[117] = { regular = 46, condensed = 37, bold = 51 },
+	[118] = { regular = 43, condensed = 36, bold = 48 },
+	[119] = { regular = 62, condensed = 51, bold = 67 },
+	[120] = { regular = 43, condensed = 35, bold = 48 },
+	[121] = { regular = 43, condensed = 36, bold = 48 },
+	[122] = { regular = 41, condensed = 33, bold = 42 },
+	[123] = { regular = 28, condensed = 23, bold = 33 },
+	[124] = { regular = 21, condensed = 17, bold = 24 },
+	[125] = { regular = 28, condensed = 23, bold = 33 },
+	[126] = { regular = 48, condensed = 39, bold = 49 },
+	[127] = { regular = 45, condensed = 37, bold = 48 },
+}
+
 local words_numbers = {  -- image widths, in pixels
-	[0] = { "ZERO",	0   },
-	{ "ONE",		41  },
-	{ "TWO",		48  },
-	{ "THREE", 		64  },
-	{ "FOUR",		53  },
-	{ "FIVE",		41  },
-	{ "SIX",		32  },
-	{ "SEVEN",		62  },
-	{ "EIGHT",		59  },
-	{ "NINE",		45  },
-	{ "TEN",		38  },
-	{ "ELEVEN",		72  },
-	{ "TWELVE",		79  },
-	{ "THIRTEEN",	94  },
-	{ "FOURTEEN",	100 },
-	{ "FIFTEEN", 	76  },
-	{ "SIXTEEN",	81  },
-	{ "SEVENTEEN",	112 },
-	{ "EIGHTEEN",	95  },
-	{ "NINETEEN",	94  }
+	[0] = "ZERO",
+	"ONE",
+	"TWO",
+	"THREE",
+	"FOUR",
+	"FIVE",
+	"SIX",
+	"SEVEN",
+	"EIGHT",
+	"NINE",
+	"TEN",
+	"ELEVEN",
+	"TWELVE",
+	"THIRTEEN",
+	"FOURTEEN",
+	"FIFTEEN",
+	"SIXTEEN",
+	"SEVENTEEN",
+	"EIGHTEEN",
+	"NINETEEN",
 }
 
 local words_tens = {
-	{ "", 0, 0 }, 
-	{ "TWENTY",		84  },
-	{ "THIRTY",		70  },
-	{ "FORTY",		61  },
-	{ "FIFTY",		52  },
-	{ "SIXTY",		57  },
-	{ "SEVENTY",	88  },
-	{ "EIGHTY",		71  },
-	{ "NINETY",		70  }
+	"",
+	"TWENTY",
+	"THIRTY",
+	"FORTY",
+	"FIFTY",
+	"SIXTY",
+	"SEVENTY",
+	"EIGHTY",
+	"NINETY",
 }
 
 local words_magnitudes = {
-	{ "HUNDRED",	96  },
-	{ "THOUSAND",	110 },
-	{ "MILLION",	77  }
+	"HUNDRED",
+	"THOUSAND",
+	"MILLION",
 }
 
 function minislots.spin_reels(def)
@@ -196,9 +295,8 @@ function minislots.register_machine(mdef)
 		horizscale = 0.800
 	end
 
-	def.constants.cashout_screen_hposscale = 0.0175
 	def.constants.cashout_screen_ctrx = (def.geometry.base_user_interface_width/2)*horizscale - hanchor
-	def.constants.cashoutticketimg_posx = (def.geometry.base_user_interface_width/2 - 3.75)*horizscale - hanchor
+	def.constants.cashoutticketimg_posx = (def.geometry.base_user_interface_width/2 - 4)*horizscale - hanchor
 
 	def.constants.form_header = "size["..(def.geometry.base_user_interface_width*0.785)..","..
 								((def.geometry.upper_section_height+def.geometry.lower_section_height)*0.823).."]"
@@ -433,6 +531,8 @@ function minislots.register_machine(mdef)
 			meta:set_string("state", "stopped")
 			meta:set_string("spin", minetest.serialize(resetspin))
 			meta:set_int("spin_timestamp", os.time())
+			meta:set_string("casino_name", "LocalGames Casino/Hotel")
+
 			meta:set_string("allwins", minetest.serialize(emptywins))
 			meta:mark_as_private({
 				"balance",
@@ -443,7 +543,8 @@ function minislots.register_machine(mdef)
 				"state",
 				"spin",
 				"spin_timestamp",
-				"allwins"
+				"allwins",
+				"casino_name"
 			})
 
 			meta:set_string("formspec", minislots.generate_display(def, "stopped", resetspin, emptywins, balance, linebet, maxlines))
@@ -527,11 +628,12 @@ function minislots.register_machine(mdef)
 				if balance > 0 and balance <= def.maxbalance then
 					local state = "stopped"
 					local last_cashout = balance
+					local casino_name = meta:get_string("casino_name")
 					balance = 0
 					meta:set_string("state", state)
 					meta:set_int("last_cashout", balance)
 					meta:set_int("balance", balance)
-					meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, nil, last_cashout))
+					meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, nil, last_cashout, pos, casino_name))
 
 					local fifties = math.floor(last_cashout/50)
 					local tens = math.floor((last_cashout - fifties*50)/10)
@@ -772,7 +874,7 @@ local function calcrp(def, spin, i, statenum)
 	return rp/2
 end
 
-function minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines, showlines, last_cashout)
+function minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines, showlines, last_cashout, pos, casino_name)
 	local reels			= ""
 	local lines			= ""
 	local scatters		= ""
@@ -1075,41 +1177,45 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			bonuses..
 			def.constants.buttoncashslot
 	else
+		local maxw = 6
+		local maxmw = 2.25
 
-		local posy = 5 - vanchor
-		local words = minislots.number_to_words(last_cashout)
-		local spwidth = 10
+		local pix2iu = 0.0175
+		local posy = 3.6 - vanchor
 
-		local x = 0
-		local cashoutlen = 0
-		local chars = {}
-		for i = #words, 1, -1 do
-			if words[i][1] ~= "ZERO" then
-				chars[#chars+1] = x..",0=minislots_number_"..string.lower(words[i][1])..".png"
-				cashoutlen = cashoutlen + words[i][2]
-			end
-			x = x + words[i][2] + spwidth
-		end
-		cashoutlen = cashoutlen + (#words-1)*spwidth
+		local txtszy = 0.25
+		local numszy = 0.85
+		local nameszy = 0.35
+		local mstr_sizey = 0.15
 
-		local wordswidth = cashoutlen < 300 and cashoutlen or 300
-		local cashoutstr_pref = "image["..(def.constants.cashout_screen_ctrx - wordswidth*def.constants.cashout_screen_hposscale/2*horizscale)..","..(posy)..
-							";"..(wordswidth*def.constants.cashout_screen_hposscale)..",0.25;"
+		local w = minislots.str_width_pix(casino_name, "regular")*pix2iu*nameszy
+		local name_sizex = w < maxw and w or maxw
 
-		local cashoutstr = cashoutstr_pref..
-					minetest.formspec_escape(
-							"[combine:"..cashoutlen.."x16:"..table.concat(chars, ":")
-					).."]"
+		local numberwords = minislots.number_to_words(last_cashout).." Minegeld"
+		local w = minislots.str_width_pix(numberwords, "condensed")*pix2iu*txtszy
+		local numwords_maxszx = w < maxw and w or maxw
 
-		local scale = 0.5
-		local posx = def.constants.cashout_screen_ctrx - (string.len(tostring(last_cashout))+1.3333)*scale*horizscale/2
+		local lastcoutstr = tostring(last_cashout).." Mg"
+		local w = minislots.str_width_pix(lastcoutstr, "bold")*pix2iu*numszy
+		local numstr_maxszx = w < maxw and w or maxw
+
+		local machinestr = "MACHINE #"..string.format("%.0f", minetest.hash_node_position(pos))
+		local w = minislots.str_width_pix(machinestr, "bold")*pix2iu*mstr_sizey
+		local mstr_sizex = w < maxmw and w or maxmw
+
+		local nameposx = def.constants.cashout_screen_ctrx - name_sizex*horizscale/2
+		local numwordsposx = def.constants.cashout_screen_ctrx - numwords_maxszx*horizscale/2
+		local numstrposx = def.constants.cashout_screen_ctrx - numstr_maxszx*horizscale/2
+		local mstr_posx = 6.25
 
 		upper_screen =
 			def.constants.cashoutbackground..
 			def.constants.upperbezel..
 			def.constants.cashoutticketimg..
-			cashoutstr..
-			minislots.print_number(def, last_cashout, posx, posy+0.35, scale, scale, true, "black")
+			minislots.print_string(def, casino_name, nameposx, posy, name_sizex, nameszy, "regular", "black")..
+			minislots.print_string(def, numberwords, numwordsposx, posy+1.4, numwords_maxszx, txtszy, "condensed", "black")..
+			minislots.print_string(def, lastcoutstr, numstrposx, posy+1.6, numstr_maxszx, numszy, "bold", "black")..
+			minislots.print_string(def, machinestr, mstr_posx, posy+2.36, mstr_sizex, mstr_sizey, "bold", "black")
 	end
 
 	return	def.constants.form_header..
@@ -1122,18 +1228,42 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			betwin
 end
 
+function minislots.str_width_pix(str, weight)
+	local w = 0
+	local len = string.len(str)
+	for i = 1, len do
+		w = w + char_widths[string.byte(str, i)][weight]
+	end
+	return w
+end
+
+function minislots.print_string(def, str, posx, posy, sizex, sizey, weight, color)
+	local t = {}
+	if not str then return "" end
+	local len = string.len(str)
+	if len < 1 then return "" end
+	local colorize = color and "\\^[colorize\\:"..color.."\\:255" or ""
+
+	local px = 0
+	for i = 1, len do
+		local asc = string.byte(str, i)
+		t[#t+1] = px..",0=minislots_font_"..weight.."_char_"..asc..".png"
+		px = px + char_widths[asc][weight]
+	end
+
+	return "image["..posx..","..posy..";"..sizex..","..sizey..";"..
+			minetest.formspec_escape("[combine:"..px.."x80:")..
+			table.concat(t, ":")..colorize.."]"
+end
+
 function minislots.print_number(def, num, posx, posy, sizex, sizey, cur, color)
 	local t = {}
 	local sn = tostring(num)
 	local len = string.len(sn)
-	local colorize = "]"
-
-	if color then
-		colorize = minetest.formspec_escape("^[colorize:"..color..":255").."]"
-	end
+	local colorize = color and minetest.formspec_escape("^[colorize:"..color..":255").."]" or "]"
 
 	for i = 1, len do
-		t[i] = "image["..(posx + (i-1)*sizex * horizscale)..","..posy..";"..
+		t[#t+1] = "image["..(posx + (i-1)*sizex * horizscale)..","..posy..";"..
 				sizex..","..sizey..";"..def.constants.digits[string.sub(sn, i, i)]..colorize
 	end
 
@@ -1151,14 +1281,17 @@ function minislots.number_to_words(number)
 	local numlen = string.len(numstr)
 	local words = {}
 
+	if numstr == "0" then return words_numbers[0] end
+
 	local i = 1
 	while i <= numlen do
 		if (i+2)/3 == math.floor((i+2)/3) then -- it's a one's digit
-			local num = words_numbers[tonumber(string.sub(numstr, -i-1, -i))]
+			local n = tonumber(string.sub(numstr, -i-1, -i))
+			local num = words_numbers[n]
 			if not num then -- it's > 19
 				words[#words+1] = words_numbers[tonumber(string.sub(numstr, -i, -i))]
 				words[#words+1] = words_tens[tonumber(string.sub(numstr, -i-1, -i-1))]
-			else
+			elseif n > 0 then
 				words[#words+1] = num
 			end
 			i = i + 2 -- skip over the ten's place, since we already handled it.
@@ -1179,7 +1312,13 @@ function minislots.number_to_words(number)
 			end
 		end
 	end
-	return words
+
+	local w = {}
+	for i = #words, 1, -1 do
+		w[#w+1] = words[i]
+	end
+
+	return table.concat(w, " ")
 end
 
 function minislots.generate_cashslot_form(def, pos, balance)
