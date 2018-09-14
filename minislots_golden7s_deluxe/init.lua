@@ -143,6 +143,9 @@ minislots.register_machine({
 	initiate_bonus = function(spin, def)
 		return 400
 	end,
+	wild_doesnt_match = {
+		jackpot = true
+	},
 	geometry = {							-- all measures are in Minetest formspec "inventory slots" units
 
 		base_user_interface_width = 14.667,	-- width of the user interface

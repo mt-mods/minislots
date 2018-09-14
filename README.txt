@@ -195,7 +195,11 @@ How wild cards work:
 
 [WILD!] is basically "don't care", as far as the engine's concerned, and will
 match the highest entry in the table that can theoretically form a match,
-regardless of how many symbols actually match.
+regardless of how many symbols actually match, except if a wild_doesnt_match
+table is also specified in the machine definition.  This table should be
+self-explanatory -- whatever symbols are listed there, a [WILD!] symbol will
+not match, regardless of its position in the payline or the value of a given
+match line.
 
 For example, suppose you get a normal-looking spin showing
 [WILD!][77][77][lemon][cherry] on a line on the 5-reel demo machine.  That
@@ -213,7 +217,8 @@ as the symbols that precede and follow the [WILD!]'s can form valid matches,
 of course).
 
 A pay line consisting of all [WILD!]'s is equivalent to whatever the highest
-winning combination is in your machine (three or five [JACKPOT]'s in the
+winning combination is in your machine, that doesn't also contain any symbols
+in the wild_doesnt_match table (three or five [777]'s in the Golden 7's
 example machines).
 
 

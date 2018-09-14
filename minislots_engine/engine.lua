@@ -112,7 +112,12 @@ function minislots.check_win(spin, def, maxlines)
 				local row = paylineoffsets[reel]+2
 				if not m[reel+1] or type(m[reel+1]) == "string" then
 					paylinecontent[payline][reel] = spin[row][reel][2]
-					if m[reel+1] and (spin[row][reel][2] ~= m[reel+1]) and spin[row][reel][2] ~= "wild" then
+					if m[reel+1]
+					  and spin[row][reel][2] ~= m[reel+1]
+					  and (spin[row][reel][2] ~= "wild" 
+					     or (spin[row][reel][2] == "wild"
+						   and def.wild_doesnt_match
+						   and def.wild_doesnt_match[m[reel+1]]))  then
 						matchwin = false
 						break
 					end
