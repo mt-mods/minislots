@@ -432,8 +432,19 @@ function minislots.register_machine(mdef)
 			meta:set_int("bonus_result", -1)
 			meta:set_string("state", "stopped")
 			meta:set_string("spin", minetest.serialize(resetspin))
+			meta:set_int("spin_timestamp", os.time())
 			meta:set_string("allwins", minetest.serialize(emptywins))
-			meta:mark_as_private({"balance", "last_cashout", "linebet", "maxlines", "bonus_result", "state", "spin", "allwins"})
+			meta:mark_as_private({
+				"balance",
+				"last_cashout",
+				"linebet",
+				"maxlines",
+				"bonus_result",
+				"state",
+				"spin",
+				"spin_timestamp",
+				"allwins"
+			})
 
 			meta:set_string("formspec", minislots.generate_display(def, "stopped", resetspin, emptywins, balance, linebet, maxlines))
 
@@ -549,6 +560,7 @@ function minislots.register_machine(mdef)
 			elseif fields.spin then
 				if state == "stopped" or string.find(state, "win") then
 					if maxlines*linebet > balance or balance > def.maxbalance then return end
+					meta:set_int("spin_timestamp", os.time())
 					local node = minetest.get_node(pos)
 					local spin = minislots.spin_reels(def)
 					local allwins = minislots.check_win(spin, def, maxlines)
@@ -604,10 +616,8 @@ end
 function minislots.cycle_states(pos)
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_items[node.name].machine_def
-
 	local meta = minetest.get_meta(pos)
 	local state = meta:get_string("state")
-
 	local spin = minetest.deserialize(meta:get_string("spin"))
 	local linebet = meta:get_int("linebet")
 	local maxlines = meta:get_int("maxlines")
@@ -726,6 +736,14 @@ function minislots.cycle_states(pos)
 			state = "win_"..w
 			timeout = def.line_timeout
 		end
+	end
+
+	if meta:get_int("spin_timestamp") < (os.time() - 60) then
+		minetest.get_node_timer(pos):stop()
+		state = "stopped"
+		meta:set_string("state", state)
+		meta:set_string("formspec", minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines))
+		return
 	end
 
 	meta:set_string("state", state)
