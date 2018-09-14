@@ -59,6 +59,13 @@ function minislots.spin_reels(def)
 --		if reel == 4 then n = 10 end
 --		if reel == 5 then n = 14 end
 
+-- force a mixed-7's win, 5-reel, but with one wild card on the mixed-7's payline
+--		local n = 3
+--		if reel == 2 then n = 10 end
+--		if reel == 3 then n = 9 end
+--		if reel == 4 then n = 10 end
+--		if reel == 5 then n = 14 end
+
 -- force the all-wilds win shown in the cabinet graphics, 3-reel
 --		local n = 10
 --		if reel == 2 then n = 9 end
@@ -122,14 +129,17 @@ function minislots.check_win(spin, def, maxlines)
 						break
 					end
 				else 
-					local matchlistwin = false
+					local sublistmatch = false
 					for e in ipairs(m[reel+1]) do
 						paylinecontent[payline][reel] = spin[row][reel][2]
-						if not m[reel+1][e] or spin[row][reel][2] == m[reel+1][e] then
-							matchlistwin = true
+						if spin[row][reel][2] == m[reel+1][e]
+						  or (spin[row][reel][2] == "wild"
+						    and not (def.wild_doesnt_match
+						      and def.wild_doesnt_match[m[reel+1][e]]))  then
+							sublistmatch = true
 						end
 					end
-					if not matchlistwin then matchwin = false break end
+					if not sublistmatch then matchwin = false break end
 				end
 			end
 
