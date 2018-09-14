@@ -221,6 +221,8 @@ winning combination is in your machine, that doesn't also contain any symbols
 in the wild_doesnt_match table (three or five [777]'s in the Golden 7's
 example machines).
 
+If a wild multiplier is in effect, it'll be applied to the final value for a
+given match.  
 
 DISCLAIMER:
 ===========

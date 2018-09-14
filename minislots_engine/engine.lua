@@ -110,11 +110,13 @@ function minislots.check_win(spin, def, maxlines)
 
 	for payline,paylineoffsets in ipairs(def.lines) do
 		local highestwin = nil
+		local wildcount = 0
 		if payline > maxlines then break end
 		paylinecontent[payline] = {}
 		for _,m in ipairs(def.matches) do
 
 			local matchwin = true
+			local wc = 0
 			for reel = 1, def.constants.numreels do
 				local row = paylineoffsets[reel]+2
 				if not m[reel+1] or type(m[reel+1]) == "string" then
@@ -128,6 +130,7 @@ function minislots.check_win(spin, def, maxlines)
 						matchwin = false
 						break
 					end
+					if spin[row][reel][2] == "wild" then wc = wc + 1 end
 				else 
 					local sublistmatch = false
 					for e in ipairs(m[reel+1]) do
@@ -139,15 +142,21 @@ function minislots.check_win(spin, def, maxlines)
 							sublistmatch = true
 						end
 					end
-					if not sublistmatch then matchwin = false break end
+					if not sublistmatch then
+						matchwin = false
+						break
+					end
+					if spin[row][reel][2] == "wild" then wc = wc + 1 end
 				end
 			end
 
 			if matchwin then
+				wildcount = wc
 				highestwin = m[1]
 			end
 		end
 		if highestwin then
+			if wildcount > 0 then highestwin = highestwin * wildcount * def.wild_multiplier end
 			table.insert(allwins, { payline = payline, value = highestwin, symbols = paylinecontent[payline]})
 		end
 	end

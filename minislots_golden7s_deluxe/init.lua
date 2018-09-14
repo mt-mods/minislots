@@ -146,6 +146,9 @@ minislots.register_machine({
 	wild_doesnt_match = {
 		jackpot = true
 	},
+	wild_multiplier = 1,					-- For every wild that contributes to a line win, multiply win by this
+											-- (so one wild mult. by this, two mult. by twice this, etc)
+
 	geometry = {							-- all measures are in Minetest formspec "inventory slots" units
 
 		base_user_interface_width = 14.667,	-- width of the user interface
