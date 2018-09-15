@@ -151,6 +151,11 @@ function minislots.spin_reels(def)
 		local n = math.random(2, def.constants.numsymbols*2+1)/2
 		if math.random(1, 100) >= def.half_stops_weight then n = math.floor(n) end
 
+-- force a mixed-7's win, 3-reel
+--		local n = 3
+--		if reel == 2 then n = 10 end
+--		if reel == 3 then n = 14 end
+
 -- force a mixed-7's win, 5-reel
 --		local n = 3
 --		if reel == 2 then n = 10 end
