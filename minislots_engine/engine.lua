@@ -145,6 +145,8 @@ local words_magnitudes = {
 	"MILLION",
 }
 
+minislots.player_last_machine_def = {}
+
 function minislots.spin_reels(def)
 	local spin = { [1] = {}, [2] = {}, [3] = {} }
 	for reel = 1, def.constants.numreels do
@@ -379,6 +381,7 @@ function minislots.register_machine(mdef)
 	def.constants.cashslotscrnbg	= def.constants.basename.."cash_slot_screen_background.png"
 	def.constants.paytablescrnbg	= def.constants.basename.."paytable_bg.png"
 	def.constants.paylinescrnbg		= def.constants.basename.."payline_bg.png"
+	def.constants.lines_bg			= def.constants.basename.."paytable_lines_bg.png"
 
 	def.constants.symbolsfast		= def.constants.basename.."reel_symbols_fast.png"
 	def.constants.symbolsmedium		= def.constants.basename.."reel_symbols_medium.png"
@@ -463,7 +466,12 @@ function minislots.register_machine(mdef)
 	def.constants.cashoutbackground	= def.constants.mainpref.."minislots_blue_img.png]"
 	def.constants.cashoutticketimg	= "image["..def.constants.cashoutticketimg_posx..","..(3.5-vanchor)..
 										";8,3;minislots_cashout_ticket.png]"
-						
+
+	def.constants.paylinestable_pref = "image_button[8.85,10.28;2,0.5;"
+	def.constants.button_showpaytable = def.constants.paylinestable_pref..def.constants.basename..
+										"button_show_paytable.png;showpaytable;]"
+	def.constants.button_showpaylines = def.constants.paylinestable_pref..def.constants.basename..
+										"button_show_paylines.png;showpaylines;]"
 
 	def.constants.buttons_n_lines = {}
 	def.constants.buttons_bet_n = {}
@@ -654,8 +662,9 @@ function minislots.register_machine(mdef)
 				local meta = minetest.get_meta(pos)
 				local balance = meta:get_int("balance")
 				local player_name = sender:get_player_name()
+				minislots.player_last_machine_def[player_name] = def
 				minetest.show_formspec(player_name, "minislots:help_screen",
-					minislots.generate_paytable_form(def, pos, balance))
+					minislots.generate_paytable_form(def))
 				return
 			end
 
@@ -1359,8 +1368,8 @@ function minislots.number_to_words(number)
 	return table.concat(w, " ")
 end
 
-function minislots.generate_paytable_form(def, pos, balance)
 
+function minislots.generate_paytable_form(def)
 	local t = {}
 	t[1] = "size[10.7,10.4]background[-0.14,-0.17;11,11;"..def.constants.paytablescrnbg.."]"..
 		"image_button_exit[10.25,-0.1;0.55,0.5;"..def.constants.button_close..";close;]"
@@ -1396,6 +1405,52 @@ function minislots.generate_paytable_form(def, pos, balance)
 		y = y + def.geometry.paytable_lineheight
 		end
 	end
+	t[#t+1] = def.constants.button_showpaylines
+	return table.concat(t)
+end
+
+function minislots.generate_paylines_form(def)
+	local t = {}
+	local height = 10.4
+	t[1] = "size[10.7,"..height.."]background[-0.14,-0.17;11,11;"..def.constants.paylinescrnbg.."]"..
+		"image_button_exit[10.25,-0.1;0.55,0.5;"..def.constants.button_close..";close;]"
+	if def.paylines_desc then
+
+		local x = def.geometry.paylines_column1
+		local y = def.geometry.paylines_posy
+		local maxy = def.geometry.paylines_posy
+
+		for _, item in ipairs(def.paylines_desc) do
+			if item == "@wrap" then
+				y = def.geometry.paylines_posy
+				x = def.geometry.paylines_column2
+			elseif string.sub(item, 1, 1) == "@" then
+				local split = string.find(item, " ")
+				local s = tonumber(string.sub(item, 2, split))
+				local e = tonumber(string.sub(item, split))
+				t[#t+1] = "image["..x*horizscale..","..y*vertscale..";"..
+					def.geometry.paylines_sizex..","..def.geometry.paylines_sizey..";"..
+					def.constants.lines_bg.."]"
+
+				for l = s, e do
+					t[#t+1] = "image["..x*horizscale..","..y*vertscale..";"..
+						def.geometry.paylines_sizex..","..def.geometry.paylines_sizey..";"..
+						def.constants.overlaylinepref..l..".png]"
+				end
+				y = y + def.geometry.paylines_sizey + def.geometry.paylines_img_padding
+			else
+				local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paylines_textheight
+				t[#t+1] = minislots.print_string(def, item, x*horizscale, y*vertscale, szx, def.geometry.paylines_textheight, "regular", "white")
+				y = y + def.geometry.paylines_lineheight
+			end
+
+			if y > height then
+				y = def.geometry.paylines_posy
+				x = def.geometry.paylines_column2
+			end
+		end
+	end
+	t[#t+1] = def.constants.button_showpaytable
 	return table.concat(t)
 end
 
@@ -1419,11 +1474,17 @@ function minislots.generate_cashslot_form(def, pos, balance)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
+	local player_name = player:get_player_name()
 	if fields.close and (formname == "minislots:cash_intake"
 	  or  formname == "minislots:help_screen") then
-		minetest.close_formspec(player:get_player_name(), formname)
+		minetest.close_formspec(player_name, formname)
+	elseif fields.showpaylines and formname == "minislots:help_screen" then
+		minetest.show_formspec(player_name, "minislots:help_screen",
+			minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
+	elseif fields.showpaytable and formname == "minislots:help_screen" then
+		minetest.show_formspec(player_name, "minislots:help_screen",
+			minislots.generate_paytable_form(minislots.player_last_machine_def[player_name]))
 	end
-
 end)
 
 print("[Minislots] Loaded!")

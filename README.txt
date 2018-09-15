@@ -79,6 +79,10 @@ usually "Mg", as that's what this engine uses internally (from Dan Duncombe's
 The "Win" label, if printed, will appear half a digit glyph's width after the
 Bet amount's currency label.
 
+The "Show Pay Lines" and "Show Pay Table" buttons in the help screen are
+256x64 px and are always displayed 2x0.5 IU in size, in the lower right
+corner of the form.
+
 Balance, Bet, Win, Scatter Win, and Bonus Win amounts are printed immediately
 next to their labels.  Be sure you leave a little space on the right in the
 images, as needed.
@@ -229,10 +233,22 @@ The symbols are of course picked from the "stopped" reel strip image, and they
 are always cropped square, so on a machine like the 5-reel demo, only the
 middle 128x128 pixel section of each 128x192 pixel symbol would be shown.
 
-If paytable_desc is not specified, then only the background and [X] button
-will be displayed.  This allows you to use the background image itself as the
-pay table description, in the event that you want to skip the text/symbol
-printing routines and just roll your own.
+For the pay lines screen, the item format is simplified.  One table item per
+screen line, which can be either a line of text, or a key indicating that one
+or more pay line images should overlaid onto their background image and placed
+on the line.  The key for those is "@" followed by a number, a space, and
+another number (e.g. "@1 5").  These numbers indicate the first and last pay
+line images to display.
+
+Lines are "printed" from top to bottom in a column toward the left side of the
+form background, overflowing into a second column if necessary.  You can force
+an overflow into column 2 with "@wrap" (on its own).
+
+If paytable_desc or paylines_desc is not specified, then only the background,
+[X] button, and "Show Pay Lines" or "Show Pay Table" button will be displayed
+on their respective screens.  This allows you to use the background image
+itself as the pay table/lines description, in the event that you want to skip
+the text/image printing routines and just roll your own.
 
 
 How wild cards work:

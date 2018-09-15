@@ -157,6 +157,20 @@ minislots.register_machine({
 		{ "@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot" },
 		{ "All wins are multiplied by your line bet." }
 	},
+	paylines_desc = {
+		"Paylines 1 - 3:",
+		"@1 3",
+		"Paylines 4 and 5:",
+		"@4 5",
+		"Paylines 6 and 7:",
+		"@6 7",
+		"Paylines 8 and 9:",
+		"@8 9",
+		"Paylines 10 and 11:",
+		"@10 11",
+		"Paylines 12 - 15:",
+		"@12 15"
+	},
 	maxbalance = 3260000,			-- 65535 50 Mg notes, minus maximum possible payout, minus a fudge amount
 	bet_initiates_spin = true,		-- Most machines initiate a spin when the user presses a "Bet n" button, using
 									-- the selected bet value.
@@ -236,5 +250,14 @@ minislots.register_machine({
 										-- X/Y size of reel symbols shown therein, minus a bit of padding.
 		paytable_textheight = 0.35,		-- height of printed text within said line, which will be vert. centered
 		paytable_textshift = 0.075,		-- use this to fine tune the text vertical position relative to symbols
+
+		paylines_column1 = 1.5,			-- position of left and right columns in paylines screen
+		paylines_column2 = 7.25,
+		paylines_posy = 0.2,			-- position of first row
+		paylines_sizex = 4,				-- size of the pay lines graphic
+		paylines_sizey = 3,
+		paylines_lineheight = 0.65,		-- text line height and font height
+		paylines_textheight = 0.35,
+		paylines_img_padding = 0.3		-- extra blank space to add below pay lines graphic
 	}
 })
