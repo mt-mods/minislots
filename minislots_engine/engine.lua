@@ -582,22 +582,58 @@ function minislots.register_machine(mdef)
 				"casino_name"
 			})
 
-			meta:set_string("formspec", minislots.generate_display(def, "stopped", resetspin, emptywins, balance, linebet, maxlines))
-
 			local inv = meta:get_inventory()
 			inv:set_size("main", 1)
 		end,
+		on_dig = function(pos, node, digger)
+			local player_name = digger:get_player_name()
+			if not minetest.is_protected(pos, player_name) then
+				local stack = ItemStack("minislots:"..def.name)
+				local nodemeta = minetest.get_meta(pos)
+				local stackmeta = stack:get_meta()
+				stackmeta:set_int("balance", nodemeta:get_int("balance"))
+				stackmeta:set_string("casino_name", nodemeta:get_string("casino_name"))
+				stackmeta:set_int("last_cashout", nodemeta:get_int("last_cashout"))
+				local inv = digger:get_inventory()
+				if inv:room_for_item("main", stack) then
+					if (not creative or not creative.is_enabled_for(player_name))
+					  or (creative and creative.is_enabled_for(player_name)
+						  and not inv:contains_item("main", stack, true)) then
+							inv:add_item("main", stack)
+					end
+					minetest.remove_node(pos)
+				end
+			end
+		end,
 		after_place_node = function(pos, placer, itemstack)
-			local meta = minetest.get_meta(pos)
+			local nodemeta = minetest.get_meta(pos)
 			local owner = placer:get_player_name()
-			meta:set_string("owner", owner)
+			local stackmeta = itemstack:get_meta()
+
+			local balance = 0
+			local resetspin = minislots.reset_reels(def)
+			local linebet = 1
+			local maxlines = 1
+			local emptywins = {
+				scatter = { count = 0, pos = {} },
+				bonus = { value = -1, count = 0, pos = {} }
+			}
+
+			if stackmeta then
+				balance = stackmeta:get_int("balance")
+				nodemeta:set_int("balance", balance)
+				nodemeta:set_string("casino_name", stackmeta:get_string("casino_name"))
+				nodemeta:set_int("last_cashout", stackmeta:get_int("last_cashout"))
+			end
+			nodemeta:set_string("owner", owner)
+			nodemeta:set_string("formspec", minislots.generate_display(def, "stopped", resetspin, emptywins, balance, linebet, maxlines))
 		end,
 		can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos)
 			local name = player and player:get_player_name()
 			local owner = meta:get_string("owner")
 			local inv = meta:get_inventory()
-			return name == owner and meta:get_int("balance") == 0
+			return name == owner
 		end,
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
 			local def = minetest.registered_items["minislots:"..def.name].machine_def
