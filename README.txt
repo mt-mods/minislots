@@ -190,6 +190,51 @@ of five assorted [7], [77], and/or [777] symbols (it also has one for assorted
 [bar], [2bar], and/or [3bar] symbols).
 
 
+The human-readable pay table:
+=============================
+
+The format of the paytable_desc is pretty simple - it's a table of tables. :-)
+
+Each line in the table represents one line in the pay table screen.  Each item
+in the line is either a chunk of text or a symbol prefixed with an "@".  In
+order to allow mixing symbols among text, it is necessary to break the line
+up, because the parser can't decode flat, mixed lines.  So if you have a line
+reading:
+
+{ "Any three mixed ", "@bar", "/", "@2bar", "/", "@3bar", " pays 10" },
+
+This will tell the parser-renderer to place the phrase "Any three mixed ",
+then right next to it the "bar" symbol.  A slash next to that, then a 2-bar,
+another slash, a 3-bar, then the phrase "pays 10".  All of that placed on one
+line.
+
+You can have as many lines as your layout and text size permit, and you may
+mix-and-match symbol and text items freely.
+
+The special symbol "@X" tells the parser to insert a blank space equal to the
+size of a symbol - this is useful for making grids of symbols with some spaces
+left empty (as in a 3-out-of-5 reel match).
+
+The parser doesn't have any text positioning commands yet, but some
+rudimentary layout formatting can be accomplished by inserting blank lines or
+chunks of whitespace between other items.
+
+For a layout with fairly large text/symbols as in the 3-reel demo machine,
+there's room for up to 19 lines, as long as the top line is not so long that
+it overlaps the [X] button.  For a layout like the 5-reel machine, with its
+smaller text, You can fit up to about 25 lines.  Of course, you can just set
+your line height to fit more text.
+
+The symbols are of course picked from the "stopped" reel strip image, and they
+are always cropped square, so on a machine like the 5-reel demo, only the
+middle 128x128 pixel section of each 128x192 pixel symbol would be shown.
+
+If paytable_desc is not specified, then only the background and [X] button
+will be displayed.  This allows you to use the background image itself as the
+pay table description, in the event that you want to skip the text/symbol
+printing routines and just roll your own.
+
+
 How wild cards work:
 ====================
 

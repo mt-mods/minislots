@@ -290,6 +290,9 @@ local horizscale = 0.805	-- scaling to apply to any position values that need it
 local vertscale = 0.867
 local hanchor = 0.23		-- the position of (0,0) relative to the upper-left formspec corner
 local vanchor = 0.24
+local pix2iu = 0.0175
+local spincouthelp_scalex = 0.8455
+local spincouthelp_scaley = 1.0241
 
 function minislots.register_machine(mdef)
 	local def = table.copy(mdef)
@@ -316,8 +319,8 @@ function minislots.register_machine(mdef)
 
 	def.constants.cslotposx = def.geometry.cash_slot_posx * horizscale - hanchor
 	def.constants.cslotposy = def.geometry.cash_slot_posy * vertscale - vanchor
-	def.constants.cslotbtnszx = def.geometry.cash_slot_sizex * 0.8455
-	def.constants.cslotbtnszy = def.geometry.cash_slot_sizey * 1.0241
+	def.constants.cslotbtnszx = def.geometry.cash_slot_sizex * spincouthelp_scalex
+	def.constants.cslotbtnszy = def.geometry.cash_slot_sizey * spincouthelp_scaley
 
 	def.constants.spincoutposx = def.geometry.spin_cashout_posx * horizscale - hanchor
 	def.constants.spinposy = def.geometry.button_rows_posy * vertscale - vanchor
@@ -327,6 +330,11 @@ function minislots.register_machine(mdef)
 	def.constants.spincoutsizey = def.geometry.main_button_size
 	def.constants.spincoutbtnszx = def.constants.spincoutsizex * 0.91
 	def.constants.spincoutbtnszy = def.constants.spincoutsizey * 1.05
+
+	def.constants.helpposx = def.geometry.button_help_posx * horizscale - hanchor
+	def.constants.helpposy = def.geometry.button_help_posy * vertscale - vanchor
+	def.constants.helpbtnsizex = def.geometry.button_help_sizex * spincouthelp_scalex
+	def.constants.helpbtnposy = def.geometry.button_help_sizey * spincouthelp_scaley
 
 	def.constants.reelspc = def.geometry.reel_sizex*1.3333
 	def.constants.highlightboxszx = def.geometry.reel_sizex*1.3333
@@ -369,6 +377,8 @@ function minislots.register_machine(mdef)
 	def.constants.bonushlimg		= def.constants.highlightboxszx..","..def.constants.highlightboxszy..";"..
 										def.constants.basename.."highlight_bonus.png]"
 	def.constants.cashslotscrnbg	= def.constants.basename.."cash_slot_screen_background.png"
+	def.constants.paytablescrnbg	= def.constants.basename.."paytable_bg.png"
+	def.constants.paylinescrnbg		= def.constants.basename.."payline_bg.png"
 
 	def.constants.symbolsfast		= def.constants.basename.."reel_symbols_fast.png"
 	def.constants.symbolsmedium		= def.constants.basename.."reel_symbols_medium.png"
@@ -427,6 +437,13 @@ function minislots.register_machine(mdef)
 										def.constants.emptyimg..";cslot;]"
 	def.constants.button_cslot_close = def.constants.basename.."cash_slot_screen_close_button.png"
 
+	def.constants.buttonhelp		= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
+										def.geometry.button_help_sizex..","..def.geometry.button_help_sizey..";"..
+										def.constants.basename.."button_help.png]"..
+										"image_button["..def.constants.helpposx..","..def.constants.helpposy..";"..
+										def.constants.helpbtnsizex..","..def.constants.helpbtnposy..";"..
+										def.constants.emptyimg..";help;]"
+
 	def.constants.reelsymsizex		= def.geometry.reel_sizex*64
 	def.constants.reelsymsizey		= def.geometry.reel_sizey/3*64
 
@@ -481,6 +498,11 @@ function minislots.register_machine(mdef)
 	def.constants.digits = {}
 	for i = 0, 9 do
 		def.constants.digits[tostring(i)] = def.constants.basename.."glyph_digit_"..i..".png"
+	end
+
+	def.constants.symlookup = {}
+	for num,sym in ipairs(def.symbols) do
+		def.constants.symlookup["sym_"..sym] = num
 	end
 
 	local mesh = ""
@@ -626,6 +648,14 @@ function minislots.register_machine(mdef)
 				local player_name = sender:get_player_name()
 				minetest.show_formspec(player_name, "minislots:cash_intake",
 					minislots.generate_cashslot_form(def, pos, balance))
+				return
+			end
+			if fields.help then
+				local meta = minetest.get_meta(pos)
+				local balance = meta:get_int("balance")
+				local player_name = sender:get_player_name()
+				minetest.show_formspec(player_name, "minislots:help_screen",
+					minislots.generate_paytable_form(def, pos, balance))
 				return
 			end
 
@@ -1185,7 +1215,6 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 		local maxw = 6
 		local maxmw = 2.25
 
-		local pix2iu = 0.0175
 		local posy = 3.6 - vanchor
 
 		local txtszy = 0.25
@@ -1228,6 +1257,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			upper_screen..
 			table.concat(linesbetbuttons)..
 			spincashoutbuttons..
+			def.constants.buttonhelp..
 			lines..
 			bal..
 			betwin
@@ -1329,6 +1359,46 @@ function minislots.number_to_words(number)
 	return table.concat(w, " ")
 end
 
+function minislots.generate_paytable_form(def, pos, balance)
+
+	local t = {}
+	t[1] = "size[10.7,10.4]background[-0.14,-0.17;11,11;"..def.constants.paytablescrnbg.."]"..
+		"image_button_exit[10.25,-0.1;0.55,0.5;"..def.constants.button_cslot_close..";cslotclose;]"
+
+	local y = def.geometry.paytable_posy
+	local sympadding = 0.05
+
+	if def.paytable_desc then
+		for _, line in ipairs(def.paytable_desc) do
+			local x = def.geometry.paytable_posx
+			for _, item in ipairs(line) do
+				if string.sub(item, 1, 1) == "@" then
+					if item == "@X" then
+						t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
+									def.geometry.paytable_lineheight..","..def.geometry.paytable_lineheight..
+									";"..def.constants.emptyimg.."]"
+					else
+						local sym = string.sub(item, 2)
+						local sympos = def.constants.symlookup["sym_"..sym] * -def.constants.reelsymsizey - (def.constants.reelsymsizey - def.constants.reelsymsizex)/2
+						t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
+								(def.geometry.paytable_lineheight-sympadding)..","..
+								(def.geometry.paytable_lineheight-sympadding)..";"..
+								"[combine:"..def.constants.reelsymsizex.."x"..def.constants.reelsymsizex..
+								":0\\,"..sympos.."="..def.constants.symbolsstopped.."]"
+					end
+					x = x + def.geometry.paytable_lineheight
+				else
+					local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paytable_textheight
+					t[#t+1] = minislots.print_string(def, item, x*horizscale, (y+def.geometry.paytable_textshift)*vertscale, szx, def.geometry.paytable_textheight, "regular", "white")
+					x = x + szx
+				end
+			end
+		y = y + def.geometry.paytable_lineheight
+		end
+	end
+	return table.concat(t)
+end
+
 function minislots.generate_cashslot_form(def, pos, balance)
 	local spos = pos.x .. "," .. pos.y .. "," ..pos.z
 	local formspec =
@@ -1349,9 +1419,11 @@ function minislots.generate_cashslot_form(def, pos, balance)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if fields.cslotclose and formname == "minislots:cash_intake" then
+	if (fields.cslotclose and formname == "minislots:cash_intake")
+	  or (fields.helpclose and formname == "minislots:help_screen") then
 		minetest.close_formspec(player:get_player_name(), formname)
 	end
+
 end)
 
 print("[Minislots] Loaded!")

@@ -122,6 +122,41 @@ minislots.register_machine({
 		{ 300, "jackpot" ,  "jackpot" ,  "jackpot" , "jackpot"  ,  "jackpot" },
 
 	},
+	paytable_desc = {
+		{ "@lemon", "@lemon", "@X", "@X", "@X", " pays 1", "                                    ", "@lemon", "@lemon", "@lemon", "@X", "@X", " pays 2" },
+		{ "@lemon", "@lemon", "@lemon", "@lemon", "@X", " pays 3", "                                    ", "@lemon", "@lemon", "@lemon", "@lemon", "@lemon", " pays 5" },
+
+		{ "@melon", "@melon", "@melon", "@X", "@X", " pays 5", "                                    ", "@melon", "@melon", "@melon", "@melon", "@X", " pays 6" },
+		{ "@melon", "@melon", "@melon", "@melon", "@melon", " pays 7" },
+
+		{ "@cherry", "@cherry", "@X", "@X", "@X", " pays 7", "                                    ", "@cherry", "@cherry", "@cherry", "@X", "@X", " pays 8" }, 
+		{ "@cherry", "@cherry", "@cherry", "@cherry", "@X", " pays 9", "                                    ", "@cherry", "@cherry", "@cherry", "@cherry", "@cherry", " pays 10" },
+
+		{ "@bell", "@bell", "@bell", "@X", "@X", " pays 10", "                                 ", "@bell", "@bell", "@bell", "@bell", "@X", " pays 15" }, 
+		{ "@bell", "@bell", "@bell", "@bell", "@bell", " pays 20" },
+
+		{ "Any five mixed", "@bar", "/", "@2bar", "/", "@3bar", " pays 25" },
+		{ "@bar", "@bar", "@bar", "@X", "@X", " pays 30", "                                 ", "@bar", "@bar", "@bar", "@bar", "@X", " pays 35" },
+		{ "@bar", "@bar", "@bar", "@bar", "@bar", " pays 40" },
+
+		{ "@2bar", "@2bar", "@2bar", "@X", "@X", " pays 50", "                                 ", "@2bar", "@2bar", "@2bar", "@2bar", "@X", " pays 55" },
+		{ "@2bar", "@2bar", "@2bar", "@2bar", "@2bar", " pays 60" },
+
+		{ "@3bar", "@3bar", "@3bar", "@X", "@X", " pays 70", "                                 ", "@3bar", "@3bar", "@3bar", "@3bar", "@X", " pays 73" },
+		{ "@3bar", "@3bar", "@3bar", "@3bar", "@3bar", " pays 75" },
+
+		{ "Any five mixed ", "@7", "/", "@77", "/", "@777", " pays 80" },
+		{ "@7", "@7", "@7", "@X", "@X", " pays 85", "                                 ", "@7", "@7", "@7", "@7", "@X", " pays 88" },
+		{ "@7", "@7", "@7", "@7", "@7", " pays 90" },
+
+		{ "@77", "@77", "@77", "@X", "@X", " pays 90", "                                 ", "@77", "@77", "@77", "@77", "@X", " pays 95" },
+		{ "@77", "@77", "@77", "@77", "@77", " pays 100" },
+
+		{ "@777", "@777", "@777", "@777", "@777", " pays 150" },
+		{ "@jackpot", "@jackpot", "@jackpot", "@jackpot", "@jackpot", " pays 300" },
+		{ "@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot" },
+		{ "All wins are multiplied by your line bet." }
+	},
 	maxbalance = 3260000,			-- 65535 50 Mg notes, minus maximum possible payout, minus a fudge amount
 	bet_initiates_spin = true,		-- Most machines initiate a spin when the user presses a "Bet n" button, using
 									-- the selected bet value.
@@ -146,48 +181,60 @@ minislots.register_machine({
 	wild_doesnt_match = {
 		jackpot = true
 	},
-	wild_multiplier = 1,					-- For every wild that contributes to a line win, multiply win by this
-											-- (so one wild mult. by this, two mult. by twice this, etc)
+	wild_multiplier = 1,				-- For every wild that contributes to a line win, multiply win by this
+										-- (so one wild mult. by this, two mult. by twice this, etc)
 
-	geometry = {							-- all measures are in Minetest formspec "inventory slots" units
+	geometry = {						-- all measures are in Minetest formspec "inventory slots" units
 
 		base_user_interface_width = 14.667,	-- width of the user interface
-		upper_section_height = 11,			-- height of the upper section (the reels et. al)
-		lower_section_height = 2,			-- height of lower section (screen, buttons)
+		upper_section_height = 11,		-- height of the upper section (the reels et. al)
+		lower_section_height = 2,		-- height of lower section (screen, buttons)
 
-		reel_posx = 1,						-- X/Y position of first reel, others drawn as indicated below
+		reel_posx = 1,					-- X/Y position of first reel, others drawn as indicated below
 		reel_posy = 1,
 
-		reel_sizex = 2,						-- Nominal X/Y size of one reel.  Note that reels are drawn with a
-		reel_sizey = 9,						-- spacing of 1.3333 times their width (leaves a 0.6667 IU gap between
-											-- reels on this machine).
+		reel_sizex = 2,					-- Nominal X/Y size of one reel.  Note that reels are drawn with a
+		reel_sizey = 9,					-- spacing of 1.3333 times their width (leaves a 0.6667 IU gap between
+										-- reels on this machine).
 
-		button_rows_posx = 6.9,				-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
-		spin_cashout_posx = 12.75,			-- X pos for Spin and Cash-out/Quit buttons
-		button_rows_posy = 11.14,			-- Y pos for "n Lines" row, and Cash Out/Quit button
+		button_rows_posx = 6.9,			-- X starting pos for "n Lines"/"Bet n" buttons, Y pos for Spin button
+		spin_cashout_posx = 12.75,		-- X pos for Spin and Cash-out/Quit buttons
+		button_rows_posy = 11.14,		-- Y pos for "n Lines" row, and Cash Out/Quit button
 
-		main_button_size = 0.8,				-- X/Y size of Lines/Bet buttons; X*2 x Y for Spin and Cash Out
-		main_button_spacing = 0.9,			-- X/Y Spacing between Lines/Bet buttons, and between Spin and
-											-- Cash Out buttons
+		main_button_size = 0.8,			-- X/Y size of Lines/Bet buttons; X*2 x Y for Spin and Cash Out
+		main_button_spacing = 0.9,		-- X/Y Spacing between Lines/Bet buttons, and between Spin and
+										-- Cash Out buttons
 
-		screen_posx = 0.125,				-- X/Y position of top-left corner of lower screen (i.e. (0,0))
+		button_help_sizex = 1.6,		-- Size and position of the "Help / Pays" button
+		button_help_sizey = 0.8,
+		button_help_posx = 0.125,
+		button_help_posy = 10.0938,
+
+		screen_posx = 0.125,			-- X/Y position of top-left corner of lower screen (i.e. (0,0))
 		screen_posy = 11.094,
 
-		screen_line_height = 0.875,			-- Height of line 1, and 2 in 2-line mode.  In 3-line mode, line 2
-											-- hight will be 2/3 of this, and line 3 height will be 1/3 of it.
+		screen_line_height = 0.875,		-- Height of line 1, and 2 in 2-line mode.  In 3-line mode, line 2
+										-- hight will be 2/3 of this, and line 3 height will be 1/3 of it.
 
-		label_medium_sizex = 1.125,			-- X size of "Bal:", "Bet:", "Win:".
-		line_win_label_sizex = 2.0,			-- X size of "Line Win" label
-		scatter_win_label_sizex = 3.0,		-- X size of "Scatter Win:" label
-		bonus_win_label_sizex = 2.75,		-- X size of "Bonus Win:" label
+		label_medium_sizex = 1.125,		-- X size of "Bal:", "Bet:", "Win:".
+		line_win_label_sizex = 2.0,		-- X size of "Line Win" label
+		scatter_win_label_sizex = 3.0,	-- X size of "Scatter Win:" label
+		bonus_win_label_sizex = 2.75,	-- X size of "Bonus Win:" label
 
-		digit_glyph_sizex = 0.75,			-- Nominal X size of digits, before scaling down as noted below
+		digit_glyph_sizex = 0.75,		-- Nominal X size of digits, before scaling down as noted below
 
-		cash_slot_sizex = 5.0,				-- X/Y size and position of the cash slot
+		cash_slot_sizex = 5.0,			-- X/Y size and position of the cash slot
 		cash_slot_sizey = 0.8125,
 		cash_slot_posx = 9.5781,
 		cash_slot_posy = 10.0938,
-		cash_slot_cin_posx = 1.9,			-- X/Y position within the "cash intake" form (uses the same size as
-		cash_slot_cin_posy = 2.27			-- above)
+		cash_slot_cin_posx = 1.9,		-- X/Y position within the "cash intake" form (uses the same size as
+		cash_slot_cin_posy = 2.27,		-- above)
+
+		paytable_posx = 0.4,			-- where to put the first symbol/character in the paytable screen.
+		paytable_posy = 0,
+		paytable_lineheight = 0.5,		-- height of a pay table line. sets the Y spacing of the lines, and the
+										-- X/Y size of reel symbols shown therein, minus a bit of padding.
+		paytable_textheight = 0.35,		-- height of printed text within said line, which will be vert. centered
+		paytable_textshift = 0.075,		-- use this to fine tune the text vertical position relative to symbols
 	}
 })
