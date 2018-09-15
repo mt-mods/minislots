@@ -1376,30 +1376,36 @@ function minislots.generate_paytable_form(def)
 
 	local y = def.geometry.paytable_posy
 	local sympadding = 0.05
+	local column = def.geometry.paytable_column1
 
 	if def.paytable_desc then
 		for _, line in ipairs(def.paytable_desc) do
-			local x = def.geometry.paytable_posx
-			for _, item in ipairs(line) do
-				if string.sub(item, 1, 1) == "@" then
-					if item == "@X" then
-						t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
-									def.geometry.paytable_lineheight..","..def.geometry.paytable_lineheight..
-									";"..def.constants.emptyimg.."]"
+			if line == "@wrap" then
+				column = def.geometry.paytable_column2
+				y = def.geometry.paytable_posy
+			else
+				local x = column
+				for _, item in ipairs(line) do
+					if string.sub(item, 1, 1) == "@" then
+						if item == "@X" then
+							t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
+										def.geometry.paytable_lineheight..","..def.geometry.paytable_lineheight..
+										";"..def.constants.emptyimg.."]"
+						else
+							local sym = string.sub(item, 2)
+							local sympos = def.constants.symlookup["sym_"..sym] * -def.constants.reelsymsizey - (def.constants.reelsymsizey - def.constants.reelsymsizex)/2
+							t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
+									(def.geometry.paytable_lineheight-sympadding)..","..
+									(def.geometry.paytable_lineheight-sympadding)..";"..
+									"[combine:"..def.constants.reelsymsizex.."x"..def.constants.reelsymsizex..
+									":0\\,"..sympos.."="..def.constants.symbolsstopped.."]"
+						end
+						x = x + def.geometry.paytable_lineheight
 					else
-						local sym = string.sub(item, 2)
-						local sympos = def.constants.symlookup["sym_"..sym] * -def.constants.reelsymsizey - (def.constants.reelsymsizey - def.constants.reelsymsizex)/2
-						t[#t+1] = "image["..(x*horizscale)..","..(y*vertscale)..";"..
-								(def.geometry.paytable_lineheight-sympadding)..","..
-								(def.geometry.paytable_lineheight-sympadding)..";"..
-								"[combine:"..def.constants.reelsymsizex.."x"..def.constants.reelsymsizex..
-								":0\\,"..sympos.."="..def.constants.symbolsstopped.."]"
+						local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paytable_textheight
+						t[#t+1] = minislots.print_string(def, item, x*horizscale, (y+def.geometry.paytable_textshift)*vertscale, szx, def.geometry.paytable_textheight, "regular", "white")
+						x = x + szx
 					end
-					x = x + def.geometry.paytable_lineheight
-				else
-					local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paytable_textheight
-					t[#t+1] = minislots.print_string(def, item, x*horizscale, (y+def.geometry.paytable_textshift)*vertscale, szx, def.geometry.paytable_textheight, "regular", "white")
-					x = x + szx
 				end
 			end
 		y = y + def.geometry.paytable_lineheight

@@ -189,7 +189,8 @@ minislots.register_machine({
 		cash_slot_cin_posx = 1.9,		-- X/Y position within the "cash intake" form (uses the same size as
 		cash_slot_cin_posy = 2.27,		-- above)
 
-		paytable_posx = 0.6,			-- where to put the first symbol/character in the paytable screen.
+		paytable_column1 = 0.6,			-- position of left/right columns in the paytable screen.
+		paytable_column2 = 6.85,
 		paytable_posy = 0.5,
 		paytable_lineheight = 0.65,		-- height of a pay table line. sets the Y spacing of the lines, and the
 										-- X/Y size of reel symbols shown therein, minus a bit of padding.

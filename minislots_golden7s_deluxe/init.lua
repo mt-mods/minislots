@@ -123,39 +123,54 @@ minislots.register_machine({
 
 	},
 	paytable_desc = {
-		{ "@lemon", "@lemon", "@X", "@X", "@X", " pays 1", "                                    ", "@lemon", "@lemon", "@lemon", "@X", "@X", " pays 2" },
-		{ "@lemon", "@lemon", "@lemon", "@lemon", "@X", " pays 3", "                                    ", "@lemon", "@lemon", "@lemon", "@lemon", "@lemon", " pays 5" },
+		{ "@lemon", "@lemon", "@X", "@X", "@X", " pays 1"} ,
+		{ "@lemon", "@lemon", "@lemon", "@X", "@X", " pays 2" },
+		{ "@lemon", "@lemon", "@lemon", "@lemon", "@X", " pays 3"},
+		{ "@lemon", "@lemon", "@lemon", "@lemon", "@lemon", " pays 5" },
 
-		{ "@melon", "@melon", "@melon", "@X", "@X", " pays 5", "                                    ", "@melon", "@melon", "@melon", "@melon", "@X", " pays 6" },
+		{ "@melon", "@melon", "@melon", "@X", "@X", " pays 5"},
+		{ "@melon", "@melon", "@melon", "@melon", "@X", " pays 6" },
 		{ "@melon", "@melon", "@melon", "@melon", "@melon", " pays 7" },
 
-		{ "@cherry", "@cherry", "@X", "@X", "@X", " pays 7", "                                    ", "@cherry", "@cherry", "@cherry", "@X", "@X", " pays 8" }, 
-		{ "@cherry", "@cherry", "@cherry", "@cherry", "@X", " pays 9", "                                    ", "@cherry", "@cherry", "@cherry", "@cherry", "@cherry", " pays 10" },
+		{ "@cherry", "@cherry", "@X", "@X", "@X", " pays 7" },
+		{ "@cherry", "@cherry", "@cherry", "@X", "@X", " pays 8" }, 
+		{ "@cherry", "@cherry", "@cherry", "@cherry", "@X", " pays 9" },
+		{ "@cherry", "@cherry", "@cherry", "@cherry", "@cherry", " pays 10" },
 
-		{ "@bell", "@bell", "@bell", "@X", "@X", " pays 10", "                                 ", "@bell", "@bell", "@bell", "@bell", "@X", " pays 15" }, 
+		{ "@bell", "@bell", "@bell", "@X", "@X", " pays 10" },
+		{ "@bell", "@bell", "@bell", "@bell", "@X", " pays 15" }, 
 		{ "@bell", "@bell", "@bell", "@bell", "@bell", " pays 20" },
 
-		{ "Any five mixed", "@bar", "/", "@2bar", "/", "@3bar", " pays 25" },
-		{ "@bar", "@bar", "@bar", "@X", "@X", " pays 30", "                                 ", "@bar", "@bar", "@bar", "@bar", "@X", " pays 35" },
+		{ "Any five ", "@bar", "/", "@2bar", "/", "@3bar", " pays 25" },
+		{ "@bar", "@bar", "@bar", "@X", "@X", " pays 30" },
+		{ "@bar", "@bar", "@bar", "@bar", "@X", " pays 35" },
 		{ "@bar", "@bar", "@bar", "@bar", "@bar", " pays 40" },
 
-		{ "@2bar", "@2bar", "@2bar", "@X", "@X", " pays 50", "                                 ", "@2bar", "@2bar", "@2bar", "@2bar", "@X", " pays 55" },
+		{ "@2bar", "@2bar", "@2bar", "@X", "@X", " pays 50" },
+		{ "@2bar", "@2bar", "@2bar", "@2bar", "@X", " pays 55" },
 		{ "@2bar", "@2bar", "@2bar", "@2bar", "@2bar", " pays 60" },
 
-		{ "@3bar", "@3bar", "@3bar", "@X", "@X", " pays 70", "                                 ", "@3bar", "@3bar", "@3bar", "@3bar", "@X", " pays 73" },
+		{ "@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot" },
+		{ "All wins are multiplied by your line bet." },
+
+		"@wrap",
+
+		{ "@3bar", "@3bar", "@3bar", "@X", "@X", " pays 70" },
+		{ "@3bar", "@3bar", "@3bar", "@3bar", "@X", " pays 73" },
 		{ "@3bar", "@3bar", "@3bar", "@3bar", "@3bar", " pays 75" },
 
-		{ "Any five mixed ", "@7", "/", "@77", "/", "@777", " pays 80" },
-		{ "@7", "@7", "@7", "@X", "@X", " pays 85", "                                 ", "@7", "@7", "@7", "@7", "@X", " pays 88" },
+		{ "Any five ", "@7", "/", "@77", "/", "@777", " pays 80" },
+		{ "@7", "@7", "@7", "@X", "@X", " pays 85" },
+		{ "@7", "@7", "@7", "@7", "@X", " pays 88" },
 		{ "@7", "@7", "@7", "@7", "@7", " pays 90" },
 
-		{ "@77", "@77", "@77", "@X", "@X", " pays 90", "                                 ", "@77", "@77", "@77", "@77", "@X", " pays 95" },
+		{ "@77", "@77", "@77", "@X", "@X", " pays 90" },
+		{ "@77", "@77", "@77", "@77", "@X", " pays 95" },
 		{ "@77", "@77", "@77", "@77", "@77", " pays 100" },
 
 		{ "@777", "@777", "@777", "@777", "@777", " pays 150" },
 		{ "@jackpot", "@jackpot", "@jackpot", "@jackpot", "@jackpot", " pays 300" },
-		{ "@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot" },
-		{ "All wins are multiplied by your line bet." }
+
 	},
 	paylines_desc = {
 		"Paylines 1 - 3:",
@@ -244,8 +259,9 @@ minislots.register_machine({
 		cash_slot_cin_posx = 1.9,		-- X/Y position within the "cash intake" form (uses the same size as
 		cash_slot_cin_posy = 2.27,		-- above)
 
-		paytable_posx = 0.4,			-- where to put the first symbol/character in the paytable screen.
-		paytable_posy = 0,
+		paytable_column1 = 0.65,		-- position of left/right columns in the paytable screen.
+		paytable_column2 = 6.9,
+		paytable_posy = 0.25,
 		paytable_lineheight = 0.5,		-- height of a pay table line. sets the Y spacing of the lines, and the
 										-- X/Y size of reel symbols shown therein, minus a bit of padding.
 		paytable_textheight = 0.35,		-- height of printed text within said line, which will be vert. centered

@@ -194,8 +194,8 @@ of five assorted [7], [77], and/or [777] symbols (it also has one for assorted
 [bar], [2bar], and/or [3bar] symbols).
 
 
-The human-readable pay table:
-=============================
+The human-readable pay table and pay lines screen:
+==================================================
 
 The format of the paytable_desc is pretty simple - it's a table of tables. :-)
 
@@ -219,9 +219,9 @@ The special symbol "@X" tells the parser to insert a blank space equal to the
 size of a symbol - this is useful for making grids of symbols with some spaces
 left empty (as in a 3-out-of-5 reel match).
 
-The parser doesn't have any text positioning commands yet, but some
-rudimentary layout formatting can be accomplished by inserting blank lines or
-chunks of whitespace between other items.
+The parser doesn't have any text positioning commands yet, other than "@wrap"
+(below), but some rudimentary layout formatting can be accomplished by
+inserting blank lines or chunks of whitespace between items.
 
 For a layout with fairly large text/symbols as in the 3-reel demo machine,
 there's room for up to 19 lines, as long as the top line is not so long that
@@ -240,9 +240,11 @@ on the line.  The key for those is "@" followed by a number, a space, and
 another number (e.g. "@1 5").  These numbers indicate the first and last pay
 line images to display.
 
-Lines are "printed" from top to bottom in a column toward the left side of the
-form background, overflowing into a second column if necessary.  You can force
-an overflow into column 2 with "@wrap" (on its own).
+On both screens, lines are "printed" from top to bottom in a column toward the
+left side of the form background, overflowing into a second column if
+necessary.  You can force an overflow into column 2 by inserting a table entry
+consisting of the string "@wrap" (in the case of the pay table, it must be on
+a line by itself, and not inside an inner table the way the other items arespac).
 
 If paytable_desc or paylines_desc is not specified, then only the background,
 [X] button, and "Show Pay Lines" or "Show Pay Table" button will be displayed
