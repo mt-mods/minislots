@@ -591,9 +591,14 @@ function minislots.register_machine(mdef)
 				local stack = ItemStack("minislots:"..def.name)
 				local nodemeta = minetest.get_meta(pos)
 				local stackmeta = stack:get_meta()
-				stackmeta:set_int("balance", nodemeta:get_int("balance"))
-				stackmeta:set_string("casino_name", nodemeta:get_string("casino_name"))
+
+				local balance = nodemeta:get_int("balance") or 0
+				local casino = nodemeta:get_string("casino_name")
+				stackmeta:set_int("balance", balance)
+				stackmeta:set_string("casino_name", casino)
 				stackmeta:set_int("last_cashout", nodemeta:get_int("last_cashout"))
+				stackmeta:set_string("description",
+					def.description.."\n(balance: "..balance.." Mg;\ncasino: "..casino..")")
 				local inv = digger:get_inventory()
 				if inv:room_for_item("main", stack) then
 					if (not creative or not creative.is_enabled_for(player_name))
