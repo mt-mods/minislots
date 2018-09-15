@@ -1277,11 +1277,11 @@ end
 
 function minislots.number_to_words(number)
 
-	local numstr = "000"..tostring(number)
+	local numstr = tostring(number)
 	local numlen = string.len(numstr)
 	local words = {}
 
-	if numstr == "0" then return words_numbers[0] end
+	if number == 0 then return words_numbers[0] end
 
 	local i = 1
 	while i <= numlen do
@@ -1289,7 +1289,10 @@ function minislots.number_to_words(number)
 			local n = tonumber(string.sub(numstr, -i-1, -i))
 			local num = words_numbers[n]
 			if not num then -- it's > 19
-				words[#words+1] = words_numbers[tonumber(string.sub(numstr, -i, -i))]
+				n = tonumber(string.sub(numstr, -i, -i))
+				if n > 0 then 
+					words[#words+1] = words_numbers[n]
+				end
 				words[#words+1] = words_tens[tonumber(string.sub(numstr, -i-1, -i-1))]
 			elseif n > 0 then
 				words[#words+1] = num
@@ -1303,7 +1306,7 @@ function minislots.number_to_words(number)
 			end
 			i = i + 1
 		end
-
+		if i > numlen then break end 
 		if tonumber(string.sub(numstr, -i-2, -i)) ~= 0 then -- the magnitude is non-zero
 			if i == 4 then
 				words[#words+1] = words_magnitudes[2] -- thousand
