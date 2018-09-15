@@ -435,7 +435,7 @@ function minislots.register_machine(mdef)
 										"image_button["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
 										def.constants.cslotbtnszx..","..def.constants.cslotbtnszy..";"..
 										def.constants.emptyimg..";cslot;]"
-	def.constants.button_cslot_close = def.constants.basename.."cash_slot_screen_close_button.png"
+	def.constants.button_close = def.constants.basename.."cash_slot_screen_close_button.png"
 
 	def.constants.buttonhelp		= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
 										def.geometry.button_help_sizex..","..def.geometry.button_help_sizey..";"..
@@ -1363,7 +1363,7 @@ function minislots.generate_paytable_form(def, pos, balance)
 
 	local t = {}
 	t[1] = "size[10.7,10.4]background[-0.14,-0.17;11,11;"..def.constants.paytablescrnbg.."]"..
-		"image_button_exit[10.25,-0.1;0.55,0.5;"..def.constants.button_cslot_close..";cslotclose;]"
+		"image_button_exit[10.25,-0.1;0.55,0.5;"..def.constants.button_close..";close;]"
 
 	local y = def.geometry.paytable_posy
 	local sympadding = 0.05
@@ -1404,7 +1404,7 @@ function minislots.generate_cashslot_form(def, pos, balance)
 	local formspec =
 		"size[8,7]"..
 		"background[-0.2,-0.25;8.4,7.74;"..def.constants.cashslotscrnbg.."]"..
-		"image_button_exit[7.55,-0.1;0.55,0.5;"..def.constants.button_cslot_close..";cslotclose;]"..
+		"image_button_exit[7.55,-0.1;0.55,0.5;"..def.constants.button_close..";close;]"..
 		"list[nodemeta:".. spos .. ";main;3.5,1;1,1;]"..
 		"label[2.5,-0.25;Insert money into the space below.]"..
 		"label[2.2,0;When you're done, close this screen, then]"..
@@ -1419,8 +1419,8 @@ function minislots.generate_cashslot_form(def, pos, balance)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if (fields.cslotclose and formname == "minislots:cash_intake")
-	  or (fields.helpclose and formname == "minislots:help_screen") then
+	if fields.close and (formname == "minislots:cash_intake"
+	  or  formname == "minislots:help_screen") then
 		minetest.close_formspec(player:get_player_name(), formname)
 	end
 
