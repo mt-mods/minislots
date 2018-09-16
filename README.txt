@@ -116,6 +116,9 @@ Same vertical positioning, and horizontally-centered.
 Reels always show three symbols' of height, not counting the overlap at the
 top and bottom to allow for symbols to be positioned "off-screen".
 
+The pay table, pay lines, admin, and cashout voucher screens all use the
+Liberation Sans font (either condensed, regular, or bold).
+
 
 Geometry for the 3-reel "Golden 7's" machine:
 ---------------------------------------------
@@ -140,7 +143,7 @@ Geometry for the 5-reel "Golden 7's Deluxe" machine:
 ----------------------------------------------------
 
 The upper overlay, reel underlay, and line win overlays are 939x704 px  --> 14.667 x 11 IU
-The lower overlay image is 939x128 px                                   --> 13 x 2 IU
+The lower overlay image is 939x128 px                                   --> 14.667 x 2 IU
 A single reel image is 128x576 px                                       --> 2 x 9  IU
 A digit glyph is 48x80 px                                               --> 0.563, 0.338, or 0.30 IU
 The currency label is 96x80 px                                          --> 0.4 x screen_line_height_3 IU
@@ -187,11 +190,11 @@ mean "any of these can match".  So if you have a match entry like:
 would need to have one of [7], [77], or [777] also to complete the match
 (which would pay 100 times the line bet).
 
-You can do this for any reels you want, as many as you want (well, up to
-however many the machine has, of course).  For example, the Golden 7's Deluxe
-machine has an entry in its pay table that pays out on a line win consisting
-of five assorted [7], [77], and/or [777] symbols (it also has one for assorted
-[bar], [2bar], and/or [3bar] symbols).
+You can do this for any reels you want, with as many entries in each sub-list
+as you want (well, up to however many the machine has, of course).  For
+example, the Golden 7's Deluxe machine has an entry in its pay table that pays
+out on a line win consisting of five assorted [7], [77], and/or [777] symbols
+(it also has one for assorted [bar], [2bar], and/or [3bar] symbols).
 
 
 The human-readable pay table and pay lines screen:
@@ -244,7 +247,7 @@ On both screens, lines are "printed" from top to bottom in a column toward the
 left side of the form background, overflowing into a second column if
 necessary.  You can force an overflow into column 2 by inserting a table entry
 consisting of the string "@wrap" (in the case of the pay table, it must be on
-a line by itself, and not inside an inner table the way the other items arespac).
+a line by itself, and not inside an inner table the way the other items are).
 
 If paytable_desc or paylines_desc is not specified, then only the background,
 [X] button, and "Show Pay Lines" or "Show Pay Table" button will be displayed
@@ -285,7 +288,10 @@ in the wild_doesnt_match table (three or five [777]'s in the Golden 7's
 example machines, because they're both set to not match against [JACKPOT!]).
 
 If a wild multiplier is in effect, it'll be applied to the final value for a
-given match.  
+given match.  Each wild card multiplies the win by the configured amount, but
+only for wild cards that actually helped create a win.  Thus, the final win
+amount will be line_win * ( 2 ^ number_of_wilds ).
+
 
 DISCLAIMER:
 ===========
@@ -304,4 +310,3 @@ WHETHER TANGIBLE OR INTANGIBLE, PHYSICAL OR ELECTRONIC.
 NO CLAIMS REGARDING THE FITNESS OF THIS PROJECT FOR ANY PURPOSE ARE HEREIN
 MADE, AND NO WARRANTY OR GUARANTEE OF ANY KIND IS OFFERED BY ANY PARTY.  SEE
 ALSO, "LICENSE" IN THE MAIN PROJECT DIRECTORY.
-
