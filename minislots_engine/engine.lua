@@ -1313,6 +1313,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			scatters..
 			bonuses..
 			def.constants.buttoncashslot..
+			def.constants.buttonhelp..
 			button_admin
 	else
 		local maxw = 6
@@ -1360,7 +1361,6 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			upper_screen..
 			table.concat(linesbetbuttons)..
 			spincashoutbuttons..
-			def.constants.buttonhelp..
 			lines..
 			bal..
 			betwin
