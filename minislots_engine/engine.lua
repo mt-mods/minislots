@@ -1603,10 +1603,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.close and (formname == "minislots:cash_intake"
 	  or formname == "minislots:help_screen") then
 		minetest.close_formspec(player_name, formname)
-	elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
-		if def and pos and meta and meta:get_string("owner") == player_name then
-			meta:set_string("formspec", "")
-		end
 	elseif fields.showpaylines and formname == "minislots:help_screen" then
 		minetest.show_formspec(player_name, "minislots:help_screen",
 			minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
@@ -1617,6 +1613,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if def and pos and meta and meta:get_string("owner") == player_name then
 			meta:set_string("formspec", "")
 			meta:set_string("casino_name", minetest.formspec_escape(fields.casino_input))
+		end
+	elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
+		if def and pos and meta and meta:get_string("owner") == player_name then
+			meta:set_string("formspec", "")
 		end
 	end
 end)
