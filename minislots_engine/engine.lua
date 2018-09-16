@@ -607,6 +607,8 @@ function minislots.register_machine(mdef)
 			meta:set_int("spin_count", 0)
 			meta:set_int("money_in", 0)
 			meta:set_int("money_out", 0)
+			meta:set_int("total_bets", 0)
+			meta:set_int("total_wins", 0)
 			meta:set_int("scatter_hits", 0)
 			meta:set_int("bonus_hits", 0)
 
@@ -628,6 +630,8 @@ function minislots.register_machine(mdef)
 				"spin_count",
 				"money_in",
 				"money_out",
+				"total_bets",
+				"total_wins",
 				"scatter_hits",
 				"bonus_hits"
 			})
@@ -651,6 +655,8 @@ function minislots.register_machine(mdef)
 				stackmeta:set_int("spin_count",      nodemeta:get_int("spin_count")      )
 				stackmeta:set_int("money_in",        nodemeta:get_int("money_in")        )
 				stackmeta:set_int("money_out",       nodemeta:get_int("money_out")       )
+				stackmeta:set_int("total_bets",      nodemeta:get_int("total_bets")      )
+				stackmeta:set_int("total_wins",      nodemeta:get_int("total_wins")      )
 				stackmeta:set_int("scatter_hits",    nodemeta:get_int("scatter_hits")    )
 				stackmeta:set_int("bonus_hits",      nodemeta:get_int("bonus_hits")      )
 				stackmeta:set_string("description",
@@ -692,6 +698,8 @@ function minislots.register_machine(mdef)
 				nodemeta:set_int("spin_count",   stackmeta:get_int("spin_count")  )
 				nodemeta:set_int("money_in",     stackmeta:get_int("money_in")    )
 				nodemeta:set_int("money_out",    stackmeta:get_int("money_out")   )
+				nodemeta:set_int("total_bets",   stackmeta:get_int("total_bets")  )
+				nodemeta:set_int("total_wins",   stackmeta:get_int("total_wins")  )
 				nodemeta:set_int("scatter_hits", stackmeta:get_int("scatter_hits"))
 				nodemeta:set_int("bonus_hits",   stackmeta:get_int("bonus_hits")  )
 			end
@@ -821,7 +829,7 @@ function minislots.register_machine(mdef)
 				return
 			elseif fields.spin then
 				if state == "stopped" or string.find(state, "win") then
-					if maxlines*linebet > balance or balance > def.maxbalance then return end
+					if (linebet*maxlines) > balance or balance > def.maxbalance then return end
 					meta:set_int("spin_timestamp", os.time())
 					local node = minetest.get_node(pos)
 					local spin = minislots.spin_reels(def)
@@ -829,8 +837,6 @@ function minislots.register_machine(mdef)
 					meta:set_string("spin", minetest.serialize(spin))
 					meta:set_string("allwins", minetest.serialize(allwins))
 					meta:set_string("state", "start")
-					meta:set_int("spin_count", meta:get_int("spin_count")+1)
-
 					minislots.cycle_states(pos)
 					return
 				end
@@ -895,6 +901,8 @@ function minislots.cycle_states(pos)
 	if state == "start" then
 		balance = meta:get_int("balance") - linebet*maxlines
 		meta:set_int("balance", balance)
+		meta:set_int("spin_count", meta:get_int("spin_count")+1)
+		meta:set_int("total_bets", meta:get_int("total_bets")+linebet*maxlines)
 		state = "spinning_fast_0"
 		timeout = def.reel_fast_timeout
 	elseif string.find(state, "spinning_fast_") then
@@ -944,20 +952,24 @@ function minislots.cycle_states(pos)
 		end
 	elseif state == "stopped" then
 		if #allwins > 0 then
-			balance = balance + allwins.line_wins_total*linebet
-			allwins.total = allwins.total + allwins.line_wins_total*linebet
+			local amount = allwins.line_wins_total*linebet
+			balance = balance + amount
+			allwins.total = allwins.total + amount
+			meta:set_int("total_wins", meta:get_int("total_wins")+amount)
 		end
 		if numscatter >= def.min_scatter then
 			local amount = allwins.scatter.count*def.scatter_value*linebet
 			balance = balance + amount
 			allwins.total = allwins.total + amount
 			meta:set_int("scatter_hits", meta:get_int("scatter_hits")+1)
+			meta:set_int("total_wins", meta:get_int("total_wins")+amount)
 		end
 		if numbonus >= def.min_bonus and allwins.bonus.value < 0 then
 			allwins.bonus.value = def.initiate_bonus(spin, def)
 			balance = balance + allwins.bonus.value
-			allwins.total = allwins.total + bonus_value
+			allwins.total = allwins.total + allwins.bonus.value
 			meta:set_int("bonus_hits", meta:get_int("bonus_hits")+1)
+			meta:set_int("total_wins", meta:get_int("total_wins")+allwins.bonus.value)
 		end
 		meta:set_string("allwins", minetest.serialize(allwins))
 		meta:set_int("balance", balance)
@@ -1589,14 +1601,22 @@ function minislots.generate_admin_form(def, pos, balance)
 
 	local money_in     = meta:get_int("money_in")
 	local money_out    = meta:get_int("money_out")
+	local total_bets   = meta:get_int("total_bets")
+	local total_wins   = meta:get_int("total_wins")
 	local spin_count   = meta:get_int("spin_count")
 	local scatter_hits = meta:get_int("scatter_hits")
 	local bonus_hits   = meta:get_int("bonus_hits")
 	local install_date = meta:get_string("install_date")
 
+	local pay_percent  = 0
+	if total_bets > 0 then pay_percent = math.floor((total_wins/total_bets+0.0005)*1000)/10 end
+
 	local balancestr      = "Current Balance:  "..balance.." Mg"
 	local money_instr     = "Money in:  "..money_in.." Mg"
 	local money_outstr    = "Money out:  "..money_out.." Mg"
+	local total_betsstr   = "Total bets:  "..total_bets.." Mg"
+	local total_winsstr   = "Total wins:  "..total_wins.." Mg"
+	local percent_str     = "Payout percentage:  "..pay_percent.."%"
 	local spin_countstr   = "Spin count:  "..spin_count
 	local scatter_hitsstr = "Scatter wins (count):  "..scatter_hits
 	local bonus_hitsstr   = "Bonus wins (count):  "..bonus_hits
@@ -1608,6 +1628,9 @@ function minislots.generate_admin_form(def, pos, balance)
 	local balw = minislots.str_width_pix(balancestr, "regular")*pix2iu*sizey
 	local miw  = minislots.str_width_pix(money_instr, "regular")*pix2iu*sizey
 	local mow  = minislots.str_width_pix(money_outstr, "regular")*pix2iu*sizey
+	local tbw  = minislots.str_width_pix(total_betsstr, "regular")*pix2iu*sizey
+	local tww  = minislots.str_width_pix(total_winsstr, "regular")*pix2iu*sizey
+	local pctw = minislots.str_width_pix(percent_str, "regular")*pix2iu*sizey
 	local spcw = minislots.str_width_pix(spin_countstr, "regular")*pix2iu*sizey
 	local sccw = minislots.str_width_pix(scatter_hitsstr, "regular")*pix2iu*sizey
 	local bcw  = minislots.str_width_pix(bonus_hitsstr, "regular")*pix2iu*sizey
@@ -1615,7 +1638,7 @@ function minislots.generate_admin_form(def, pos, balance)
 	local cnw  = minislots.str_width_pix(cstr, "regular")*pix2iu*sizey
 
 	local formspec =
-		"size[6,4]"..
+		"size[6,4.5]"..
 		"image_button_exit[5.65,-0.2;0.55,0.5;"..def.constants.button_close..";close;]"..
 		minislots.print_string(def, "Admin/configuration", 0.88, -0.12, 5, 0.4, "bold", "black")..
 		minislots.print_string(def, "Admin/configuration", 0.85, -0.15, 5, 0.4, "bold")..
@@ -1626,19 +1649,27 @@ function minislots.generate_admin_form(def, pos, balance)
 		minislots.print_string(def, money_instr,     0,    0.8,  miw,  sizey, "regular")..
 		minislots.print_string(def, money_outstr,    0.03, 1.13, mow,  sizey, "regular", "black")..
 		minislots.print_string(def, money_outstr,    0,    1.1,  mow,  sizey, "regular")..
-		minislots.print_string(def, spin_countstr,   0.03, 1.43, spcw, sizey, "regular", "black")..
-		minislots.print_string(def, spin_countstr,   0,    1.4,  spcw, sizey, "regular")..
-		minislots.print_string(def, scatter_hitsstr, 0.03, 1.73, sccw, sizey, "regular", "black")..
-		minislots.print_string(def, scatter_hitsstr, 0,    1.7,  sccw, sizey, "regular")..
-		minislots.print_string(def, bonus_hitsstr,   0.03, 2.03, bcw,  sizey, "regular", "black")..
-		minislots.print_string(def, bonus_hitsstr,   0,    2.0,  bcw,  sizey, "regular")..
-		minislots.print_string(def, install_datestr, 0.03, 2.33, idw,  sizey, "regular", "black")..
-		minislots.print_string(def, install_datestr, 0,    2.3,  idw,  sizey, "regular")..
 
-		minislots.print_string(def, cstr,            1.03, 2.93, cnw,  sizey, "regular", "black")..
-		minislots.print_string(def, cstr,            1,    2.9,  cnw,  sizey, "regular")..
+		minislots.print_string(def, total_betsstr,   0.03, 1.43, tbw,  sizey, "regular", "black")..
+		minislots.print_string(def, total_betsstr,   0,    1.4,  tbw,  sizey, "regular")..
+		minislots.print_string(def, total_winsstr,   0.03, 1.73, tww,  sizey, "regular", "black")..
+		minislots.print_string(def, total_winsstr,   0,    1.7,  tww,  sizey, "regular")..
+		minislots.print_string(def, percent_str,     0.03, 2.03, pctw,  sizey, "regular", "black")..
+		minislots.print_string(def, percent_str,     0,    2,    pctw,  sizey, "regular")..
 
-		"field[1.3,2.6;4,3;casino_input;;"..casino.."]"..
+		minislots.print_string(def, spin_countstr,   0.03, 2.33, spcw, sizey, "regular", "black")..
+		minislots.print_string(def, spin_countstr,   0,    2.3,  spcw, sizey, "regular")..
+		minislots.print_string(def, scatter_hitsstr, 0.03, 2.63, sccw, sizey, "regular", "black")..
+		minislots.print_string(def, scatter_hitsstr, 0,    2.6,  sccw, sizey, "regular")..
+		minislots.print_string(def, bonus_hitsstr,   0.03, 2.93, bcw,  sizey, "regular", "black")..
+		minislots.print_string(def, bonus_hitsstr,   0,    2.9,  bcw,  sizey, "regular")..
+		minislots.print_string(def, install_datestr, 0.03, 3.23, idw,  sizey, "regular", "black")..
+		minislots.print_string(def, install_datestr, 0,    3.2,  idw,  sizey, "regular")..
+
+		minislots.print_string(def, cstr,            1.03, 3.73, cnw,  sizey, "regular", "black")..
+		minislots.print_string(def, cstr,            1,    3.7,  cnw,  sizey, "regular")..
+
+		"field[1.3,3.4;4,3;casino_input;;"..casino.."]"..
 		"field_close_on_enter[casino_input;true]"
 	return formspec
 end
