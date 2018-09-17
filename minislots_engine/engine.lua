@@ -575,7 +575,19 @@ function minislots.register_machine(mdef)
 				local spin = minetest.deserialize(meta:get_string("spin"))
 				local linebet = meta:get_int("linebet")
 				local maxlines = meta:get_int("maxlines")
-				meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, nil, nil, pos, nil, default.can_interact_with_node(clicker, pos)))
+				meta:set_string("last_right_clicker", clicker:get_player_name())
+				meta:set_string("formspec",
+					minislots.generate_display(def, {
+						state = state,
+						spin = spin,
+						allwins = {},
+						balance = balance,
+						linebet = linebet,
+						maxlines = maxlines,
+						pos = pos,
+						admin = default.can_interact_with_node(clicker, pos)
+					})
+				)
 			elseif meta:get_string("owner") == player_name then
 				minetest.get_node_timer(pos):stop()
 				minetest.show_formspec(player_name, "minislots:admin_form",
@@ -705,7 +717,17 @@ function minislots.register_machine(mdef)
 			end
 			nodemeta:set_string("owner", player_name)
 			nodemeta:set_string("infotext", def.description.."\nOwned by "..player_name)
-			nodemeta:set_string("formspec", minislots.generate_display(def, "stopped", resetspin, emptywins, balance, linebet, maxlines))
+			nodemeta:set_string("formspec",
+				minislots.generate_display(def, {
+					state = "stopped",
+					spin = resetspin,
+					allwins = emptywins,
+					balance = balance,
+					linebet = linebet,
+					maxlines = maxlines,
+					admin = default.can_interact_with_node(placer, pos)
+				})
+			)
 		end,
 		can_dig = function(pos, player)
 			return default.can_interact_with_node(player, pos)
@@ -727,7 +749,18 @@ function minislots.register_machine(mdef)
 			local state = "stopped"
 			meta:set_string("state", state)
 			meta:set_int("last_cashout", balance)
-			meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, nil, last_cashout))
+			meta:set_string("formspec",
+				minislots.generate_display(def, {
+					state = state,
+					spin = spin,
+					allwins = {},
+					balance = balance,
+					linebet = linebet,
+					maxlines = maxlines,
+					last_cashout = last_cashout,
+					admin = default.can_interact_with_node(player, pos)
+				})
+			)
 			minetest.show_formspec(player_name, "minislots:cash_intake",
 				minislots.generate_cashslot_form(def, pos, balance))
 		end,
@@ -797,8 +830,20 @@ function minislots.register_machine(mdef)
 					meta:set_string("state", state)
 					meta:set_int("last_cashout", balance)
 					meta:set_int("balance", balance)
-					meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, nil, last_cashout, pos, casino_name))
-
+					meta:set_string("formspec",
+						minislots.generate_display(def, {
+							state = state,
+							spin = spin,
+							allwins = {},
+							balance = balance,
+							linebet = linebet,
+							maxlines = maxlines,
+							last_cashout = last_cashout,
+							pos = pos,
+							casino_name = casino_name,
+							admin = default.can_interact_with_node(sender, pos)
+						})
+					)
 					local fifties = math.floor(last_cashout/50)
 					local tens = math.floor((last_cashout - fifties*50)/10)
 					local fives = math.floor((last_cashout - fifties*50 - tens*10)/5)
@@ -824,7 +869,17 @@ function minislots.register_machine(mdef)
 				meta:set_string("state", state)
 				local oldform = meta:get_string("formspec")
 				if not string.find(oldform, "locked-out") then
-					meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines))
+					meta:set_string("formspec",
+						minislots.generate_display(def, {
+							state = state,
+							spin = spin,
+							allwins = {},
+							balance = balance,
+							linebet = linebet,
+							maxlines = maxlines,
+							admin = default.can_interact_with_node(sender, pos)
+						})
+					)
 				end
 				return
 			elseif fields.spin then
@@ -860,7 +915,18 @@ function minislots.register_machine(mdef)
 						local state = "stopped"
 						meta:set_string("state", state)
 						meta:set_int("linebet", linebet)
-						meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, true))
+						meta:set_string("formspec",
+							minislots.generate_display(def, {
+								state = state,
+								spin = spin,
+								allwins = {},
+								balance = balance,
+								linebet = linebet,
+								maxlines = maxlines,
+								showlines = true,
+								admin = default.can_interact_with_node(sender, pos)
+							})
+						)
 					end
 				end
 			elseif string.find(allfields, "lines_") then
@@ -871,7 +937,18 @@ function minislots.register_machine(mdef)
 					local state = "stopped"
 					meta:set_string("state", state)
 					meta:set_int("maxlines", maxlines)
-					meta:set_string("formspec", minislots.generate_display(def, state, spin, {}, balance, linebet, maxlines, true))
+					meta:set_string("formspec",
+						minislots.generate_display(def, {
+							state = state,
+							spin = spin,
+							allwins = {},
+							balance = balance,
+							linebet = linebet,
+							maxlines = maxlines,
+							showlines = true,
+							admin = default.can_interact_with_node(sender, pos)
+						})
+					)
 				end
 			end
 		end
@@ -895,6 +972,8 @@ function minislots.cycle_states(pos)
 	local allwins = minetest.deserialize(meta:get_string("allwins"))
 	local numscatter = (allwins and allwins.scatter and allwins.scatter.count) or 0
 	local numbonus = (allwins and allwins.bonus and allwins.bonus.count) or 0
+	local last_right_clicker = meta:get_string("last_right_clicker")
+	local player = minetest.get_player_by_name(last_right_clicker) or ""
 
 	local timeout = 0
 
@@ -1021,13 +1100,32 @@ function minislots.cycle_states(pos)
 		minetest.get_node_timer(pos):stop()
 		state = "stopped"
 		meta:set_string("state", state)
-		meta:set_string("formspec", minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines))
+		meta:set_string("formspec",
+			minislots.generate_display(def, {
+				state = state,
+				spin = spin,
+				allwins = allwins,
+				balance = balance,
+				linebet = linebet,
+				maxlines = maxlines,
+				admin = default.can_interact_with_node(player, pos)
+			})
+		)
 		return
 	end
 
 	meta:set_string("state", state)
-	meta:set_string("formspec", minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines))
-
+	meta:set_string("formspec",
+		minislots.generate_display(def, {
+			state = state,
+			spin = spin,
+			allwins = allwins,
+			balance = balance,
+			linebet = linebet,
+			maxlines = maxlines,
+			admin = default.can_interact_with_node(player, pos)
+		})
+	)
 	if timeout > 0 then
 		local timer = minetest.get_node_timer(pos)
 		timer:start(timeout)
@@ -1051,7 +1149,19 @@ local function calcrp(def, spin, i, statenum)
 	return rp/2
 end
 
-function minislots.generate_display(def, state, spin, allwins, balance, linebet, maxlines, showlines, last_cashout, pos, casino_name, admin)
+function minislots.generate_display(def, options)
+	local state = options.state
+	local spin = options.spin
+	local allwins = options.allwins
+	local balance = options.balance
+	local linebet = options.linebet
+	local maxlines = options.maxlines
+	local showlines = options.showlines
+	local last_cashout = options.last_cashout
+	local pos = options.pos
+	local casino_name = options.casino_name
+	local admin = options.admin
+
 	local reels			= ""
 	local lines			= ""
 	local scatters		= ""
@@ -1355,8 +1465,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 			scatters..
 			bonuses..
 			def.constants.buttoncashslot..
-			def.constants.buttonhelp..
-			button_admin
+			def.constants.buttonhelp
 	else
 		local maxw = 6
 		local maxmw = 2.25
@@ -1401,6 +1510,7 @@ function minislots.generate_display(def, state, spin, allwins, balance, linebet,
 	return	def.constants.form_header..
 			def.constants.overlay_lower..
 			upper_screen..
+			button_admin..
 			table.concat(linesbetbuttons)..
 			spincashoutbuttons..
 			lines..
