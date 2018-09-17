@@ -290,7 +290,7 @@ example machines, because they're both set to not match against [JACKPOT!]).
 If a wild multiplier is in effect, it'll be applied to the final value for a
 given match.  Each wild card multiplies the win by the configured amount, but
 only for wild cards that actually helped create a win.  Thus, the final win
-amount will be line_win * ( 2 ^ number_of_wilds ).
+amount will be line_win * ( wild_multiplier ^ number_of_wilds ).
 
 
 DISCLAIMER:
