@@ -1531,10 +1531,10 @@ function minislots.generate_display(def, options)
 			def.constants.cashoutbackground..
 			def.constants.upperbezel..
 			def.constants.cashoutticketimg..
-			minislots.print_string(def, casino_name, nameposx, posy, name_sizex, nameszy, "regular", "black")..
-			minislots.print_string(def, numberwords, numwordsposx, posy+1.4, numwords_maxszx, txtszy, "condensed", "black")..
-			minislots.print_string(def, lastcoutstr, numstrposx, posy+1.6, numstr_maxszx, numszy, "bold", "black")..
-			minislots.print_string(def, machinestr, mstr_posx, posy+2.36, mstr_sizex, mstr_sizey, "bold", "black")
+			minislots.print_string(def, casino_name, nameposx, posy, name_sizex, nameszy, "regular", false, "black")..
+			minislots.print_string(def, numberwords, numwordsposx, posy+1.4, numwords_maxszx, txtszy, "condensed", false, "black")..
+			minislots.print_string(def, lastcoutstr, numstrposx, posy+1.6, numstr_maxszx, numszy, "bold", false, "black")..
+			minislots.print_string(def, machinestr, mstr_posx, posy+2.36, mstr_sizex, mstr_sizey, "bold", false, "black")
 	end
 
 	return	def.constants.form_header..
@@ -1556,23 +1556,31 @@ function minislots.str_width_pix(str, weight)
 	return w
 end
 
-function minislots.print_string(def, str, posx, posy, sizex, sizey, weight, color)
+function minislots.print_string(def, str, posx, posy, sizex, sizey, weight, shadow, color)
 	local t = {}
 	if not str then return "" end
 	local len = string.len(str)
 	if len < 1 then return "" end
 	local colorize = color and "\\^[colorize\\:"..color.."\\:255" or ""
+	local shadowcolor = "\\^[colorize\\:black\\:255"
 
 	local px = 0
 	for i = 1, len do
 		local asc = string.byte(str, i)
+
 		t[#t+1] = px..",0=minislots_font_"..weight.."_char_"..asc..".png"
 		px = px + char_widths[asc][weight]
 	end
 
-	return "image["..posx..","..posy..";"..sizex..","..sizey..";"..
+	local text = "image["..posx..","..posy..";"..sizex..","..sizey..";"..
 			minetest.formspec_escape("[combine:"..px.."x80:")..
 			table.concat(t, ":")..colorize.."]"
+	if shadow then
+		text = "image["..(posx+0.03)..","..(posy+0.03)..";"..sizex..","..sizey..";"..
+			minetest.formspec_escape("[combine:"..px.."x80:")..
+			table.concat(t, ":")..shadowcolor.."]"..text
+	end
+	return text
 end
 
 function minislots.print_number(def, num, posx, posy, sizex, sizey, cur, color)
@@ -1677,7 +1685,7 @@ function minislots.generate_paytable_form(def)
 						x = x + def.geometry.paytable_lineheight
 					else
 						local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paytable_textheight
-						t[#t+1] = minislots.print_string(def, item, x*horizscale, (y+def.geometry.paytable_textshift)*vertscale, szx, def.geometry.paytable_textheight, "regular", "white")
+						t[#t+1] = minislots.print_string(def, item, x*horizscale, (y+def.geometry.paytable_textshift)*vertscale, szx, def.geometry.paytable_textheight, "regular", true)
 						x = x + szx
 					end
 				end
@@ -1720,7 +1728,7 @@ function minislots.generate_paylines_form(def)
 				y = y + def.geometry.paylines_sizey + def.geometry.paylines_img_padding
 			else
 				local szx = minislots.str_width_pix(item, "regular")*pix2iu*def.geometry.paylines_textheight
-				t[#t+1] = minislots.print_string(def, item, x*horizscale, y*vertscale, szx, def.geometry.paylines_textheight, "regular", "white")
+				t[#t+1] = minislots.print_string(def, item, x*horizscale, y*vertscale, szx, def.geometry.paylines_textheight, "regular", true)
 				y = y + def.geometry.paylines_lineheight
 			end
 
@@ -1779,34 +1787,18 @@ function minislots.generate_admin_form(def, pos, balance)
 	local formspec =
 		"size[6,4.5]"..
 		"image_button_exit[5.65,-0.2;0.55,0.5;"..def.constants.button_close..";close;]"..
-		minislots.print_string(def, "Admin/configuration", 0.88, -0.12, 5, 0.4, "bold", "black")..
-		minislots.print_string(def, "Admin/configuration", 0.85, -0.15, 5, 0.4, "bold")..
-
-		minislots.print_string(def, balancestr,      0.03, 0.53, balw, sizey, "regular", "black")..
-		minislots.print_string(def, balancestr,      0,    0.5,  balw, sizey, "regular")..
-		minislots.print_string(def, money_instr,     0.03, 0.83, miw,  sizey, "regular", "black")..
-		minislots.print_string(def, money_instr,     0,    0.8,  miw,  sizey, "regular")..
-		minislots.print_string(def, money_outstr,    0.03, 1.13, mow,  sizey, "regular", "black")..
-		minislots.print_string(def, money_outstr,    0,    1.1,  mow,  sizey, "regular")..
-
-		minislots.print_string(def, total_betsstr,   0.03, 1.43, tbw,  sizey, "regular", "black")..
-		minislots.print_string(def, total_betsstr,   0,    1.4,  tbw,  sizey, "regular")..
-		minislots.print_string(def, total_winsstr,   0.03, 1.73, tww,  sizey, "regular", "black")..
-		minislots.print_string(def, total_winsstr,   0,    1.7,  tww,  sizey, "regular")..
-		minislots.print_string(def, percent_str,     0.03, 2.03, pctw,  sizey, "regular", "black")..
-		minislots.print_string(def, percent_str,     0,    2,    pctw,  sizey, "regular")..
-
-		minislots.print_string(def, spin_countstr,   0.03, 2.33, spcw, sizey, "regular", "black")..
-		minislots.print_string(def, spin_countstr,   0,    2.3,  spcw, sizey, "regular")..
-		minislots.print_string(def, scatter_hitsstr, 0.03, 2.63, sccw, sizey, "regular", "black")..
-		minislots.print_string(def, scatter_hitsstr, 0,    2.6,  sccw, sizey, "regular")..
-		minislots.print_string(def, bonus_hitsstr,   0.03, 2.93, bcw,  sizey, "regular", "black")..
-		minislots.print_string(def, bonus_hitsstr,   0,    2.9,  bcw,  sizey, "regular")..
-		minislots.print_string(def, install_datestr, 0.03, 3.23, idw,  sizey, "regular", "black")..
-		minislots.print_string(def, install_datestr, 0,    3.2,  idw,  sizey, "regular")..
-
-		minislots.print_string(def, cstr,            1.03, 3.73, cnw,  sizey, "regular", "black")..
-		minislots.print_string(def, cstr,            1,    3.7,  cnw,  sizey, "regular")..
+		minislots.print_string(def, "Admin/configuration", 0.85, -0.15, 5, 0.4, "bold", true)..
+		minislots.print_string(def, balancestr,      0,    0.5,  balw, sizey, "regular", true)..
+		minislots.print_string(def, money_instr,     0,    0.8,  miw,  sizey, "regular", true)..
+		minislots.print_string(def, money_outstr,    0,    1.1,  mow,  sizey, "regular", true)..
+		minislots.print_string(def, total_betsstr,   0,    1.4,  tbw,  sizey, "regular", true)..
+		minislots.print_string(def, total_winsstr,   0,    1.7,  tww,  sizey, "regular", true)..
+		minislots.print_string(def, percent_str,     0,    2,    pctw, sizey, "regular", true)..
+		minislots.print_string(def, spin_countstr,   0,    2.3,  spcw, sizey, "regular", true)..
+		minislots.print_string(def, scatter_hitsstr, 0,    2.6,  sccw, sizey, "regular", true)..
+		minislots.print_string(def, bonus_hitsstr,   0,    2.9,  bcw,  sizey, "regular", true)..
+		minislots.print_string(def, install_datestr, 0,    3.2,  idw,  sizey, "regular", true)..
+		minislots.print_string(def, cstr,            1,    3.7,  cnw,  sizey, "regular", true)..
 
 		"field[1.3,3.4;4,3;casino_input;;"..casino.."]"..
 		"field_close_on_enter[casino_input;true]"
