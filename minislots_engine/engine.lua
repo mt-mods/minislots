@@ -551,8 +551,8 @@ function minislots.register_machine(mdef)
 	local tiles = {}
 	local cbox = {}
 
-	if def.machine_shape == "standard" then
-		mesh = "minislots_generic_machine_standard.obj"
+	if def.machine_shape == "upright" then
+		mesh = "minislots_generic_machine_upright.obj"
 		cbox = {
 			type = "fixed",
 			fixed = {
@@ -560,8 +560,8 @@ function minislots.register_machine(mdef)
 				{-0.5,  0.5, -0.1875, 0.5, 1.5, 0.5 },
 			}
 		}
-	elseif def.machine_shape == "big" then
-		mesh = "minislots_generic_model_bigslot.obj"
+	elseif def.machine_shape == "upright_big" then
+		mesh = "minislots_generic_machine_upright_big.obj"
 		cbox = {
 			type = "fixed",
 			fixed = { -1, -0.5, -0.5, 1.5, 3.5, 1.5 }
