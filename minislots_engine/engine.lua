@@ -439,6 +439,11 @@ function minislots.register_machine(mdef)
 										"image_button["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
 										def.constants.cslotbtnszx..","..def.constants.cslotbtnszy..";"..
 										def.constants.emptyimg..";cslot;]"
+
+	def.constants.buttoncashslot_dis = "image["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
+										def.geometry.cash_slot_sizex..","..def.geometry.cash_slot_sizey..";"..
+										def.constants.basename.."cash_slot.png]"
+
 	def.constants.button_close = def.constants.basename.."cash_slot_screen_close_button.png"
 
 	def.constants.buttonhelp		= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
@@ -447,6 +452,10 @@ function minislots.register_machine(mdef)
 										"image_button["..def.constants.helpposx..","..def.constants.helpposy..";"..
 										def.constants.helpbtnsizex..","..def.constants.helpbtnposy..";"..
 										def.constants.emptyimg..";help;]"
+
+	def.constants.buttonhelp_dis	= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
+										def.geometry.button_help_sizex..","..def.geometry.button_help_sizey..";"..
+										def.constants.basename.."button_help.png]"
 
 	def.constants.reelsymsizex		= def.geometry.reel_sizex*64
 	def.constants.reelsymsizey		= def.geometry.reel_sizey/3*64
@@ -485,6 +494,12 @@ function minislots.register_machine(mdef)
 								def.constants.cslotbtnszy..","..def.constants.cslotbtnszy..
 								";"..def.constants.emptyimg..";admin;]"
 
+	def.constants.buttonadmin_dis = "image["..
+								((def.geometry.cash_slot_posx - def.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
+								(def.geometry.cash_slot_posy * vertscale - vanchor)..";"..
+								def.constants.cslotbtnszy..","..def.constants.cslotbtnszy..
+								";minislots_button_admin.png]"
+
 
 	def.constants.buttons_n_lines = {}
 	def.constants.buttons_bet_n = {}
@@ -495,10 +510,13 @@ function minislots.register_machine(mdef)
 						+ (i-1)*def.geometry.main_button_spacing) * horizscale - hanchor)
 
 		for _, state in ipairs( {"dis", "off", "on"} ) do
-			def.constants.buttons_n_lines[value][state] = "image["..posx..","..def.constants.spinposy..";"..
-				def.constants.lnbetpref..def.constants.basename.."button_lines_"..state.."_"..value..
-				".png]image_button["..posx..","..def.constants.spinposy..";"..
+			local btn = "image["..posx..","..def.constants.spinposy..";"..
+				def.constants.lnbetpref..def.constants.basename.."button_lines_"..state.."_"..value..".png]"
+			if state ~= "dis" then 
+				btn = btn.."image_button["..posx..","..def.constants.spinposy..";"..
 				def.constants.lnbetpref.."minislots_empty_img.png;lines_"..value..";]"
+			end
+			def.constants.buttons_n_lines[value][state] = btn
 		end
 	end
 
@@ -509,10 +527,13 @@ function minislots.register_machine(mdef)
 						+ (i-1)*def.geometry.main_button_spacing) * horizscale - hanchor)
 
 		for _, state in ipairs( {"dis", "off", "on"} ) do
-			def.constants.buttons_bet_n[value][state] = "image["..posx..","..def.constants.coutposy..";"..
-				def.constants.lnbetpref..def.constants.basename.."button_bet_"..state.."_"..value..
-				".png]image_button["..posx..","..def.constants.coutposy..";"..
+			local btn = "image["..posx..","..def.constants.coutposy..";"..
+				def.constants.lnbetpref..def.constants.basename.."button_bet_"..state.."_"..value..".png]"
+			if state ~= "dis" then
+				btn = btn.."image_button["..posx..","..def.constants.coutposy..";"..
 				def.constants.lnbetpref.."minislots_empty_img.png;bet_"..value..";]"
+			end
+			def.constants.buttons_bet_n[value][state] = btn
 		end
 	end
 
@@ -1444,18 +1465,26 @@ function minislots.generate_display(def, options)
 	end
 
 	local spincashoutbuttons = ""
+	local upper_screen = ""
+	local cash_slot = ""
+	local button_admin = ""
+	local button_help = ""
+
 	if not (string.find(state, "spinning") or string.find(state, "reels_stopping_")) then
+		button_help = def.constants.buttonhelp
+		cash_slot = def.constants.buttoncashslot
 		if balance > 0  then
 			spincashoutbuttons = def.constants.buttonspin..def.constants.buttoncashout
 		else
 			spincashoutbuttons = def.constants.buttonspin_dis..def.constants.buttonquit
 		end
+		if admin then button_admin = def.constants.buttonadmin end
 	else
+		button_help = def.constants.buttonhelp_dis
+		cash_slot = def.constants.buttoncashslot_dis
 		spincashoutbuttons = def.constants.buttonspin_dis..def.constants.buttoncashout_dis
+		if admin then button_admin = def.constants.buttonadmin_dis end
 	end
-
-	local upper_screen
-	local button_admin = admin and def.constants.buttonadmin or ""
 
 	if not last_cashout then
 		upper_screen =
@@ -1464,8 +1493,9 @@ function minislots.generate_display(def, options)
 			def.constants.overlay_upper..
 			scatters..
 			bonuses..
-			def.constants.buttoncashslot..
-			def.constants.buttonhelp
+			cash_slot..
+			button_admin..
+			button_help
 	else
 		local maxw = 6
 		local maxmw = 2.25
@@ -1510,7 +1540,6 @@ function minislots.generate_display(def, options)
 	return	def.constants.form_header..
 			def.constants.overlay_lower..
 			upper_screen..
-			button_admin..
 			table.concat(linesbetbuttons)..
 			spincashoutbuttons..
 			lines..
