@@ -789,9 +789,15 @@ function minislots.register_machine(mdef)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local sn = stack:get_name()
-			if string.find(sn, "minegeld") then
-				local mg = tonumber(string.sub(sn, 19))
-				if not mg then mg = 1 end
+			local mg
+			if string.find(sn, "currency:minegeld") and not string.find(sn, "bundle") then
+				if not string.find(sn, "cent") then
+					mg = tonumber(string.sub(sn, 19))
+					if not mg then mg = 1 end
+				else
+					mg = tonumber(string.sub(sn, 24)) / 100
+				end
+				if mg < def.currency_min or mg > def.currency_max then return 0 end
 				local balance = meta:get_int("balance")
 				if balance < (def.maxbalance - mg*stack:get_count()) then
 					local amount = mg*stack:get_count()
@@ -799,10 +805,9 @@ function minislots.register_machine(mdef)
 					meta:set_int("balance", balance)
 					meta:set_int("money_in", meta:get_int("money_in")+amount)
 					return -1
-				else
-					return 0
 				end
 			end
+			return 0
 		end,
 		on_receive_fields = function(pos, formname, fields, sender)
 			local def = minetest.registered_items["minislots:"..def.name].machine_def

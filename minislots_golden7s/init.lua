@@ -118,6 +118,8 @@ minislots.register_machine({
 		"@8 9"
 	},
 	maxbalance = 3260000,			-- 65535 50 Mg notes, minus maximum possible payout, minus a fudge amount
+	currency_min = 1,				-- smallest and largest denominations of minegeld to allow
+	currency_max = 100,
 	bet_initiates_spin = true,		-- Most machines initiate a spin when the user presses a "Bet n" button, using
 									-- the selected bet value.
 
