@@ -298,260 +298,260 @@ local spincouthelp_scalex = 0.8455
 local spincouthelp_scaley = 1.0241
 
 function minislots.register_machine(mdef)
-	local def = table.copy(mdef)
-	def.constants = {}
+	local mdef_copy = table.copy(mdef)
+	mdef_copy.constants = {}
 
 	if string.sub(mtver.string, 1, 4) == "5.0." then
 		print("[Minislots] 5.0.x engine detected, Adjusting display to compensate.")
 		horizscale = 0.800
 	end
 
-	def.constants.cashout_screen_ctrx = (def.geometry.base_user_interface_width/2)*horizscale - hanchor
-	def.constants.cashoutticketimg_posx = (def.geometry.base_user_interface_width/2 - 4)*horizscale - hanchor
+	mdef_copy.constants.cashout_screen_ctrx = (mdef_copy.geometry.base_user_interface_width/2)*horizscale - hanchor
+	mdef_copy.constants.cashoutticketimg_posx = (mdef_copy.geometry.base_user_interface_width/2 - 4)*horizscale - hanchor
 
-	def.constants.form_header = "size["..(def.geometry.base_user_interface_width*0.785)..","..
-								((def.geometry.upper_section_height+def.geometry.lower_section_height)*0.823).."]"
-	def.constants.mainpref   = "image[-"..hanchor..",-"..vanchor..";"..
-								def.geometry.base_user_interface_width..","..def.geometry.upper_section_height..";"
-	def.constants.screenposx = def.geometry.screen_posx * horizscale - hanchor
-	def.constants.screenposy = def.geometry.screen_posy * vertscale - vanchor
-	def.constants.lscrnpref = "image["..def.constants.screenposx
+	mdef_copy.constants.form_header = "size["..(mdef_copy.geometry.base_user_interface_width*0.785)..","..
+								((mdef_copy.geometry.upper_section_height+mdef_copy.geometry.lower_section_height)*0.823).."]"
+	mdef_copy.constants.mainpref   = "image[-"..hanchor..",-"..vanchor..";"..
+								mdef_copy.geometry.base_user_interface_width..","..mdef_copy.geometry.upper_section_height..";"
+	mdef_copy.constants.screenposx = mdef_copy.geometry.screen_posx * horizscale - hanchor
+	mdef_copy.constants.screenposy = mdef_copy.geometry.screen_posy * vertscale - vanchor
+	mdef_copy.constants.lscrnpref = "image["..mdef_copy.constants.screenposx
 
-	def.constants.lscrnypos1  = ","..(def.constants.screenposy)..";"
-	def.constants.lscrnypos2  = ","..(def.constants.screenposy + def.geometry.screen_line_height * vertscale)..";"
+	mdef_copy.constants.lscrnypos1  = ","..(mdef_copy.constants.screenposy)..";"
+	mdef_copy.constants.lscrnypos2  = ","..(mdef_copy.constants.screenposy + mdef_copy.geometry.screen_line_height * vertscale)..";"
 
-	def.constants.cslotposx = def.geometry.cash_slot_posx * horizscale - hanchor
-	def.constants.cslotposy = def.geometry.cash_slot_posy * vertscale - vanchor
-	def.constants.cslotbtnszx = def.geometry.cash_slot_sizex * spincouthelp_scalex
-	def.constants.cslotbtnszy = def.geometry.cash_slot_sizey * spincouthelp_scaley
+	mdef_copy.constants.cslotposx = mdef_copy.geometry.cash_slot_posx * horizscale - hanchor
+	mdef_copy.constants.cslotposy = mdef_copy.geometry.cash_slot_posy * vertscale - vanchor
+	mdef_copy.constants.cslotbtnszx = mdef_copy.geometry.cash_slot_sizex * spincouthelp_scalex
+	mdef_copy.constants.cslotbtnszy = mdef_copy.geometry.cash_slot_sizey * spincouthelp_scaley
 
-	def.constants.spincoutposx = def.geometry.spin_cashout_posx * horizscale - hanchor
-	def.constants.spinposy = def.geometry.button_rows_posy * vertscale - vanchor
-	def.constants.coutposy = (def.geometry.button_rows_posy
-								+ def.geometry.main_button_spacing) * vertscale - vanchor
-	def.constants.spincoutsizex = def.geometry.main_button_size*2
-	def.constants.spincoutsizey = def.geometry.main_button_size
-	def.constants.spincoutbtnszx = def.constants.spincoutsizex * 0.91
-	def.constants.spincoutbtnszy = def.constants.spincoutsizey * 1.05
+	mdef_copy.constants.spincoutposx = mdef_copy.geometry.spin_cashout_posx * horizscale - hanchor
+	mdef_copy.constants.spinposy = mdef_copy.geometry.button_rows_posy * vertscale - vanchor
+	mdef_copy.constants.coutposy = (mdef_copy.geometry.button_rows_posy
+								+ mdef_copy.geometry.main_button_spacing) * vertscale - vanchor
+	mdef_copy.constants.spincoutsizex = mdef_copy.geometry.main_button_size*2
+	mdef_copy.constants.spincoutsizey = mdef_copy.geometry.main_button_size
+	mdef_copy.constants.spincoutbtnszx = mdef_copy.constants.spincoutsizex * 0.91
+	mdef_copy.constants.spincoutbtnszy = mdef_copy.constants.spincoutsizey * 1.05
 
-	def.constants.helpposx = def.geometry.button_help_posx * horizscale - hanchor
-	def.constants.helpposy = def.geometry.button_help_posy * vertscale - vanchor
-	def.constants.helpbtnsizex = def.geometry.button_help_sizex * spincouthelp_scalex
-	def.constants.helpbtnposy = def.geometry.button_help_sizey * spincouthelp_scaley
+	mdef_copy.constants.helpposx = mdef_copy.geometry.button_help_posx * horizscale - hanchor
+	mdef_copy.constants.helpposy = mdef_copy.geometry.button_help_posy * vertscale - vanchor
+	mdef_copy.constants.helpbtnsizex = mdef_copy.geometry.button_help_sizex * spincouthelp_scalex
+	mdef_copy.constants.helpbtnposy = mdef_copy.geometry.button_help_sizey * spincouthelp_scaley
 
-	def.constants.reelspc = def.geometry.reel_sizex*1.3333
-	def.constants.highlightboxszx = def.geometry.reel_sizex*1.3333
-	def.constants.highlightboxszy = def.geometry.reel_sizey/3*1.3333
-	def.constants.highlightboxoffsx = 1-(def.geometry.reel_sizex/6)
-	def.constants.highlightboxoffsy = 1-(def.geometry.reel_sizey/18)
+	mdef_copy.constants.reelspc = mdef_copy.geometry.reel_sizex*1.3333
+	mdef_copy.constants.highlightboxszx = mdef_copy.geometry.reel_sizex*1.3333
+	mdef_copy.constants.highlightboxszy = mdef_copy.geometry.reel_sizey/3*1.3333
+	mdef_copy.constants.highlightboxoffsx = 1-(mdef_copy.geometry.reel_sizex/6)
+	mdef_copy.constants.highlightboxoffsy = 1-(mdef_copy.geometry.reel_sizey/18)
 
-	def.constants.screenlnht2 = def.geometry.screen_line_height * 0.6667
-	def.constants.screenlnht3 = def.geometry.screen_line_height * 0.3333
-	def.constants.digitmed = def.geometry.digit_glyph_sizex * 0.45
-	def.constants.digitsm = def.geometry.digit_glyph_sizex * 0.4
-	def.constants.lscrnypos3  = ","..(def.constants.screenposy + (def.geometry.screen_line_height + def.constants.screenlnht2) * vertscale)..";"
-	def.constants.medlblsz1 = def.geometry.label_medium_sizex..","..def.geometry.screen_line_height..";"
-	def.constants.medlblsz2 = def.geometry.label_medium_sizex..","..def.constants.screenlnht2..";"
-	def.constants.posy3 = def.constants.screenposy + (def.geometry.screen_line_height + def.constants.screenlnht2) * vertscale
-	def.constants.lnwinlblsz = def.geometry.line_win_label_sizex..","..def.constants.screenlnht3..";"
-	def.constants.parensize = def.geometry.digit_glyph_sizex/4
-	def.constants.parenlblsz = def.constants.parensize..","..def.constants.screenlnht3..";"
-	def.constants.ln3dig = def.geometry.digit_glyph_sizex/4
+	mdef_copy.constants.screenlnht2 = mdef_copy.geometry.screen_line_height * 0.6667
+	mdef_copy.constants.screenlnht3 = mdef_copy.geometry.screen_line_height * 0.3333
+	mdef_copy.constants.digitmed = mdef_copy.geometry.digit_glyph_sizex * 0.45
+	mdef_copy.constants.digitsm = mdef_copy.geometry.digit_glyph_sizex * 0.4
+	mdef_copy.constants.lscrnypos3  = ","..(mdef_copy.constants.screenposy + (mdef_copy.geometry.screen_line_height + mdef_copy.constants.screenlnht2) * vertscale)..";"
+	mdef_copy.constants.medlblsz1 = mdef_copy.geometry.label_medium_sizex..","..mdef_copy.geometry.screen_line_height..";"
+	mdef_copy.constants.medlblsz2 = mdef_copy.geometry.label_medium_sizex..","..mdef_copy.constants.screenlnht2..";"
+	mdef_copy.constants.posy3 = mdef_copy.constants.screenposy + (mdef_copy.geometry.screen_line_height + mdef_copy.constants.screenlnht2) * vertscale
+	mdef_copy.constants.lnwinlblsz = mdef_copy.geometry.line_win_label_sizex..","..mdef_copy.constants.screenlnht3..";"
+	mdef_copy.constants.parensize = mdef_copy.geometry.digit_glyph_sizex/4
+	mdef_copy.constants.parenlblsz = mdef_copy.constants.parensize..","..mdef_copy.constants.screenlnht3..";"
+	mdef_copy.constants.ln3dig = mdef_copy.geometry.digit_glyph_sizex/4
 
-	def.constants.numreels = #def.lines[1]
-	def.constants.numsymbols = #def.symbols
-	def.symbols[#def.symbols+1] = def.symbols[1]
-	def.symbols[0] = def.symbols[def.constants.numsymbols]
+	mdef_copy.constants.numreels = #mdef_copy.lines[1]
+	mdef_copy.constants.numsymbols = #mdef_copy.symbols
+	mdef_copy.symbols[#mdef_copy.symbols+1] = mdef_copy.symbols[1]
+	mdef_copy.symbols[0] = mdef_copy.symbols[mdef_copy.constants.numsymbols]
 
-	def.constants.fast_med_cutover = def.cutover_frames*2
-	def.constants.med_slow_cutover = def.constants.fast_med_cutover + def.cutover_frames*2
-	def.constants.slow_stop_cutover = def.constants.med_slow_cutover + def.cutover_frames*2
-	def.constants.last_step = def.inter_reel_steps * (def.constants.numreels-1) + def.constants.slow_stop_cutover
-	def.constants.reel_wraparound_buf = def.constants.numsymbols*10
+	mdef_copy.constants.fast_med_cutover = mdef_copy.cutover_frames*2
+	mdef_copy.constants.med_slow_cutover = mdef_copy.constants.fast_med_cutover + mdef_copy.cutover_frames*2
+	mdef_copy.constants.slow_stop_cutover = mdef_copy.constants.med_slow_cutover + mdef_copy.cutover_frames*2
+	mdef_copy.constants.last_step = mdef_copy.inter_reel_steps * (mdef_copy.constants.numreels-1) + mdef_copy.constants.slow_stop_cutover
+	mdef_copy.constants.reel_wraparound_buf = mdef_copy.constants.numsymbols*10
 
-	def.constants.basename			= "minislots_"..def.name.."_"
+	mdef_copy.constants.basename			= "minislots_"..mdef_copy.name.."_"
 
-	def.constants.emptyimg			= "minislots_empty_img.png"
+	mdef_copy.constants.emptyimg			= "minislots_empty_img.png"
 
-	def.constants.reelimg 			= def.constants.basename.."reel_background.png"
-	def.constants.reelshadowimg		= ":0,0="..def.constants.basename.."reel_shadow.png]"
-	def.constants.scatterhlimg		= def.constants.highlightboxszx..","..def.constants.highlightboxszy..";"..
-										def.constants.basename.."highlight_scatter.png]"
-	def.constants.bonushlimg		= def.constants.highlightboxszx..","..def.constants.highlightboxszy..";"..
-										def.constants.basename.."highlight_bonus.png]"
-	def.constants.cashslotscrnbg	= def.constants.basename.."cash_slot_screen_background.png"
-	def.constants.paytablescrnbg	= def.constants.basename.."paytable_bg.png"
-	def.constants.paylinescrnbg		= def.constants.basename.."payline_bg.png"
-	def.constants.lines_bg			= def.constants.basename.."paytable_lines_bg.png"
+	mdef_copy.constants.reelimg 			= mdef_copy.constants.basename.."reel_background.png"
+	mdef_copy.constants.reelshadowimg		= ":0,0="..mdef_copy.constants.basename.."reel_shadow.png]"
+	mdef_copy.constants.scatterhlimg		= mdef_copy.constants.highlightboxszx..","..mdef_copy.constants.highlightboxszy..";"..
+										mdef_copy.constants.basename.."highlight_scatter.png]"
+	mdef_copy.constants.bonushlimg		= mdef_copy.constants.highlightboxszx..","..mdef_copy.constants.highlightboxszy..";"..
+										mdef_copy.constants.basename.."highlight_bonus.png]"
+	mdef_copy.constants.cashslotscrnbg	= mdef_copy.constants.basename.."cash_slot_screen_background.png"
+	mdef_copy.constants.paytablescrnbg	= mdef_copy.constants.basename.."paytable_bg.png"
+	mdef_copy.constants.paylinescrnbg		= mdef_copy.constants.basename.."payline_bg.png"
+	mdef_copy.constants.lines_bg			= mdef_copy.constants.basename.."paytable_lines_bg.png"
 
-	def.constants.symbolsfast		= def.constants.basename.."reel_symbols_fast.png"
-	def.constants.symbolsmedium		= def.constants.basename.."reel_symbols_medium.png"
-	def.constants.symbolsslow		= def.constants.basename.."reel_symbols_slow.png"
-	def.constants.symbolsstopped	= def.constants.basename.."reel_symbols_stopped.png"
+	mdef_copy.constants.symbolsfast		= mdef_copy.constants.basename.."reel_symbols_fast.png"
+	mdef_copy.constants.symbolsmedium		= mdef_copy.constants.basename.."reel_symbols_medium.png"
+	mdef_copy.constants.symbolsslow		= mdef_copy.constants.basename.."reel_symbols_slow.png"
+	mdef_copy.constants.symbolsstopped	= mdef_copy.constants.basename.."reel_symbols_stopped.png"
 
-	def.constants.ballabelimg		= def.constants.basename.."label_balance.png]"
-	def.constants.betlabelimg		= def.constants.basename.."label_bet.png]"
-	def.constants.winlabelimg		= def.constants.basename.."label_win.png]"
-	def.constants.linewinlabelimg	= def.constants.basename.."label_linewin.png]"
-	def.constants.scatterwinlabelimg = def.geometry.scatter_win_label_sizex..","..def.constants.screenlnht3..";"..def.constants.basename.."label_scatterwin.png]"
-	def.constants.bonuswinlabelimg	= def.geometry.bonus_win_label_sizex..","..def.constants.screenlnht3..";"..def.constants.basename.."label_bonuswin.png]"
-	def.constants.curlabelimg		= ";"..def.constants.basename.."label_currency.png"
+	mdef_copy.constants.ballabelimg		= mdef_copy.constants.basename.."label_balance.png]"
+	mdef_copy.constants.betlabelimg		= mdef_copy.constants.basename.."label_bet.png]"
+	mdef_copy.constants.winlabelimg		= mdef_copy.constants.basename.."label_win.png]"
+	mdef_copy.constants.linewinlabelimg	= mdef_copy.constants.basename.."label_linewin.png]"
+	mdef_copy.constants.scatterwinlabelimg = mdef_copy.geometry.scatter_win_label_sizex..","..mdef_copy.constants.screenlnht3..";"..mdef_copy.constants.basename.."label_scatterwin.png]"
+	mdef_copy.constants.bonuswinlabelimg	= mdef_copy.geometry.bonus_win_label_sizex..","..mdef_copy.constants.screenlnht3..";"..mdef_copy.constants.basename.."label_bonuswin.png]"
+	mdef_copy.constants.curlabelimg		= ";"..mdef_copy.constants.basename.."label_currency.png"
 
-	def.constants.lparenimg			= def.constants.basename.."glyph_lparen.png]"
-	def.constants.rparenimg			= def.constants.basename.."glyph_rparen.png]"
-	def.constants.colonimg			= def.constants.basename.."glyph_colon.png]"
+	mdef_copy.constants.lparenimg			= mdef_copy.constants.basename.."glyph_lparen.png]"
+	mdef_copy.constants.rparenimg			= mdef_copy.constants.basename.."glyph_rparen.png]"
+	mdef_copy.constants.colonimg			= mdef_copy.constants.basename.."glyph_colon.png]"
 
-	def.constants.lnbetpref			= def.geometry.main_button_size..","..def.geometry.main_button_size..";"
+	mdef_copy.constants.lnbetpref			= mdef_copy.geometry.main_button_size..","..mdef_copy.geometry.main_button_size..";"
 
-	def.constants.behindreels		= def.constants.mainpref..def.constants.basename.."behind_reels.png]"
-	def.constants.overlay_upper 	= def.constants.mainpref..def.constants.basename.."overlay_upper.png]"
+	mdef_copy.constants.behindreels		= mdef_copy.constants.mainpref..mdef_copy.constants.basename.."behind_reels.png]"
+	mdef_copy.constants.overlay_upper 	= mdef_copy.constants.mainpref..mdef_copy.constants.basename.."overlay_upper.png]"
 
-	def.constants.buttonspin		= "image["..def.constants.spincoutposx..","..def.constants.spinposy..";"..
-										def.constants.spincoutsizex..","..def.constants.spincoutsizey..";"..
-										def.constants.basename.."button_spin.png]"..
-										"image_button["..def.constants.spincoutposx..","..def.constants.spinposy..
-										";"..def.constants.spincoutbtnszx..","..def.constants.spincoutbtnszy..";"..
-										def.constants.emptyimg..";spin;]"
-	def.constants.buttonspin_dis	= "image["..def.constants.spincoutposx..","..def.constants.spinposy..";"..
-										def.constants.spincoutsizex..","..def.constants.spincoutsizey..";"..
-										def.constants.basename.."button_spin_dis.png]"
+	mdef_copy.constants.buttonspin		= "image["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.spinposy..";"..
+										mdef_copy.constants.spincoutsizex..","..mdef_copy.constants.spincoutsizey..";"..
+										mdef_copy.constants.basename.."button_spin.png]"..
+										"image_button["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.spinposy..
+										";"..mdef_copy.constants.spincoutbtnszx..","..mdef_copy.constants.spincoutbtnszy..";"..
+										mdef_copy.constants.emptyimg..";spin;]"
+	mdef_copy.constants.buttonspin_dis	= "image["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.spinposy..";"..
+										mdef_copy.constants.spincoutsizex..","..mdef_copy.constants.spincoutsizey..";"..
+										mdef_copy.constants.basename.."button_spin_dis.png]"
 
-	def.constants.buttoncashout		= "image["..def.constants.spincoutposx..","..def.constants.coutposy..";"..
-										def.constants.spincoutsizex..","..def.constants.spincoutsizey..";"..
-										def.constants.basename.."button_cash_out.png]"..
-										"image_button["..def.constants.spincoutposx..","..def.constants.coutposy..";"..
-										def.constants.spincoutbtnszx..","..def.constants.spincoutbtnszy..";"..
-										def.constants.emptyimg..";cout;]"
-	def.constants.buttoncashout_dis = "image["..def.constants.spincoutposx..","..def.constants.coutposy..";"..
-										def.constants.spincoutsizex..","..def.constants.spincoutsizey..";"..
-										def.constants.basename.."button_cash_out_dis.png]"
+	mdef_copy.constants.buttoncashout		= "image["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.coutposy..";"..
+										mdef_copy.constants.spincoutsizex..","..mdef_copy.constants.spincoutsizey..";"..
+										mdef_copy.constants.basename.."button_cash_out.png]"..
+										"image_button["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.coutposy..";"..
+										mdef_copy.constants.spincoutbtnszx..","..mdef_copy.constants.spincoutbtnszy..";"..
+										mdef_copy.constants.emptyimg..";cout;]"
+	mdef_copy.constants.buttoncashout_dis = "image["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.coutposy..";"..
+										mdef_copy.constants.spincoutsizex..","..mdef_copy.constants.spincoutsizey..";"..
+										mdef_copy.constants.basename.."button_cash_out_dis.png]"
 
-	def.constants.buttonquit		= "image["..def.constants.spincoutposx..","..def.constants.coutposy..";"..
-										def.constants.spincoutsizex..","..def.constants.spincoutsizey..";"..
-										def.constants.basename.."button_quit.png]"..
-										"image_button_exit["..def.constants.spincoutposx..","..def.constants.coutposy..";"..
-										def.constants.spincoutbtnszx..","..def.constants.spincoutbtnszy..";"..
-										def.constants.emptyimg..";quit;]"
+	mdef_copy.constants.buttonquit		= "image["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.coutposy..";"..
+										mdef_copy.constants.spincoutsizex..","..mdef_copy.constants.spincoutsizey..";"..
+										mdef_copy.constants.basename.."button_quit.png]"..
+										"image_button_exit["..mdef_copy.constants.spincoutposx..","..mdef_copy.constants.coutposy..";"..
+										mdef_copy.constants.spincoutbtnszx..","..mdef_copy.constants.spincoutbtnszy..";"..
+										mdef_copy.constants.emptyimg..";quit;]"
 
-	def.constants.buttoncashslot	= "image["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
-										def.geometry.cash_slot_sizex..","..def.geometry.cash_slot_sizey..";"..
-										def.constants.basename.."cash_slot.png]"..
-										"image_button["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
-										def.constants.cslotbtnszx..","..def.constants.cslotbtnszy..";"..
-										def.constants.emptyimg..";cslot;]"
+	mdef_copy.constants.buttoncashslot	= "image["..mdef_copy.constants.cslotposx..","..mdef_copy.constants.cslotposy..";"..
+										mdef_copy.geometry.cash_slot_sizex..","..mdef_copy.geometry.cash_slot_sizey..";"..
+										mdef_copy.constants.basename.."cash_slot.png]"..
+										"image_button["..mdef_copy.constants.cslotposx..","..mdef_copy.constants.cslotposy..";"..
+										mdef_copy.constants.cslotbtnszx..","..mdef_copy.constants.cslotbtnszy..";"..
+										mdef_copy.constants.emptyimg..";cslot;]"
 
-	def.constants.buttoncashslot_dis = "image["..def.constants.cslotposx..","..def.constants.cslotposy..";"..
-										def.geometry.cash_slot_sizex..","..def.geometry.cash_slot_sizey..";"..
-										def.constants.basename.."cash_slot.png]"
+	mdef_copy.constants.buttoncashslot_dis = "image["..mdef_copy.constants.cslotposx..","..mdef_copy.constants.cslotposy..";"..
+										mdef_copy.geometry.cash_slot_sizex..","..mdef_copy.geometry.cash_slot_sizey..";"..
+										mdef_copy.constants.basename.."cash_slot.png]"
 
-	def.constants.button_close = def.constants.basename.."cash_slot_screen_close_button.png"
+	mdef_copy.constants.button_close = mdef_copy.constants.basename.."cash_slot_screen_close_button.png"
 
-	def.constants.buttonhelp		= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
-										def.geometry.button_help_sizex..","..def.geometry.button_help_sizey..";"..
-										def.constants.basename.."button_help.png]"..
-										"image_button["..def.constants.helpposx..","..def.constants.helpposy..";"..
-										def.constants.helpbtnsizex..","..def.constants.helpbtnposy..";"..
-										def.constants.emptyimg..";help;]"
+	mdef_copy.constants.buttonhelp		= "image["..mdef_copy.constants.helpposx..","..mdef_copy.constants.helpposy..";"..
+										mdef_copy.geometry.button_help_sizex..","..mdef_copy.geometry.button_help_sizey..";"..
+										mdef_copy.constants.basename.."button_help.png]"..
+										"image_button["..mdef_copy.constants.helpposx..","..mdef_copy.constants.helpposy..";"..
+										mdef_copy.constants.helpbtnsizex..","..mdef_copy.constants.helpbtnposy..";"..
+										mdef_copy.constants.emptyimg..";help;]"
 
-	def.constants.buttonhelp_dis	= "image["..def.constants.helpposx..","..def.constants.helpposy..";"..
-										def.geometry.button_help_sizex..","..def.geometry.button_help_sizey..";"..
-										def.constants.basename.."button_help.png]"
+	mdef_copy.constants.buttonhelp_dis	= "image["..mdef_copy.constants.helpposx..","..mdef_copy.constants.helpposy..";"..
+										mdef_copy.geometry.button_help_sizex..","..mdef_copy.geometry.button_help_sizey..";"..
+										mdef_copy.constants.basename.."button_help.png]"
 
-	def.constants.reelsymsizex		= def.geometry.reel_sizex*64
-	def.constants.reelsymsizey		= def.geometry.reel_sizey/3*64
+	mdef_copy.constants.reelsymsizex		= mdef_copy.geometry.reel_sizex*64
+	mdef_copy.constants.reelsymsizey		= mdef_copy.geometry.reel_sizey/3*64
 
-	def.constants.reelcombinepref	= ","..(def.geometry.reel_posy*vertscale-vanchor)..";"..
-										(def.geometry.reel_sizex)..","..(def.geometry.reel_sizey)..";"..
-										def.constants.reelimg..
-										"^[combine:"..def.constants.reelsymsizex.."x"..
-										def.constants.reelsymsizey
+	mdef_copy.constants.reelcombinepref	= ","..(mdef_copy.geometry.reel_posy*vertscale-vanchor)..";"..
+										(mdef_copy.geometry.reel_sizex)..","..(mdef_copy.geometry.reel_sizey)..";"..
+										mdef_copy.constants.reelimg..
+										"^[combine:"..mdef_copy.constants.reelsymsizex.."x"..
+										mdef_copy.constants.reelsymsizey
 
-	def.constants.reelunderlightpref = def.constants.basename.."reel_underlight_"
-	def.constants.overlaylinepref	= def.constants.basename.."overlay_line_"
-	def.constants.overlay_lower		= "image[-"..hanchor..","..(11*vertscale-vanchor)..";"..
-										def.geometry.base_user_interface_width..","..def.geometry.lower_section_height..";"..
-										def.constants.basename.."overlay_lower.png]"
+	mdef_copy.constants.reelunderlightpref = mdef_copy.constants.basename.."reel_underlight_"
+	mdef_copy.constants.overlaylinepref	= mdef_copy.constants.basename.."overlay_line_"
+	mdef_copy.constants.overlay_lower		= "image[-"..hanchor..","..(11*vertscale-vanchor)..";"..
+										mdef_copy.geometry.base_user_interface_width..","..mdef_copy.geometry.lower_section_height..";"..
+										mdef_copy.constants.basename.."overlay_lower.png]"
 
-	def.constants.upperbezel		= def.constants.mainpref.."minislots_golden7s_overlay_upper_bezel.png]"
-	def.constants.cashoutbackground	= def.constants.mainpref.."minislots_blue_img.png]"
-	def.constants.cashoutticketimg	= "image["..def.constants.cashoutticketimg_posx..","..(3.5-vanchor)..
+	mdef_copy.constants.upperbezel		= mdef_copy.constants.mainpref.."minislots_golden7s_overlay_upper_bezel.png]"
+	mdef_copy.constants.cashoutbackground	= mdef_copy.constants.mainpref.."minislots_blue_img.png]"
+	mdef_copy.constants.cashoutticketimg	= "image["..mdef_copy.constants.cashoutticketimg_posx..","..(3.5-vanchor)..
 										";8,3;minislots_cashout_ticket.png]"
 
-	def.constants.paylinestable_pref = "image_button[8.85,10.28;2,0.5;"
-	def.constants.button_showpaytable = def.constants.paylinestable_pref..def.constants.basename..
+	mdef_copy.constants.paylinestable_pref = "image_button[8.85,10.28;2,0.5;"
+	mdef_copy.constants.button_showpaytable = mdef_copy.constants.paylinestable_pref..mdef_copy.constants.basename..
 										"button_show_paytable.png;showpaytable;]"
-	def.constants.button_showpaylines = def.constants.paylinestable_pref..def.constants.basename..
+	mdef_copy.constants.button_showpaylines = mdef_copy.constants.paylinestable_pref..mdef_copy.constants.basename..
 										"button_show_paylines.png;showpaylines;]"
 
-	def.constants.buttonadmin = "image["..
-								((def.geometry.cash_slot_posx - def.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
-								(def.geometry.cash_slot_posy * vertscale - vanchor)..";"..
-								def.constants.cslotbtnszy..","..def.constants.cslotbtnszy..
+	mdef_copy.constants.buttonadmin = "image["..
+								((mdef_copy.geometry.cash_slot_posx - mdef_copy.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
+								(mdef_copy.geometry.cash_slot_posy * vertscale - vanchor)..";"..
+								mdef_copy.constants.cslotbtnszy..","..mdef_copy.constants.cslotbtnszy..
 								";minislots_button_admin.png]"..
 								"image_button["..
-								((def.geometry.cash_slot_posx - def.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
-								(def.geometry.cash_slot_posy * vertscale - vanchor)..";"..
-								def.constants.cslotbtnszy..","..def.constants.cslotbtnszy..
-								";"..def.constants.emptyimg..";admin;]"
+								((mdef_copy.geometry.cash_slot_posx - mdef_copy.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
+								(mdef_copy.geometry.cash_slot_posy * vertscale - vanchor)..";"..
+								mdef_copy.constants.cslotbtnszy..","..mdef_copy.constants.cslotbtnszy..
+								";"..mdef_copy.constants.emptyimg..";admin;]"
 
-	def.constants.buttonadmin_dis = "image["..
-								((def.geometry.cash_slot_posx - def.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
-								(def.geometry.cash_slot_posy * vertscale - vanchor)..";"..
-								def.constants.cslotbtnszy..","..def.constants.cslotbtnszy..
+	mdef_copy.constants.buttonadmin_dis = "image["..
+								((mdef_copy.geometry.cash_slot_posx - mdef_copy.constants.cslotbtnszy - 0.02)* horizscale - hanchor)..","..
+								(mdef_copy.geometry.cash_slot_posy * vertscale - vanchor)..";"..
+								mdef_copy.constants.cslotbtnszy..","..mdef_copy.constants.cslotbtnszy..
 								";minislots_button_admin.png]"
 
 
-	def.constants.buttons_n_lines = {}
-	def.constants.buttons_bet_n = {}
+	mdef_copy.constants.buttons_n_lines = {}
+	mdef_copy.constants.buttons_bet_n = {}
 
-	for i, value in ipairs(def.linebuttons) do
-		def.constants.buttons_n_lines[value] = {}
-		local posx = ((def.geometry.button_rows_posx
-						+ (i-1)*def.geometry.main_button_spacing) * horizscale - hanchor)
+	for i, value in ipairs(mdef_copy.linebuttons) do
+		mdef_copy.constants.buttons_n_lines[value] = {}
+		local posx = ((mdef_copy.geometry.button_rows_posx
+						+ (i-1)*mdef_copy.geometry.main_button_spacing) * horizscale - hanchor)
 
 		for _, state in ipairs( {"dis", "off", "on"} ) do
-			local btn = "image["..posx..","..def.constants.spinposy..";"..
-				def.constants.lnbetpref..def.constants.basename.."button_lines_"..state.."_"..value..".png]"
+			local btn = "image["..posx..","..mdef_copy.constants.spinposy..";"..
+				mdef_copy.constants.lnbetpref..mdef_copy.constants.basename.."button_lines_"..state.."_"..value..".png]"
 			if state ~= "dis" then 
-				btn = btn.."image_button["..posx..","..def.constants.spinposy..";"..
-				def.constants.lnbetpref.."minislots_empty_img.png;lines_"..value..";]"
+				btn = btn.."image_button["..posx..","..mdef_copy.constants.spinposy..";"..
+				mdef_copy.constants.lnbetpref.."minislots_empty_img.png;lines_"..value..";]"
 			end
-			def.constants.buttons_n_lines[value][state] = btn
+			mdef_copy.constants.buttons_n_lines[value][state] = btn
 		end
 	end
 
-	for i, value in ipairs(def.betbuttons) do
-		def.constants.buttons_bet_n[value] = {}
+	for i, value in ipairs(mdef_copy.betbuttons) do
+		mdef_copy.constants.buttons_bet_n[value] = {}
 
-		local posx = ((def.geometry.button_rows_posx
-						+ (i-1)*def.geometry.main_button_spacing) * horizscale - hanchor)
+		local posx = ((mdef_copy.geometry.button_rows_posx
+						+ (i-1)*mdef_copy.geometry.main_button_spacing) * horizscale - hanchor)
 
 		for _, state in ipairs( {"dis", "off", "on"} ) do
-			local btn = "image["..posx..","..def.constants.coutposy..";"..
-				def.constants.lnbetpref..def.constants.basename.."button_bet_"..state.."_"..value..".png]"
+			local btn = "image["..posx..","..mdef_copy.constants.coutposy..";"..
+				mdef_copy.constants.lnbetpref..mdef_copy.constants.basename.."button_bet_"..state.."_"..value..".png]"
 			if state ~= "dis" then
-				btn = btn.."image_button["..posx..","..def.constants.coutposy..";"..
-				def.constants.lnbetpref.."minislots_empty_img.png;bet_"..value..";]"
+				btn = btn.."image_button["..posx..","..mdef_copy.constants.coutposy..";"..
+				mdef_copy.constants.lnbetpref.."minislots_empty_img.png;bet_"..value..";]"
 			end
-			def.constants.buttons_bet_n[value][state] = btn
+			mdef_copy.constants.buttons_bet_n[value][state] = btn
 		end
 	end
 
-	def.constants.digits = {}
+	mdef_copy.constants.digits = {}
 	for i = 0, 9 do
-		def.constants.digits[tostring(i)] = def.constants.basename.."glyph_digit_"..i..".png"
+		mdef_copy.constants.digits[tostring(i)] = mdef_copy.constants.basename.."glyph_digit_"..i..".png"
 	end
 
-	def.constants.symlookup = {}
-	for num,sym in ipairs(def.symbols) do
-		def.constants.symlookup["sym_"..sym] = num
+	mdef_copy.constants.symlookup = {}
+	for num,sym in ipairs(mdef_copy.symbols) do
+		mdef_copy.constants.symlookup["sym_"..sym] = num
 	end
 
 	local mesh = ""
 	local tiles = {}
 	local cbox = {}
 
-	if def.machine_shape == "upright" then
+	if mdef_copy.machine_shape == "upright" then
 		mesh = "minislots_generic_machine_upright.obj"
 		cbox = {
 			type = "fixed",
@@ -560,7 +560,7 @@ function minislots.register_machine(mdef)
 				{-0.5,  0.5, -0.1875, 0.5, 1.5, 0.5 },
 			}
 		}
-	elseif def.machine_shape == "upright_big" then
+	elseif mdef_copy.machine_shape == "upright_big" then
 		mesh = "minislots_generic_machine_upright_big.obj"
 		cbox = {
 			type = "fixed",
@@ -568,24 +568,25 @@ function minislots.register_machine(mdef)
 		}
 	end
 
-	minetest.register_node(":minislots:"..def.name, {
-		description = def.description,
+	minetest.register_node(":minislots:"..mdef_copy.name, {
+		description = mdef_copy.description,
 		drawtype = "mesh",
 		mesh = mesh,
-		tiles = { "minislots_"..def.name.."_cabinet_graphics.png" },
+		tiles = { "minislots_"..mdef_copy.name.."_cabinet_graphics.png" },
 		node_box = cbox,   -- this is used to create proper collision info.
 		paramtype2 = "facedir",
 		selection_box = cbox,
 		is_ground_content = false,
 		groups = {cracky = 1, level = 2},
 		sounds = default.node_sound_metal_defaults(),
-		machine_def = table.copy(def),
+		machine_def = table.copy(mdef_copy),
 		on_timer = minislots.cycle_states,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			local meta = minetest.get_meta(pos)
 			local player_name = clicker:get_player_name()
 			local oldform = meta:get_string("formspec")
 			local balance = meta:get_int("balance")
+			local def = minetest.registered_items[node.name].machine_def
 
 			minislots.player_last_machine_def[player_name] = def
 			minislots.player_last_machine_pos[player_name] = pos
@@ -617,7 +618,8 @@ function minislots.register_machine(mdef)
 			end
 		end,
 		on_construct = function(pos)
-			local def = minetest.registered_items["minislots:"..def.name].machine_def
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_items[node.name].machine_def
 			local meta = minetest.get_meta(pos)
 			local resetspin = minislots.reset_reels(def)
 			local balance = 0
@@ -673,6 +675,7 @@ function minislots.register_machine(mdef)
 			inv:set_size("main", 1)
 		end,
 		on_dig = function(pos, node, digger)
+			local def = minetest.registered_items[node.name].machine_def
 			local player_name = digger:get_player_name()
 			if default.can_interact_with_node(digger, pos) then
 				local stack = ItemStack("minislots:"..def.name)
@@ -706,6 +709,8 @@ function minislots.register_machine(mdef)
 			end
 		end,
 		after_place_node = function(pos, placer, itemstack)
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_items[node.name].machine_def
 			local nodemeta = minetest.get_meta(pos)
 			local player_name = placer:get_player_name()
 			local stackmeta = itemstack:get_meta()
@@ -754,7 +759,8 @@ function minislots.register_machine(mdef)
 			return default.can_interact_with_node(player, pos)
 		end,
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
-			local def = minetest.registered_items["minislots:"..def.name].machine_def
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_items[node.name].machine_def
 			local player_name = player:get_player_name()
 			local meta = minetest.get_meta(pos)
 			local state = meta:get_string("state")
@@ -786,6 +792,8 @@ function minislots.register_machine(mdef)
 				minislots.generate_cashslot_form(def, pos, balance))
 		end,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_items[node.name].machine_def
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local sn = stack:get_name()
@@ -810,7 +818,8 @@ function minislots.register_machine(mdef)
 			return 0
 		end,
 		on_receive_fields = function(pos, formname, fields, sender)
-			local def = minetest.registered_items["minislots:"..def.name].machine_def
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_items[node.name].machine_def
 			local player_name = sender:get_player_name()
 			local meta = minetest.get_meta(pos)
 			local state = meta:get_string("state")
