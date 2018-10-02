@@ -1839,45 +1839,48 @@ function minislots.generate_cashslot_form(def, pos, balance)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	local player_name = player:get_player_name()
-	local def = minislots.player_last_machine_def[player_name]
-	local pos = minislots.player_last_machine_pos[player_name]
-	local meta
-	if pos then meta = minetest.get_meta(pos) end
+	if string.find(formname, "minislots:") then 
 
-	if fields.close and (formname == "minislots:cash_intake"
-	  or formname == "minislots:help_screen") then
-		minetest.close_formspec(player_name, formname)
-	elseif fields.showpaylines and formname == "minislots:help_screen" then
-		if not def then
-			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
-			return
-		end
-		minetest.show_formspec(player_name, "minislots:help_screen",
-			minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
-	elseif fields.showpaytable and formname == "minislots:help_screen" then
-		if not def then
+		local player_name = player:get_player_name()
+		local def = minislots.player_last_machine_def[player_name]
+		local pos = minislots.player_last_machine_pos[player_name]
+		local meta
+		if pos then meta = minetest.get_meta(pos) end
+
+		if fields.close and (formname == "minislots:cash_intake"
+		  or formname == "minislots:help_screen") then
+			minetest.close_formspec(player_name, formname)
+		elseif fields.showpaylines and formname == "minislots:help_screen" then
+			if not def then
 				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
-			return
-		end
-		minetest.show_formspec(player_name, "minislots:help_screen",
-			minislots.generate_paytable_form(minislots.player_last_machine_def[player_name]))
-	elseif fields.key_enter_field and fields.key_enter_field == fields.key_enter_field then
-		if not def then
-			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
-			return
-		end
-		if def and pos and meta and meta:get_string("owner") == player_name then
-			meta:set_string("formspec", "")
-			meta:set_string("casino_name", minetest.formspec_escape(fields.casino_input))
-		end
-	elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
-		if not def then
-			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
-			return
-		end
-		if def and pos and meta and meta:get_string("owner") == player_name then
-			meta:set_string("formspec", "")
+				return
+			end
+			minetest.show_formspec(player_name, "minislots:help_screen",
+				minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
+		elseif fields.showpaytable and formname == "minislots:help_screen" then
+			if not def then
+					minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				return
+			end
+			minetest.show_formspec(player_name, "minislots:help_screen",
+				minislots.generate_paytable_form(minislots.player_last_machine_def[player_name]))
+		elseif fields.key_enter_field and fields.key_enter_field == fields.key_enter_field then
+			if not def then
+				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				return
+			end
+			if def and pos and meta and meta:get_string("owner") == player_name then
+				meta:set_string("formspec", "")
+				meta:set_string("casino_name", minetest.formspec_escape(fields.casino_input))
+			end
+		elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
+			if not def then
+				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				return
+			end
+			if def and pos and meta and meta:get_string("owner") == player_name then
+				meta:set_string("formspec", "")
+			end
 		end
 	end
 end)
