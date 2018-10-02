@@ -444,7 +444,7 @@ function minislots.register_machine(mdef)
 										mdef_copy.geometry.cash_slot_sizex..","..mdef_copy.geometry.cash_slot_sizey..";"..
 										mdef_copy.constants.basename.."cash_slot.png]"
 
-	mdef_copy.constants.button_close = mdef_copy.constants.basename.."cash_slot_screen_close_button.png"
+	mdef_copy.constants.button_close = "minislots_close_button.png"
 
 	mdef_copy.constants.buttonhelp		= "image["..mdef_copy.constants.helpposx..","..mdef_copy.constants.helpposy..";"..
 										mdef_copy.geometry.button_help_sizex..","..mdef_copy.geometry.button_help_sizey..";"..
@@ -1849,21 +1849,45 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	  or formname == "minislots:help_screen") then
 		minetest.close_formspec(player_name, formname)
 	elseif fields.showpaylines and formname == "minislots:help_screen" then
+		if not def then
+			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+			return
+		end
 		minetest.show_formspec(player_name, "minislots:help_screen",
 			minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
 	elseif fields.showpaytable and formname == "minislots:help_screen" then
+		if not def then
+				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+			return
+		end
 		minetest.show_formspec(player_name, "minislots:help_screen",
 			minislots.generate_paytable_form(minislots.player_last_machine_def[player_name]))
 	elseif fields.key_enter_field and fields.key_enter_field == fields.key_enter_field then
+		if not def then
+			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+			return
+		end
 		if def and pos and meta and meta:get_string("owner") == player_name then
 			meta:set_string("formspec", "")
 			meta:set_string("casino_name", minetest.formspec_escape(fields.casino_input))
 		end
 	elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
+		if not def then
+			minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+			return
+		end
 		if def and pos and meta and meta:get_string("owner") == player_name then
 			meta:set_string("formspec", "")
 		end
 	end
 end)
+
+function minislots.generate_too_old_screen()
+		local form = "size[4,1]"..
+		"image_button_exit[3.65,-0.2;0.55,0.5;minislots_close_button.png;close;]"..
+		"label[0.32,0.2;Sorry, your client is too old to]"..
+		"label[0.15,0.5;show this screen.  Please update.]"
+	return form
+end
 
 print("[Minislots] Loaded!")
