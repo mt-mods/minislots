@@ -1008,7 +1008,8 @@ function minislots.cycle_states(pos)
 	local numscatter = (allwins and allwins.scatter and allwins.scatter.count) or 0
 	local numbonus = (allwins and allwins.bonus and allwins.bonus.count) or 0
 	local last_right_clicker = meta:get_string("last_right_clicker")
-	local player = minetest.get_player_by_name(last_right_clicker) or ""
+	local player = minetest.get_player_by_name(last_right_clicker)
+	local admin = player and default.can_interact_with_node(player, pos)
 
 	local timeout = 0
 
@@ -1143,7 +1144,7 @@ function minislots.cycle_states(pos)
 				balance = balance,
 				linebet = linebet,
 				maxlines = maxlines,
-				admin = default.can_interact_with_node(player, pos)
+				admin = admin
 			})
 		)
 		return
@@ -1158,7 +1159,7 @@ function minislots.cycle_states(pos)
 			balance = balance,
 			linebet = linebet,
 			maxlines = maxlines,
-			admin = default.can_interact_with_node(player, pos)
+			admin = admin
 		})
 	)
 	if timeout > 0 then
