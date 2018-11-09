@@ -20,8 +20,6 @@ Note: As of this writing, the "bonus round" feature is only barely implemented
 - it only calls a function provided in the machine's definition.  This will be
 expanded-on in time.
 
-License: CC-By-NC-SA 4.0 (all parts, all files, all machines)
-
 Depends:  Minetest 0.4.17.1 or 5.0.0-dev, a corresponding minetest_game, and
 Dan Duncombe's currency mod (my fork, which has 50 Mg notes,
 https://gitlab.com/VanessaE/currency ).
