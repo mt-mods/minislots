@@ -2,7 +2,7 @@
 
 minislots = {}
 
-minislots.modpath = minetest.get_modpath(minetest.get_current_modname())
-local machinelist = minetest.get_dir_list(minislots.modpath.."/machines", true)
+minislots.modpath = core.get_modpath(core.get_current_modname())
+local machinelist = core.get_dir_list(minislots.modpath.."/machines", true)
 
 dofile(minislots.modpath.."/engine.lua")
