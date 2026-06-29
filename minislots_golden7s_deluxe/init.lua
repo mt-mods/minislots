@@ -1,4 +1,4 @@
- 
+
 -- Golden 7's Deluxe example machine
 --
 -- By Vanessa "VanessaE" Dannenberg
@@ -10,22 +10,22 @@ minislots.register_machine({
 	name = "golden7s_deluxe",
 	description = "Golden 7's Deluxe slot machine",
 	machine_shape = "upright",
-	lines = {           -- reel symbol pay line positions: 0 = center, -1 = top, +1 = bottom
-		{  0,  0,  0,  0,  0 }, -- pay line 1: center symbol on each reel
-		{ -1, -1, -1, -1, -1 }, -- 2: top symbol on each reel
-		{  1,  1,  1,  1,  1 }, -- 3: bottom symbol on each reel
-		{ -1, -1,  0,  1,  1 }, -- 4: top of reels 1 and 2, center of 3, bottom of 4 and 5
-		{  1,  1,  0, -1, -1 }, -- 5: bottom of reels 1, 2, center 3, top 4, 5
-		{ -1, -1, -1,  0,  1 }, -- 6: top of 1, 2, 3, center 4, bottom 5
-		{  1,  1,  1,  0, -1 }, -- 7: bottom of 1, 2, 3, center 4, top 5
-		{ -1,  0,  1,  1,  1 }, -- 8: top of 1, center 2, bottom 3, 4, 5
-		{  1,  0, -1, -1, -1 }, -- 9: bottom of 1, center 2, top 3, 4, 5
-		{  1,  0, -1,  0,  1 }, -- 10: bottom 1, center 2, top 3, center 4, bottom 5
-		{ -1,  0,  1,  0, -1 }, -- 11: top 1, center 2, bottom 3, center 4, top 5
-		{  0, -1, -1, -1, -1 }, -- 12: center 1, top 2, 3, 4, 5
-		{  0,  1,  1,  1,  1 }, -- 13: center 1, bottom 2, 3, 4, 5
-		{ -1, -1, -1, -1,  0 }, -- 14: top 1, 2, 3, 4, center 5
-		{  1,  1,  1,  1,  0 }, -- 15: bottom 1, 2, 3, 4, center 5
+	lines = { -- reel symbol pay line positions: 0 = center, -1 = top, +1 = bottom
+		{0, 0, 0, 0, 0}, -- pay line 1: center symbol on each reel
+		{-1, -1, -1, -1, -1},-- 2: top symbol on each reel
+		{1, 1, 1, 1, 1}, -- 3: bottom symbol on each reel
+		{-1, -1, 0, 1, 1}, -- 4: top of reels 1 and 2, center of 3, bottom of 4 and 5
+		{1, 1, 0, -1, -1}, -- 5: bottom of reels 1, 2, center 3, top 4, 5
+		{-1, -1, -1, 0, 1}, -- 6: top of 1, 2, 3, center 4, bottom 5
+		{1, 1, 1, 0, -1}, -- 7: bottom of 1, 2, 3, center 4, top 5
+		{-1, 0, 1, 1, 1}, -- 8: top of 1, center 2, bottom 3, 4, 5
+		{1, 0, -1, -1, -1}, -- 9: bottom of 1, center 2, top 3, 4, 5
+		{1, 0, -1, 0, 1}, -- 10: bottom 1, center 2, top 3, center 4, bottom 5
+		{-1, 0, 1, 0, -1}, -- 11: top 1, center 2, bottom 3, center 4, top 5
+		{0, -1, -1, -1, -1}, -- 12: center 1, top 2, 3, 4, 5
+		{0, 1, 1, 1, 1}, -- 13: center 1, bottom 2, 3, 4, 5
+		{-1, -1, -1, -1, 0}, -- 14: top 1, 2, 3, 4, center 5
+		{1, 1, 1, 1, 0}, -- 15: bottom 1, 2, 3, 4, center 5
 	},
 	symbols = {
 		"bar",
@@ -45,40 +45,40 @@ minislots.register_machine({
 		"melon",
 		"bonus"
 	},
-	linebuttons = { -- number of lines on each button, from left to right
+	linebuttons = {-- number of lines on each button, from left to right
 		1,
 		3,
 		5,
 		9,
 		15
 	},
-	betbuttons = { -- line bet amount on each button, from left to right
+	betbuttons = {-- line bet amount on each button, from left to right
 		1,
 		2,
 		5,
 		10,
 		25
 	},
-	matches = { -- nil == don't care about that reel in a given match
-		{   1, "lemon"   ,  "lemon"   ,  nil       ,   nil      ,  nil       },
-		{   2, "lemon"   ,  "lemon"   ,  "lemon"   ,   nil      ,  nil       },
-		{   3, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  nil       },
-		{   5, "lemon"   ,  "lemon"   ,  "lemon"   ,   "lemon"  ,  "lemon"   },
+	matches = {-- nil == don't care about that reel in a given match
+		{1, "lemon", "lemon", nil, nil, nil},
+		{2, "lemon", "lemon", "lemon", nil, nil},
+		{3, "lemon", "lemon", "lemon", "lemon", nil},
+		{5, "lemon", "lemon", "lemon", "lemon", "lemon"},
 
-		{   5, "melon"   ,  "melon"   ,  "melon"   ,   nil      ,  nil       },
-		{   6, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  nil       },
-		{   7, "melon"   ,  "melon"   ,  "melon"   ,   "melon"  ,  "melon"   },
+		{5, "melon", "melon", "melon", nil, nil},
+		{6, "melon", "melon", "melon", "melon", nil},
+		{7, "melon", "melon", "melon", "melon", "melon"},
 
-		{   7, "cherry"  ,  "cherry"  ,  nil       ,  nil       ,  nil       },
-		{   8, "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       ,  nil       },
-		{   9, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  nil       },
-		{  10, "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  ,  "cherry"  },
+		{7, "cherry", "cherry", nil, nil, nil},
+		{8, "cherry", "cherry", "cherry", nil, nil},
+		{9, "cherry", "cherry", "cherry", "cherry", nil},
+		{10, "cherry", "cherry", "cherry", "cherry", "cherry"},
 
-		{  10, "bell"    ,  "bell"    ,  "bell"    ,  nil       ,  nil       },
-		{  15, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  nil       },
-		{  20, "bell"    ,  "bell"    ,  "bell"    ,  "bell"    ,  "bell"    },
+		{10, "bell", "bell", "bell", nil, nil},
+		{15, "bell", "bell", "bell", "bell", nil},
+		{20, "bell", "bell", "bell", "bell", "bell"},
 
-		{  25,
+		{25,
 			{"bar", "2bar", "3bar"},
 			{"bar", "2bar", "3bar"},
 			{"bar", "2bar", "3bar"},
@@ -86,19 +86,19 @@ minislots.register_machine({
 			{"bar", "2bar", "3bar"}
 		},
 
-		{  30, "bar"     ,  "bar"     ,  "bar"     ,  nil       ,  nil       },
-		{  35, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  nil       },
-		{  40, "bar"     ,  "bar"     ,  "bar"     ,  "bar"     ,  "bar"     },
+		{30, "bar", "bar", "bar", nil, nil},
+		{35, "bar", "bar", "bar", "bar", nil},
+		{40, "bar", "bar", "bar", "bar", "bar"},
 
-		{  50, "2bar"    ,  "2bar"    ,  "2bar"    ,  nil       ,  nil       },
-		{  55, "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    ,  nil       },
-		{  60, "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    ,  "2bar"    },
+		{50, "2bar", "2bar", "2bar", nil, nil},
+		{55, "2bar", "2bar", "2bar", "2bar", nil},
+		{60, "2bar", "2bar", "2bar", "2bar", "2bar"},
 
-		{  70, "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       ,  nil       },
-		{  73, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  nil       },
-		{  75, "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    ,  "3bar"    },
+		{70, "3bar", "3bar", "3bar", nil, nil},
+		{73, "3bar", "3bar", "3bar", "3bar", nil},
+		{75, "3bar", "3bar", "3bar", "3bar", "3bar"},
 
-		{  80,
+		{80,
 			{"7", "77", "777"},
 			{"7", "77", "777"},
 			{"7", "77", "777"},
@@ -106,70 +106,70 @@ minislots.register_machine({
 			{"7", "77", "777"}
 		},
 
-		{  85, "7"       ,  "7"       ,  "7"       ,  nil       ,  nil       },
-		{  88, "7"       ,  "7"       ,  "7"       ,  "7"       ,  nil       },
-		{  90, "7"       ,  "7"       ,  "7"       ,  "7"       ,  "7"       },
+		{85, "7", "7", "7", nil, nil},
+		{88, "7", "7", "7", "7", nil},
+		{90, "7", "7", "7", "7", "7"},
 
-		{  90, "77"      ,  "77"      ,  "77"      ,  nil       ,  nil       },
-		{  95, "77"      ,  "77"      ,  "77"      ,  "77"      ,  nil       },
-		{ 100, "77"      ,  "77"      ,  "77"      ,  "77"      ,  "77"      },
+		{90, "77", "77", "77", nil, nil},
+		{95, "77", "77", "77", "77", nil},
+		{100, "77", "77", "77", "77", "77"},
 
-		{ 100, "777"     ,  "777"     ,  "777"     ,  nil       ,  nil       },
-		{ 125, "777"     ,  "777"     ,  "777"     ,  "777"     ,  nil       },
+		{100, "777", "777", "777", nil, nil},
+		{125, "777", "777", "777", "777", nil},
 
-		{ 150, "777"     ,  "777"     ,  "777"     ,  "777"     ,  "777"     },
+		{150, "777", "777", "777", "777", "777"},
 
-		{ 300, "jackpot" ,  "jackpot" ,  "jackpot" , "jackpot"  ,  "jackpot" },
+		{300, "jackpot", "jackpot", "jackpot", "jackpot", "jackpot"},
 
 	},
 	paytable_desc = {
-		{ "@lemon", "@lemon", "@X", "@X", "@X", " pays 1"} ,
-		{ "@lemon", "@lemon", "@lemon", "@X", "@X", " pays 2" },
-		{ "@lemon", "@lemon", "@lemon", "@lemon", "@X", " pays 3"},
-		{ "@lemon", "@lemon", "@lemon", "@lemon", "@lemon", " pays 5" },
+		{"@lemon", "@lemon", "@X", "@X", "@X", " pays 1"},
+		{"@lemon", "@lemon", "@lemon", "@X", "@X", " pays 2"},
+		{"@lemon", "@lemon", "@lemon", "@lemon", "@X", " pays 3"},
+		{"@lemon", "@lemon", "@lemon", "@lemon", "@lemon", " pays 5"},
 
-		{ "@melon", "@melon", "@melon", "@X", "@X", " pays 5"},
-		{ "@melon", "@melon", "@melon", "@melon", "@X", " pays 6" },
-		{ "@melon", "@melon", "@melon", "@melon", "@melon", " pays 7" },
+		{"@melon", "@melon", "@melon", "@X", "@X", " pays 5"},
+		{"@melon", "@melon", "@melon", "@melon", "@X", " pays 6"},
+		{"@melon", "@melon", "@melon", "@melon", "@melon", " pays 7"},
 
-		{ "@cherry", "@cherry", "@X", "@X", "@X", " pays 7" },
-		{ "@cherry", "@cherry", "@cherry", "@X", "@X", " pays 8" }, 
-		{ "@cherry", "@cherry", "@cherry", "@cherry", "@X", " pays 9" },
-		{ "@cherry", "@cherry", "@cherry", "@cherry", "@cherry", " pays 10" },
+		{"@cherry", "@cherry", "@X", "@X", "@X", " pays 7"},
+		{"@cherry", "@cherry", "@cherry", "@X", "@X", " pays 8"},
+		{"@cherry", "@cherry", "@cherry", "@cherry", "@X", " pays 9"},
+		{"@cherry", "@cherry", "@cherry", "@cherry", "@cherry", " pays 10"},
 
-		{ "@bell", "@bell", "@bell", "@X", "@X", " pays 10" },
-		{ "@bell", "@bell", "@bell", "@bell", "@X", " pays 15" }, 
-		{ "@bell", "@bell", "@bell", "@bell", "@bell", " pays 20" },
+		{"@bell", "@bell", "@bell", "@X", "@X", " pays 10"},
+		{"@bell", "@bell", "@bell", "@bell", "@X", " pays 15"},
+		{"@bell", "@bell", "@bell", "@bell", "@bell", " pays 20"},
 
-		{ "Any five ", "@bar", "/", "@2bar", "/", "@3bar", " pays 25" },
-		{ "@bar", "@bar", "@bar", "@X", "@X", " pays 30" },
-		{ "@bar", "@bar", "@bar", "@bar", "@X", " pays 35" },
-		{ "@bar", "@bar", "@bar", "@bar", "@bar", " pays 40" },
+		{"Any five ", "@bar", "/", "@2bar", "/", "@3bar", " pays 25"},
+		{"@bar", "@bar", "@bar", "@X", "@X", " pays 30"},
+		{"@bar", "@bar", "@bar", "@bar", "@X", " pays 35"},
+		{"@bar", "@bar", "@bar", "@bar", "@bar", " pays 40"},
 
-		{ "@2bar", "@2bar", "@2bar", "@X", "@X", " pays 50" },
-		{ "@2bar", "@2bar", "@2bar", "@2bar", "@X", " pays 55" },
-		{ "@2bar", "@2bar", "@2bar", "@2bar", "@2bar", " pays 60" },
+		{"@2bar", "@2bar", "@2bar", "@X", "@X", " pays 50"},
+		{"@2bar", "@2bar", "@2bar", "@2bar", "@X", " pays 55"},
+		{"@2bar", "@2bar", "@2bar", "@2bar", "@2bar", " pays 60"},
 
-		{ "@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot" },
-		{ "All wins are multiplied by your line bet." },
+		{"@wild", " matches any symbol except ", "@scatter", " ", "@bonus", " or ", "@jackpot"},
+		{"All wins are multiplied by your line bet."},
 
 		"@wrap",
 
-		{ "@3bar", "@3bar", "@3bar", "@X", "@X", " pays 70" },
-		{ "@3bar", "@3bar", "@3bar", "@3bar", "@X", " pays 73" },
-		{ "@3bar", "@3bar", "@3bar", "@3bar", "@3bar", " pays 75" },
+		{"@3bar", "@3bar", "@3bar", "@X", "@X", " pays 70"},
+		{"@3bar", "@3bar", "@3bar", "@3bar", "@X", " pays 73"},
+		{"@3bar", "@3bar", "@3bar", "@3bar", "@3bar", " pays 75"},
 
-		{ "Any five ", "@7", "/", "@77", "/", "@777", " pays 80" },
-		{ "@7", "@7", "@7", "@X", "@X", " pays 85" },
-		{ "@7", "@7", "@7", "@7", "@X", " pays 88" },
-		{ "@7", "@7", "@7", "@7", "@7", " pays 90" },
+		{"Any five ", "@7", "/", "@77", "/", "@777", " pays 80"},
+		{"@7", "@7", "@7", "@X", "@X", " pays 85"},
+		{"@7", "@7", "@7", "@7", "@X", " pays 88"},
+		{"@7", "@7", "@7", "@7", "@7", " pays 90"},
 
-		{ "@77", "@77", "@77", "@X", "@X", " pays 90" },
-		{ "@77", "@77", "@77", "@77", "@X", " pays 95" },
-		{ "@77", "@77", "@77", "@77", "@77", " pays 100" },
+		{"@77", "@77", "@77", "@X", "@X", " pays 90"},
+		{"@77", "@77", "@77", "@77", "@X", " pays 95"},
+		{"@77", "@77", "@77", "@77", "@77", " pays 100"},
 
-		{ "@777", "@777", "@777", "@777", "@777", " pays 150" },
-		{ "@jackpot", "@jackpot", "@jackpot", "@jackpot", "@jackpot", " pays 300" },
+		{"@777", "@777", "@777", "@777", "@777", " pays 150"},
+		{"@jackpot", "@jackpot", "@jackpot", "@jackpot", "@jackpot", " pays 300"},
 
 	},
 	paylines_desc = {
@@ -206,7 +206,7 @@ minislots.register_machine({
 	min_scatter = 3,				-- minimum number of scatter symbols needed before computing a scatter win
 	scatter_value = 3,				-- value of the scatter symbol, will be multiplied by number visible * line bet
 	min_bonus = 4,					-- minimum number of symbols needed to trigger the bonus round
-	initiate_bonus = function(spin, def)
+	initiate_bonus = function(_, _)
 		return 400
 	end,
 	wild_doesnt_match = {
@@ -224,7 +224,7 @@ minislots.register_machine({
 		reel_posx = 1,					-- X/Y position of first reel, others drawn as indicated below
 		reel_posy = 1,
 
-		reel_sizex = 2,					-- Nominal X/Y size of one reel.  Note that reels are drawn with a
+		reel_sizex = 2,					-- Nominal X/Y size of one reel. Note that reels are drawn with a
 		reel_sizey = 9,					-- spacing of 1.3333 times their width (leaves a 0.6667 IU gap between
 										-- reels on this machine).
 
@@ -244,7 +244,7 @@ minislots.register_machine({
 		screen_posx = 0.125,			-- X/Y position of top-left corner of lower screen (i.e. (0,0))
 		screen_posy = 11.094,
 
-		screen_line_height = 0.875,		-- Height of line 1, and 2 in 2-line mode.  In 3-line mode, line 2
+		screen_line_height = 0.875,		-- Height of line 1, and 2 in 2-line mode. In 3-line mode, line 2
 										-- hight will be 2/3 of this, and line 3 height will be 1/3 of it.
 
 		label_medium_sizex = 1.125,		-- X size of "Bal:", "Bet:", "Win:".

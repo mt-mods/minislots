@@ -1,5 +1,6 @@
-Minislots Game Engine
-=====================
+# Minislots Game Engine
+
+---
 
 Written by Vanessa "VanessaE" Dannenberg
 
@@ -17,17 +18,19 @@ elements' sizes and positions can be controlled.
 Two example machines are included (described below).
 
 Note: As of this writing, the "bonus round" feature is only barely implemented
+
 - it only calls a function provided in the machine's definition.  This will be
 expanded-on in time.
 
-Depends:  Minetest 0.4.17.1 or 5.0.0-dev, a corresponding minetest_game, and
-Dan Duncombe's currency mod (my fork, which has 50 Mg notes,
-https://gitlab.com/VanessaE/currency ).
+## Depends
 
+- Luanti/Minetest v0.4.17.1+
+- [Minetest Game](https://github.com/luanti-org/minetest_game)
+- [currency](https://github.com/mt-mods/currency)
 
+## Image Geometry
 
-Image Geometry:
-===============
+---
 
 In Minetest, the size and position of an item in a formspec is designated in
 units equal to the spacing between two squares in your inventory.  In this
@@ -117,9 +120,9 @@ top and bottom to allow for symbols to be positioned "off-screen".
 The pay table, pay lines, admin, and cashout voucher screens all use the
 Liberation Sans font (either condensed, regular, or bold).
 
+## Geometry for the 3-reel "Golden 7's" machine
 
-Geometry for the 3-reel "Golden 7's" machine:
----------------------------------------------
+---
 
 The upper overlay, reel underlay, and line win overlays are 832x704 px  --> 13 x 11 IU
 The lower overlay image is 832x128 px                                   --> 13 x 2 IU
@@ -136,9 +139,9 @@ The cash slot is 320x128 px and is normally shown at full-size          --> 5.0 
 The "screen" in the lower overlay is 384x112 px                         --> 6.0 x 0.875 IU.
 The Scatter and Bonus highlight boxes are 768x768px                     --> 4.0 x 4.0 IU
 
-
 Geometry for the 5-reel "Golden 7's Deluxe" machine:
-----------------------------------------------------
+
+---
 
 The upper overlay, reel underlay, and line win overlays are 939x704 px  --> 14.667 x 11 IU
 The lower overlay image is 939x128 px                                   --> 14.667 x 2 IU
@@ -154,9 +157,9 @@ The cash slot is 320x128 px                                             --> 5.0 
 The "screen" in the lower overlay is 426x112 px                         --> 6.656 x 0.875 IU.
 The Scatter and Bonus highlight boxes are 512x768 px                    --> 2.667 x 4.0 IU
 
+## Matching
 
-Matching:
-=========
+---
 
 In most cases, line matches are pretty straightforward.  If you specify a
 line in your match table reading:
@@ -194,9 +197,9 @@ example, the Golden 7's Deluxe machine has an entry in its pay table that pays
 out on a line win consisting of five assorted [7], [77], and/or [777] symbols
 (it also has one for assorted [bar], [2bar], and/or [3bar] symbols).
 
+## The human-readable pay table and pay lines screen
 
-The human-readable pay table and pay lines screen:
-==================================================
+---
 
 The format of the paytable_desc is pretty simple - it's a table of tables. :-)
 
@@ -253,9 +256,9 @@ on their respective screens.  This allows you to use the background image
 itself as the pay table/lines description, in the event that you want to skip
 the text/image printing routines and just roll your own.
 
+## How wild cards work
 
-How wild cards work:
-====================
+---
 
 [WILD!] is basically "don't care", as far as the engine's concerned, and will
 match the highest entry in the table that can theoretically form a match,
@@ -290,11 +293,11 @@ given match.  Each wild card multiplies the win by the configured amount, but
 only for wild cards that actually helped create a win.  Thus, the final win
 amount will be line_win * ( wild_multiplier ^ number_of_wilds ).
 
+## DISCLAIMER
 
-DISCLAIMER:
-===========
+---
 
-THIS IS A SLOT MACHINE "MINI GAME" PROJECT FOR THE MINETEST OPEN SOURCE GAME
+THIS IS A SLOT MACHINE "MINI GAME" PROJECT FOR THE LUANTI/MINETEST OPEN SOURCE GAME
 ENGINE/PLATFORM.  IT IS NOT IN ANY WAY, SHAPE, OR FORM ASSOCIATED WITH,
 REGULATED BY, OR OTHERWISE UNDER THE CONTROL OR INFLUENCE OF ANY LOCAL,
 COUNTY, STATE, OR FEDERAL GAMING AGENCY, COMMISSION, OR OFFICE.

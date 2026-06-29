@@ -1,110 +1,110 @@
 -- Minislots game engine
 -- by Vanessa "VanessaE" Dannenberg
 
-local mtver = minetest.get_version()
+local mtver = core.get_version()
 
 math.randomseed(os.time())
 
 local char_widths = {
-	[32]  = { regular = 16, condensed = 12, bold = 24 },
-	[33]  = { regular = 22, condensed = 18, bold = 28 },
-	[34]  = { regular = 29, condensed = 23, bold = 40 },
-	[35]  = { regular = 48, condensed = 39, bold = 47 },
-	[36]  = { regular = 47, condensed = 39, bold = 47 },
-	[37]  = { regular = 74, condensed = 60, bold = 75 },
-	[38]  = { regular = 56, condensed = 46, bold = 61 },
-	[39]  = { regular = 15, condensed = 12, bold = 20 },
-	[40]  = { regular = 29, condensed = 24, bold = 29 },
-	[41]  = { regular = 27, condensed = 22, bold = 28 },
-	[42]  = { regular = 33, condensed = 27, bold = 34 },
-	[43]  = { regular = 48, condensed = 39, bold = 49 },
-	[44]  = { regular = 22, condensed = 18, bold = 23 },
-	[45]  = { regular = 27, condensed = 22, bold = 28 },
-	[46]  = { regular = 22, condensed = 18, bold = 23 },
-	[47]  = { regular = 25, condensed = 21, bold = 24 },
-	[48]  = { regular = 46, condensed = 37, bold = 47 },
-	[49]  = { regular = 46, condensed = 37, bold = 47 },
-	[50]  = { regular = 46, condensed = 37, bold = 47 },
-	[51]  = { regular = 46, condensed = 37, bold = 47 },
-	[52]  = { regular = 46, condensed = 38, bold = 48 },
-	[53]  = { regular = 46, condensed = 37, bold = 47 },
-	[54]  = { regular = 46, condensed = 37, bold = 47 },
-	[55]  = { regular = 46, condensed = 37, bold = 47 },
-	[56]  = { regular = 46, condensed = 37, bold = 47 },
-	[57]  = { regular = 46, condensed = 37, bold = 47 },
-	[58]  = { regular = 22, condensed = 18, bold = 28 },
-	[59]  = { regular = 22, condensed = 18, bold = 28 },
-	[60]  = { regular = 48, condensed = 39, bold = 49 },
-	[61]  = { regular = 48, condensed = 39, bold = 49 },
-	[62]  = { regular = 48, condensed = 39, bold = 49 },
-	[63]  = { regular = 46, condensed = 37, bold = 51 },
-	[64]  = { regular = 84, condensed = 69, bold = 82 },
-	[65]  = { regular = 57, condensed = 47, bold = 61 },
-	[66]  = { regular = 55, condensed = 45, bold = 61 },
-	[67]  = { regular = 60, condensed = 49, bold = 61 },
-	[68]  = { regular = 60, condensed = 49, bold = 61 },
-	[69]  = { regular = 55, condensed = 45, bold = 56 },
-	[70]  = { regular = 50, condensed = 41, bold = 51 },
-	[71]  = { regular = 64, condensed = 53, bold = 65 },
-	[72]  = { regular = 60, condensed = 49, bold = 61 },
-	[73]  = { regular = 22, condensed = 18, bold = 23 },
-	[74]  = { regular = 41, condensed = 33, bold = 47 },
-	[75]  = { regular = 57, condensed = 47, bold = 61 },
-	[76]  = { regular = 46, condensed = 38, bold = 51 },
-	[77]  = { regular = 69, condensed = 56, bold = 70 },
-	[78]  = { regular = 60, condensed = 49, bold = 61 },
-	[79]  = { regular = 64, condensed = 53, bold = 65 },
-	[80]  = { regular = 55, condensed = 45, bold = 56 },
-	[81]  = { regular = 64, condensed = 53, bold = 65 },
-	[82]  = { regular = 60, condensed = 49, bold = 61 },
-	[83]  = { regular = 55, condensed = 45, bold = 56 },
-	[84]  = { regular = 51, condensed = 42, bold = 52 },
-	[85]  = { regular = 60, condensed = 49, bold = 61 },
-	[86]  = { regular = 57, condensed = 47, bold = 57 },
-	[87]  = { regular = 80, condensed = 66, bold = 81 },
-	[88]  = { regular = 56, condensed = 46, bold = 57 },
-	[89]  = { regular = 56, condensed = 46, bold = 56 },
-	[90]  = { regular = 50, condensed = 41, bold = 51 },
-	[91]  = { regular = 24, condensed = 20, bold = 28 },
-	[92]  = { regular = 25, condensed = 21, bold = 24 },
-	[93]  = { regular = 22, condensed = 18, bold = 28 },
-	[94]  = { regular = 40, condensed = 33, bold = 49 },
-	[95]  = { regular = 49, condensed = 41, bold = 49 },
-	[96]  = { regular = 27, condensed = 22, bold = 28 },
-	[97]  = { regular = 48, condensed = 40, bold = 49 },
-	[98]  = { regular = 46, condensed = 37, bold = 51 },
-	[99]  = { regular = 41, condensed = 34, bold = 47 },
-	[100] = { regular = 46, condensed = 37, bold = 51 },
-	[101] = { regular = 46, condensed = 37, bold = 47 },
-	[102] = { regular = 25, condensed = 21, bold = 30 },
-	[103] = { regular = 46, condensed = 37, bold = 51 },
-	[104] = { regular = 46, condensed = 37, bold = 51 },
-	[105] = { regular = 18, condensed = 14, bold = 23 },
-	[106] = { regular = 18, condensed = 14, bold = 23 },
-	[107] = { regular = 44, condensed = 36, bold = 48 },
-	[108] = { regular = 18, condensed = 14, bold = 23 },
-	[109] = { regular = 69, condensed = 56, bold = 75 },
-	[110] = { regular = 46, condensed = 37, bold = 51 },
-	[111] = { regular = 46, condensed = 37, bold = 51 },
-	[112] = { regular = 46, condensed = 37, bold = 51 },
-	[113] = { regular = 46, condensed = 37, bold = 51 },
-	[114] = { regular = 28, condensed = 23, bold = 33 },
-	[115] = { regular = 41, condensed = 33, bold = 47 },
-	[116] = { regular = 24, condensed = 20, bold = 28 },
-	[117] = { regular = 46, condensed = 37, bold = 51 },
-	[118] = { regular = 43, condensed = 36, bold = 48 },
-	[119] = { regular = 62, condensed = 51, bold = 67 },
-	[120] = { regular = 43, condensed = 35, bold = 48 },
-	[121] = { regular = 43, condensed = 36, bold = 48 },
-	[122] = { regular = 41, condensed = 33, bold = 42 },
-	[123] = { regular = 28, condensed = 23, bold = 33 },
-	[124] = { regular = 21, condensed = 17, bold = 24 },
-	[125] = { regular = 28, condensed = 23, bold = 33 },
-	[126] = { regular = 48, condensed = 39, bold = 49 },
-	[127] = { regular = 45, condensed = 37, bold = 48 },
+	[32] = {regular = 16, condensed = 12, bold = 24},
+	[33] = {regular = 22, condensed = 18, bold = 28},
+	[34] = {regular = 29, condensed = 23, bold = 40},
+	[35] = {regular = 48, condensed = 39, bold = 47},
+	[36] = {regular = 47, condensed = 39, bold = 47},
+	[37] = {regular = 74, condensed = 60, bold = 75},
+	[38] = {regular = 56, condensed = 46, bold = 61},
+	[39] = {regular = 15, condensed = 12, bold = 20},
+	[40] = {regular = 29, condensed = 24, bold = 29},
+	[41] = {regular = 27, condensed = 22, bold = 28},
+	[42] = {regular = 33, condensed = 27, bold = 34},
+	[43] = {regular = 48, condensed = 39, bold = 49},
+	[44] = {regular = 22, condensed = 18, bold = 23},
+	[45] = {regular = 27, condensed = 22, bold = 28},
+	[46] = {regular = 22, condensed = 18, bold = 23},
+	[47] = {regular = 25, condensed = 21, bold = 24},
+	[48] = {regular = 46, condensed = 37, bold = 47},
+	[49] = {regular = 46, condensed = 37, bold = 47},
+	[50] = {regular = 46, condensed = 37, bold = 47},
+	[51] = {regular = 46, condensed = 37, bold = 47},
+	[52] = {regular = 46, condensed = 38, bold = 48},
+	[53] = {regular = 46, condensed = 37, bold = 47},
+	[54] = {regular = 46, condensed = 37, bold = 47},
+	[55] = {regular = 46, condensed = 37, bold = 47},
+	[56] = {regular = 46, condensed = 37, bold = 47},
+	[57] = {regular = 46, condensed = 37, bold = 47},
+	[58] = {regular = 22, condensed = 18, bold = 28},
+	[59] = {regular = 22, condensed = 18, bold = 28},
+	[60] = {regular = 48, condensed = 39, bold = 49},
+	[61] = {regular = 48, condensed = 39, bold = 49},
+	[62] = {regular = 48, condensed = 39, bold = 49},
+	[63] = {regular = 46, condensed = 37, bold = 51},
+	[64] = {regular = 84, condensed = 69, bold = 82},
+	[65] = {regular = 57, condensed = 47, bold = 61},
+	[66] = {regular = 55, condensed = 45, bold = 61},
+	[67] = {regular = 60, condensed = 49, bold = 61},
+	[68] = {regular = 60, condensed = 49, bold = 61},
+	[69] = {regular = 55, condensed = 45, bold = 56},
+	[70] = {regular = 50, condensed = 41, bold = 51},
+	[71] = {regular = 64, condensed = 53, bold = 65},
+	[72] = {regular = 60, condensed = 49, bold = 61},
+	[73] = {regular = 22, condensed = 18, bold = 23},
+	[74] = {regular = 41, condensed = 33, bold = 47},
+	[75] = {regular = 57, condensed = 47, bold = 61},
+	[76] = {regular = 46, condensed = 38, bold = 51},
+	[77] = {regular = 69, condensed = 56, bold = 70},
+	[78] = {regular = 60, condensed = 49, bold = 61},
+	[79] = {regular = 64, condensed = 53, bold = 65},
+	[80] = {regular = 55, condensed = 45, bold = 56},
+	[81] = {regular = 64, condensed = 53, bold = 65},
+	[82] = {regular = 60, condensed = 49, bold = 61},
+	[83] = {regular = 55, condensed = 45, bold = 56},
+	[84] = {regular = 51, condensed = 42, bold = 52},
+	[85] = {regular = 60, condensed = 49, bold = 61},
+	[86] = {regular = 57, condensed = 47, bold = 57},
+	[87] = {regular = 80, condensed = 66, bold = 81},
+	[88] = {regular = 56, condensed = 46, bold = 57},
+	[89] = {regular = 56, condensed = 46, bold = 56},
+	[90] = {regular = 50, condensed = 41, bold = 51},
+	[91] = {regular = 24, condensed = 20, bold = 28},
+	[92] = {regular = 25, condensed = 21, bold = 24},
+	[93] = {regular = 22, condensed = 18, bold = 28},
+	[94] = {regular = 40, condensed = 33, bold = 49},
+	[95] = {regular = 49, condensed = 41, bold = 49},
+	[96] = {regular = 27, condensed = 22, bold = 28},
+	[97] = {regular = 48, condensed = 40, bold = 49},
+	[98] = {regular = 46, condensed = 37, bold = 51},
+	[99] = {regular = 41, condensed = 34, bold = 47},
+	[100] = {regular = 46, condensed = 37, bold = 51},
+	[101] = {regular = 46, condensed = 37, bold = 47},
+	[102] = {regular = 25, condensed = 21, bold = 30},
+	[103] = {regular = 46, condensed = 37, bold = 51},
+	[104] = {regular = 46, condensed = 37, bold = 51},
+	[105] = {regular = 18, condensed = 14, bold = 23},
+	[106] = {regular = 18, condensed = 14, bold = 23},
+	[107] = {regular = 44, condensed = 36, bold = 48},
+	[108] = {regular = 18, condensed = 14, bold = 23},
+	[109] = {regular = 69, condensed = 56, bold = 75},
+	[110] = {regular = 46, condensed = 37, bold = 51},
+	[111] = {regular = 46, condensed = 37, bold = 51},
+	[112] = {regular = 46, condensed = 37, bold = 51},
+	[113] = {regular = 46, condensed = 37, bold = 51},
+	[114] = {regular = 28, condensed = 23, bold = 33},
+	[115] = {regular = 41, condensed = 33, bold = 47},
+	[116] = {regular = 24, condensed = 20, bold = 28},
+	[117] = {regular = 46, condensed = 37, bold = 51},
+	[118] = {regular = 43, condensed = 36, bold = 48},
+	[119] = {regular = 62, condensed = 51, bold = 67},
+	[120] = {regular = 43, condensed = 35, bold = 48},
+	[121] = {regular = 43, condensed = 36, bold = 48},
+	[122] = {regular = 41, condensed = 33, bold = 42},
+	[123] = {regular = 28, condensed = 23, bold = 33},
+	[124] = {regular = 21, condensed = 17, bold = 24},
+	[125] = {regular = 28, condensed = 23, bold = 33},
+	[126] = {regular = 48, condensed = 39, bold = 49},
+	[127] = {regular = 45, condensed = 37, bold = 48},
 }
 
-local words_numbers = {  -- image widths, in pixels
+local words_numbers = { -- image widths, in pixels
 	[0] = "ZERO",
 	"ONE",
 	"TWO",
@@ -149,7 +149,7 @@ minislots.player_last_machine_def = {}
 minislots.player_last_machine_pos = {}
 
 function minislots.spin_reels(def)
-	local spin = { [1] = {}, [2] = {}, [3] = {} }
+	local spin = {[1] = {}, [2] = {}, [3] = {}}
 	for reel = 1, def.constants.numreels do
 		local n = math.random(2, def.constants.numsymbols*2+1)/2
 		if math.random(1, 100) >= def.half_stops_weight then n = math.floor(n) end
@@ -192,60 +192,59 @@ function minislots.spin_reels(def)
 
 --		local n = 16 -- force a bonus win + 3 line wins
 
-		spin[1][reel] = { n-1, def.symbols[n-1] }
-		spin[2][reel] = { n,   def.symbols[n]   }
-		spin[3][reel] = { n+1, def.symbols[n+1] }
+		spin[1][reel] = {n-1, def.symbols[n-1]}
+		spin[2][reel] = {n, def.symbols[n]}
+		spin[3][reel] = {n+1, def.symbols[n+1]}
 	end
 	return spin
 end
 
 function minislots.reset_reels(def)
-	local resetspin = { [1] = {}, [2] = {}, [3] = {} }
+	local resetspin = {[1] = {}, [2] = {}, [3] = {}}
 	for reel = 1, def.constants.numreels do
-		resetspin[1][reel] = { 0, def.symbols[0] }
-		resetspin[2][reel] = { 1, def.symbols[1] }
-		resetspin[3][reel] = { 2, def.symbols[2] }
+		resetspin[1][reel] = {0, def.symbols[0]}
+		resetspin[2][reel] = {1, def.symbols[1]}
+		resetspin[3][reel] = {2, def.symbols[2]}
 	end
 	return resetspin
 end
 
 function minislots.check_win(spin, def, maxlines)
-	local allwins = { total = 0, line_wins_total = 0 }
+	local allwins = {total = 0, line_wins_total = 0}
 	local paylinecontent = {}
-	allwins.scatter = { count = 0, pos = {} }
-	allwins.bonus = { value = -1, count = 0, pos = {} }
+	allwins.scatter = {count = 0, pos = {}}
+	allwins.bonus = {value = -1, count = 0, pos = {}}
 
 	for payline,paylineoffsets in ipairs(def.lines) do
 		local highestwin = nil
 		local wildcount = 0
 		if payline > maxlines then break end
 		paylinecontent[payline] = {}
-		for _,m in ipairs(def.matches) do
 
+		for _,m in ipairs(def.matches) do
 			local matchwin = true
 			local wc = 0
+
 			for reel = 1, def.constants.numreels do
 				local row = paylineoffsets[reel]+2
 				if not m[reel+1] or type(m[reel+1]) == "string" then
 					paylinecontent[payline][reel] = spin[row][reel][2]
 					if m[reel+1]
-					  and spin[row][reel][2] ~= m[reel+1]
-					  and (spin[row][reel][2] ~= "wild" 
-					     or (spin[row][reel][2] == "wild"
-						   and def.wild_doesnt_match
-						   and def.wild_doesnt_match[m[reel+1]]))  then
+						and spin[row][reel][2] ~= m[reel+1]
+						and (spin[row][reel][2] ~= "wild"
+						or (spin[row][reel][2] == "wild"
+							and def.wild_doesnt_match
+							and def.wild_doesnt_match[m[reel+1]])) then
 						matchwin = false
 						break
 					end
 					if spin[row][reel][2] == "wild" then wc = wc + 1 end
-				else 
+				else
 					local sublistmatch = false
 					for e in ipairs(m[reel+1]) do
 						paylinecontent[payline][reel] = spin[row][reel][2]
-						if spin[row][reel][2] == m[reel+1][e]
-						  or (spin[row][reel][2] == "wild"
-						    and not (def.wild_doesnt_match
-						      and def.wild_doesnt_match[m[reel+1][e]]))  then
+						if spin[row][reel][2] == m[reel+1][e] or (spin[row][reel][2] == "wild"
+								and not (def.wild_doesnt_match and def.wild_doesnt_match[m[reel+1][e]])) then
 							sublistmatch = true
 						end
 					end
@@ -264,7 +263,7 @@ function minislots.check_win(spin, def, maxlines)
 		end
 		if highestwin then
 			if wildcount > 0 then highestwin = highestwin * wildcount * def.wild_multiplier end
-			table.insert(allwins, { payline = payline, value = highestwin, symbols = paylinecontent[payline]})
+			table.insert(allwins, {payline = payline, value = highestwin, symbols = paylinecontent[payline]})
 		end
 	end
 
@@ -272,10 +271,10 @@ function minislots.check_win(spin, def, maxlines)
 		for reel = 1, def.constants.numreels do
 			if spin[row][reel][2] == "scatter" then
 				allwins.scatter.count = allwins.scatter.count + 1
-				table.insert(allwins.scatter.pos, { reel, row } )
+				table.insert(allwins.scatter.pos, {reel, row} )
 			elseif spin[row][reel][2] == "bonus" then
 				allwins.bonus.count = allwins.bonus.count + 1
-				table.insert(allwins.bonus.pos, { reel, row } )
+				table.insert(allwins.bonus.pos, {reel, row} )
 			end
 		end
 	end
@@ -311,14 +310,14 @@ function minislots.register_machine(mdef)
 
 	mdef_copy.constants.form_header = "size["..(mdef_copy.geometry.base_user_interface_width*0.785)..","..
 								((mdef_copy.geometry.upper_section_height+mdef_copy.geometry.lower_section_height)*0.823).."]"
-	mdef_copy.constants.mainpref   = "image[-"..hanchor..",-"..vanchor..";"..
+	mdef_copy.constants.mainpref = "image[-"..hanchor..",-"..vanchor..";"..
 								mdef_copy.geometry.base_user_interface_width..","..mdef_copy.geometry.upper_section_height..";"
 	mdef_copy.constants.screenposx = mdef_copy.geometry.screen_posx * horizscale - hanchor
 	mdef_copy.constants.screenposy = mdef_copy.geometry.screen_posy * vertscale - vanchor
 	mdef_copy.constants.lscrnpref = "image["..mdef_copy.constants.screenposx
 
-	mdef_copy.constants.lscrnypos1  = ","..(mdef_copy.constants.screenposy)..";"
-	mdef_copy.constants.lscrnypos2  = ","..(mdef_copy.constants.screenposy + mdef_copy.geometry.screen_line_height * vertscale)..";"
+	mdef_copy.constants.lscrnypos1 = ","..(mdef_copy.constants.screenposy)..";"
+	mdef_copy.constants.lscrnypos2 = ","..(mdef_copy.constants.screenposy + mdef_copy.geometry.screen_line_height * vertscale)..";"
 
 	mdef_copy.constants.cslotposx = mdef_copy.geometry.cash_slot_posx * horizscale - hanchor
 	mdef_copy.constants.cslotposy = mdef_copy.geometry.cash_slot_posy * vertscale - vanchor
@@ -349,7 +348,7 @@ function minislots.register_machine(mdef)
 	mdef_copy.constants.screenlnht3 = mdef_copy.geometry.screen_line_height * 0.3333
 	mdef_copy.constants.digitmed = mdef_copy.geometry.digit_glyph_sizex * 0.45
 	mdef_copy.constants.digitsm = mdef_copy.geometry.digit_glyph_sizex * 0.4
-	mdef_copy.constants.lscrnypos3  = ","..(mdef_copy.constants.screenposy + (mdef_copy.geometry.screen_line_height + mdef_copy.constants.screenlnht2) * vertscale)..";"
+	mdef_copy.constants.lscrnypos3 = ","..(mdef_copy.constants.screenposy + (mdef_copy.geometry.screen_line_height + mdef_copy.constants.screenlnht2) * vertscale)..";"
 	mdef_copy.constants.medlblsz1 = mdef_copy.geometry.label_medium_sizex..","..mdef_copy.geometry.screen_line_height..";"
 	mdef_copy.constants.medlblsz2 = mdef_copy.geometry.label_medium_sizex..","..mdef_copy.constants.screenlnht2..";"
 	mdef_copy.constants.posy3 = mdef_copy.constants.screenposy + (mdef_copy.geometry.screen_line_height + mdef_copy.constants.screenlnht2) * vertscale
@@ -512,7 +511,7 @@ function minislots.register_machine(mdef)
 		for _, state in ipairs( {"dis", "off", "on"} ) do
 			local btn = "image["..posx..","..mdef_copy.constants.spinposy..";"..
 				mdef_copy.constants.lnbetpref..mdef_copy.constants.basename.."button_lines_"..state.."_"..value..".png]"
-			if state ~= "dis" then 
+			if state ~= "dis" then
 				btn = btn.."image_button["..posx..","..mdef_copy.constants.spinposy..";"..
 				mdef_copy.constants.lnbetpref.."minislots_empty_img.png;lines_"..value..";]"
 			end
@@ -556,24 +555,24 @@ function minislots.register_machine(mdef)
 		cbox = {
 			type = "fixed",
 			fixed = {
-				{-0.5, -0.5, -0.5,    0.5, 0.5, 0.5 },
-				{-0.5,  0.5, -0.1875, 0.5, 1.5, 0.5 },
+				{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+				{-0.5, 0.5, -0.1875, 0.5, 1.5, 0.5},
 			}
 		}
 	elseif mdef_copy.machine_shape == "upright_big" then
 		mesh = "minislots_generic_machine_upright_big.obj"
 		cbox = {
 			type = "fixed",
-			fixed = { -1, -0.5, -0.5, 1.5, 3.5, 1.5 }
+			fixed = {-1, -0.5, -0.5, 1.5, 3.5, 1.5}
 		}
 	end
 
-	minetest.register_node(":minislots:"..mdef_copy.name, {
+	core.register_node(":minislots:"..mdef_copy.name, {
 		description = mdef_copy.description,
 		drawtype = "mesh",
 		mesh = mesh,
-		tiles = { "minislots_"..mdef_copy.name.."_cabinet_graphics.png" },
-		node_box = cbox,   -- this is used to create proper collision info.
+		tiles = {"minislots_"..mdef_copy.name.."_cabinet_graphics.png"},
+		node_box = cbox, -- this is used to create proper collision info.
 		paramtype2 = "facedir",
 		selection_box = cbox,
 		is_ground_content = false,
@@ -582,11 +581,11 @@ function minislots.register_machine(mdef)
 		machine_def = table.copy(mdef_copy),
 		on_timer = minislots.cycle_states,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-			local meta = minetest.get_meta(pos)
+			local meta = core.get_meta(pos)
 			local player_name = clicker:get_player_name()
 			local oldform = meta:get_string("formspec")
 			local balance = meta:get_int("balance")
-			local def = minetest.registered_items[node.name].machine_def
+			local def = core.registered_items[node.name].machine_def
 
 			minislots.player_last_machine_def[player_name] = def
 			minislots.player_last_machine_pos[player_name] = pos
@@ -594,7 +593,7 @@ function minislots.register_machine(mdef)
 			if not string.find(oldform, "locked-out") then
 				local state = meta:get_string("state")
 				if state ~= "stopped" then return end
-				local spin = minetest.deserialize(meta:get_string("spin"))
+				local spin = core.deserialize(meta:get_string("spin"))
 				local linebet = meta:get_int("linebet")
 				local maxlines = meta:get_int("maxlines")
 				meta:set_string("last_right_clicker", clicker:get_player_name())
@@ -611,23 +610,23 @@ function minislots.register_machine(mdef)
 					})
 				)
 			elseif meta:get_string("owner") == player_name then
-				minetest.get_node_timer(pos):stop()
-				minetest.show_formspec(player_name, "minislots:admin_form",
+				core.get_node_timer(pos):stop()
+				core.show_formspec(player_name, "minislots:admin_form",
 					minislots.generate_admin_form(def, pos, balance))
 				return
 			end
 		end,
 		on_construct = function(pos)
-			local node = minetest.get_node(pos)
-			local def = minetest.registered_items[node.name].machine_def
-			local meta = minetest.get_meta(pos)
+			local node = core.get_node(pos)
+			local def = core.registered_items[node.name].machine_def
+			local meta = core.get_meta(pos)
 			local resetspin = minislots.reset_reels(def)
 			local balance = 0
 			local linebet = 1
 			local maxlines = 1
 			local emptywins = {
-				scatter = { count = 0, pos = {} },
-				bonus = { value = -1, count = 0, pos = {} }
+				scatter = {count = 0, pos = {}},
+				bonus = {value = -1, count = 0, pos = {}}
 			}
 			meta:set_int("balance", balance)
 			meta:set_int("last_cashout", 0)
@@ -635,7 +634,7 @@ function minislots.register_machine(mdef)
 			meta:set_int("maxlines", maxlines)
 			meta:set_int("bonus_result", -1)
 			meta:set_string("state", "stopped")
-			meta:set_string("spin", minetest.serialize(resetspin))
+			meta:set_string("spin", core.serialize(resetspin))
 			meta:set_int("spin_timestamp", os.time())
 
 			meta:set_string("install_date", os.date())
@@ -649,7 +648,7 @@ function minislots.register_machine(mdef)
 
 			meta:set_string("casino_name", "LocalGames Casino/Hotel")
 
-			meta:set_string("allwins", minetest.serialize(emptywins))
+			meta:set_string("allwins", core.serialize(emptywins))
 			meta:mark_as_private({
 				"balance",
 				"last_cashout",
@@ -675,43 +674,43 @@ function minislots.register_machine(mdef)
 			inv:set_size("main", 1)
 		end,
 		on_dig = function(pos, node, digger)
-			local def = minetest.registered_items[node.name].machine_def
+			local def = core.registered_items[node.name].machine_def
 			local player_name = digger:get_player_name()
 			if default.can_interact_with_node(digger, pos) then
 				local stack = ItemStack("minislots:"..def.name)
-				local nodemeta = minetest.get_meta(pos)
+				local nodemeta = core.get_meta(pos)
 				local stackmeta = stack:get_meta()
 
 				local balance = nodemeta:get_int("balance") or 0
 				local casino = nodemeta:get_string("casino_name")
 				stackmeta:set_int("balance", balance)
 				stackmeta:set_string("casino_name", casino)
-				stackmeta:set_int("last_cashout",    nodemeta:get_int("last_cashout")    )
-				stackmeta:set_string("install_date", nodemeta:get_string("install_date") )
-				stackmeta:set_int("spin_count",      nodemeta:get_int("spin_count")      )
-				stackmeta:set_int("money_in",        nodemeta:get_int("money_in")        )
-				stackmeta:set_int("money_out",       nodemeta:get_int("money_out")       )
-				stackmeta:set_int("total_bets",      nodemeta:get_int("total_bets")      )
-				stackmeta:set_int("total_wins",      nodemeta:get_int("total_wins")      )
-				stackmeta:set_int("scatter_hits",    nodemeta:get_int("scatter_hits")    )
-				stackmeta:set_int("bonus_hits",      nodemeta:get_int("bonus_hits")      )
+				stackmeta:set_int("last_cashout", nodemeta:get_int("last_cashout"))
+				stackmeta:set_string("install_date", nodemeta:get_string("install_date"))
+				stackmeta:set_int("spin_count", nodemeta:get_int("spin_count"))
+				stackmeta:set_int("money_in", nodemeta:get_int("money_in"))
+				stackmeta:set_int("money_out", nodemeta:get_int("money_out"))
+				stackmeta:set_int("total_bets", nodemeta:get_int("total_bets"))
+				stackmeta:set_int("total_wins", nodemeta:get_int("total_wins"))
+				stackmeta:set_int("scatter_hits", nodemeta:get_int("scatter_hits"))
+				stackmeta:set_int("bonus_hits", nodemeta:get_int("bonus_hits"))
 				stackmeta:set_string("description",
 					def.description.."\n(balance: "..balance.." Mg;\ncasino: "..casino..")")
 				local inv = digger:get_inventory()
 				if inv:room_for_item("main", stack) then
 					if (not creative or not creative.is_enabled_for(player_name))
-					  or (creative and creative.is_enabled_for(player_name)
-						  and not inv:contains_item("main", stack, true)) then
+						or (creative and creative.is_enabled_for(player_name)
+							and not inv:contains_item("main", stack, true)) then
 							inv:add_item("main", stack)
 					end
-					minetest.remove_node(pos)
+					core.remove_node(pos)
 				end
 			end
 		end,
 		after_place_node = function(pos, placer, itemstack)
-			local node = minetest.get_node(pos)
-			local def = minetest.registered_items[node.name].machine_def
-			local nodemeta = minetest.get_meta(pos)
+			local node = core.get_node(pos)
+			local def = core.registered_items[node.name].machine_def
+			local nodemeta = core.get_meta(pos)
 			local player_name = placer:get_player_name()
 			local stackmeta = itemstack:get_meta()
 
@@ -720,8 +719,8 @@ function minislots.register_machine(mdef)
 			local linebet = 1
 			local maxlines = 1
 			local emptywins = {
-				scatter = { count = 0, pos = {} },
-				bonus = { value = -1, count = 0, pos = {} }
+				scatter = {count = 0, pos = {}},
+				bonus = {value = -1, count = 0, pos = {}}
 			}
 			local casino = stackmeta:get_string("casino_name")
 
@@ -733,13 +732,13 @@ function minislots.register_machine(mdef)
 					nodemeta:set_string("casino_name", casino)
 				end
 				nodemeta:set_int("last_cashout", stackmeta:get_int("last_cashout"))
-				nodemeta:set_int("spin_count",   stackmeta:get_int("spin_count")  )
-				nodemeta:set_int("money_in",     stackmeta:get_int("money_in")    )
-				nodemeta:set_int("money_out",    stackmeta:get_int("money_out")   )
-				nodemeta:set_int("total_bets",   stackmeta:get_int("total_bets")  )
-				nodemeta:set_int("total_wins",   stackmeta:get_int("total_wins")  )
+				nodemeta:set_int("spin_count", stackmeta:get_int("spin_count"))
+				nodemeta:set_int("money_in", stackmeta:get_int("money_in"))
+				nodemeta:set_int("money_out", stackmeta:get_int("money_out"))
+				nodemeta:set_int("total_bets", stackmeta:get_int("total_bets"))
+				nodemeta:set_int("total_wins", stackmeta:get_int("total_wins"))
 				nodemeta:set_int("scatter_hits", stackmeta:get_int("scatter_hits"))
-				nodemeta:set_int("bonus_hits",   stackmeta:get_int("bonus_hits")  )
+				nodemeta:set_int("bonus_hits", stackmeta:get_int("bonus_hits"))
 			end
 			nodemeta:set_string("owner", player_name)
 			nodemeta:set_string("infotext", def.description.."\nOwned by "..player_name)
@@ -759,16 +758,16 @@ function minislots.register_machine(mdef)
 			return default.can_interact_with_node(player, pos)
 		end,
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
-			local node = minetest.get_node(pos)
-			local def = minetest.registered_items[node.name].machine_def
+			local node = core.get_node(pos)
+			local def = core.registered_items[node.name].machine_def
 			local player_name = player:get_player_name()
-			local meta = minetest.get_meta(pos)
+			local meta = core.get_meta(pos)
 			local state = meta:get_string("state")
-			local spin = minetest.deserialize(meta:get_string("spin"))
+			local spin = core.deserialize(meta:get_string("spin"))
 			local balance = meta:get_int("balance")
 			local linebet = meta:get_int("linebet")
 			local maxlines = meta:get_int("maxlines")
-			local timer = minetest.get_node_timer(pos)
+			local timer = core.get_node_timer(pos)
 			local last_cashout = nil
 			timer:stop()
 			local inv = meta:get_inventory()
@@ -788,13 +787,13 @@ function minislots.register_machine(mdef)
 					admin = default.can_interact_with_node(player, pos)
 				})
 			)
-			minetest.show_formspec(player_name, "minislots:cash_intake",
+			core.show_formspec(player_name, "minislots:cash_intake",
 				minislots.generate_cashslot_form(def, pos, balance))
 		end,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-			local node = minetest.get_node(pos)
-			local def = minetest.registered_items[node.name].machine_def
-			local meta = minetest.get_meta(pos)
+			local node = core.get_node(pos)
+			local def = core.registered_items[node.name].machine_def
+			local meta = core.get_meta(pos)
 			local inv = meta:get_inventory()
 			local sn = stack:get_name()
 			local mg
@@ -818,42 +817,42 @@ function minislots.register_machine(mdef)
 			return 0
 		end,
 		on_receive_fields = function(pos, formname, fields, sender)
-			local node = minetest.get_node(pos)
-			local def = minetest.registered_items[node.name].machine_def
+			local node = core.get_node(pos)
+			local def = core.registered_items[node.name].machine_def
 			local player_name = sender:get_player_name()
-			local meta = minetest.get_meta(pos)
+			local meta = core.get_meta(pos)
 			local state = meta:get_string("state")
-			local spin = minetest.deserialize(meta:get_string("spin"))
+			local spin = core.deserialize(meta:get_string("spin"))
 			local balance = meta:get_int("balance")
 			local linebet = meta:get_int("linebet")
 			local maxlines = meta:get_int("maxlines")
-			local timer = minetest.get_node_timer(pos)
+			local timer = core.get_node_timer(pos)
 			timer:stop()
 
-			local allfields = minetest.serialize(fields)
+			local allfields = core.serialize(fields)
 			if fields.admin then
 				if player_name == meta:get_string("owner") then
-					minetest.get_node_timer(pos):stop()
+					core.get_node_timer(pos):stop()
 					meta:set_string("formspec", "size[4,1]"..
 						"image_button_exit[3.65,-0.2;0.55,0.5;"..def.constants.button_close..";close;]"..
 						"label[0.3,0.2;This machine has been locked-out by]"..
-						"label[0.1,0.5;the Administrator.  Please come back later.]")
-					minetest.show_formspec(player_name, "minislots:admin_form",
+						"label[0.1,0.5;the Administrator. Please come back later.]")
+					core.show_formspec(player_name, "minislots:admin_form",
 						minislots.generate_admin_form(def, pos, balance))
 					return
 				end
 			elseif fields.cslot then
-				local meta = minetest.get_meta(pos)
+				local meta = core.get_meta(pos)
 				local balance = meta:get_int("balance")
 				local player_name = sender:get_player_name()
-				minetest.show_formspec(player_name, "minislots:cash_intake",
+				core.show_formspec(player_name, "minislots:cash_intake",
 					minislots.generate_cashslot_form(def, pos, balance))
 				return
 			elseif fields.help then
-				local meta = minetest.get_meta(pos)
+				local meta = core.get_meta(pos)
 				local balance = meta:get_int("balance")
 				local player_name = sender:get_player_name()
-				minetest.show_formspec(player_name, "minislots:help_screen",
+				core.show_formspec(player_name, "minislots:help_screen",
 					minislots.generate_paytable_form(def))
 				return
 			elseif fields.cout then
@@ -885,9 +884,9 @@ function minislots.register_machine(mdef)
 					local ones = math.floor(last_cashout - fifties*50 - tens*10 - fives*5)
 					local inv = sender:get_inventory()
 					if (fifties == 0 or inv:room_for_item("main", "currency:minegeld_50 "..fifties))
-					  and (tens == 0 or inv:room_for_item("main", "currency:minegeld_10 "..tens))
-					  and (fives == 0 or inv:room_for_item("main", "currency:minegeld_5 "..fives))
-					  and (ones == 0 or inv:room_for_item("main", "currency:minegeld "..ones)) then
+						and (tens == 0 or inv:room_for_item("main", "currency:minegeld_10 "..tens))
+						and (fives == 0 or inv:room_for_item("main", "currency:minegeld_5 "..fives))
+						and (ones == 0 or inv:room_for_item("main", "currency:minegeld "..ones)) then
 
 						if fifties > 0 then inv:add_item("main", "currency:minegeld_50 "..fifties) end
 						if tens > 0 then inv:add_item("main", "currency:minegeld_10 "..tens) end
@@ -899,7 +898,7 @@ function minislots.register_machine(mdef)
 				end
 			elseif fields.quit then
 				local allwins = minislots.check_win(spin, def, maxlines)
-				meta:set_string("allwins", minetest.serialize(allwins))
+				meta:set_string("allwins", core.serialize(allwins))
 				local state = "stopped"
 				meta:set_string("state", state)
 				local oldform = meta:get_string("formspec")
@@ -921,11 +920,11 @@ function minislots.register_machine(mdef)
 				if state == "stopped" or string.find(state, "win") then
 					if (linebet*maxlines) > balance or balance > def.maxbalance then return end
 					meta:set_int("spin_timestamp", os.time())
-					local node = minetest.get_node(pos)
+					local node = core.get_node(pos)
 					local spin = minislots.spin_reels(def)
 					local allwins = minislots.check_win(spin, def, maxlines)
-					meta:set_string("spin", minetest.serialize(spin))
-					meta:set_string("allwins", minetest.serialize(allwins))
+					meta:set_string("spin", core.serialize(spin))
+					meta:set_string("allwins", core.serialize(allwins))
 					meta:set_string("state", "start")
 					minislots.cycle_states(pos)
 					return
@@ -937,11 +936,11 @@ function minislots.register_machine(mdef)
 				if def.bet_initiates_spin then
 					if maxlines*linebet > balance or balance > def.maxbalance then return end
 					meta:set_int("linebet", linebet)
-					local node = minetest.get_node(pos)
+					local node = core.get_node(pos)
 					local spin = minislots.spin_reels(def)
 					local allwins = minislots.check_win(spin, def, maxlines)
-					meta:set_string("spin", minetest.serialize(spin))
-					meta:set_string("allwins", minetest.serialize(allwins))
+					meta:set_string("spin", core.serialize(spin))
+					meta:set_string("allwins", core.serialize(allwins))
 					meta:set_string("state", "start")
 					minislots.cycle_states(pos)
 					return
@@ -996,19 +995,19 @@ end
 --###################
 
 function minislots.cycle_states(pos)
-	local node = minetest.get_node(pos)
-	local def = minetest.registered_items[node.name].machine_def
-	local meta = minetest.get_meta(pos)
+	local node = core.get_node(pos)
+	local def = core.registered_items[node.name].machine_def
+	local meta = core.get_meta(pos)
 	local state = meta:get_string("state")
-	local spin = minetest.deserialize(meta:get_string("spin"))
+	local spin = core.deserialize(meta:get_string("spin"))
 	local linebet = meta:get_int("linebet")
 	local maxlines = meta:get_int("maxlines")
 	local balance = meta:get_int("balance")
-	local allwins = minetest.deserialize(meta:get_string("allwins"))
+	local allwins = core.deserialize(meta:get_string("allwins"))
 	local numscatter = (allwins and allwins.scatter and allwins.scatter.count) or 0
 	local numbonus = (allwins and allwins.bonus and allwins.bonus.count) or 0
 	local last_right_clicker = meta:get_string("last_right_clicker")
-	local player = minetest.get_player_by_name(last_right_clicker)
+	local player = core.get_player_by_name(last_right_clicker)
 	local admin = player and default.can_interact_with_node(player, pos)
 
 	local timeout = 0
@@ -1086,7 +1085,7 @@ function minislots.cycle_states(pos)
 			meta:set_int("bonus_hits", meta:get_int("bonus_hits")+1)
 			meta:set_int("total_wins", meta:get_int("total_wins")+allwins.bonus.value)
 		end
-		meta:set_string("allwins", minetest.serialize(allwins))
+		meta:set_string("allwins", core.serialize(allwins))
 		meta:set_int("balance", balance)
 		if numbonus >= def.min_bonus then
 			state = "bonus_win"
@@ -1133,7 +1132,7 @@ function minislots.cycle_states(pos)
 	end
 
 	if meta:get_int("spin_timestamp") < (os.time() - 60) then
-		minetest.get_node_timer(pos):stop()
+		core.get_node_timer(pos):stop()
 		state = "stopped"
 		meta:set_string("state", state)
 		meta:set_string("formspec",
@@ -1163,7 +1162,7 @@ function minislots.cycle_states(pos)
 		})
 	)
 	if timeout > 0 then
-		local timer = minetest.get_node_timer(pos)
+		local timer = core.get_node_timer(pos)
 		timer:start(timeout)
 	end
 	return false
@@ -1450,7 +1449,7 @@ function minislots.generate_display(def, options)
 					allwins[s].value*linebet,
 					def.constants.screenposx
 						+ (def.geometry.line_win_label_sizex
-						+ def.constants.digitsm  -- that is, two separate 1/2 spaces' worth
+						+ def.constants.digitsm -- that is, two separate 1/2 spaces' worth
 						+ def.constants.parensize*3 -- i.e. three colon/paren spaces' worth
 						+ def.constants.digitsm * lwlen) * horizscale,
 					def.constants.posy3,
@@ -1462,7 +1461,7 @@ function minislots.generate_display(def, options)
 
 	local onoff
 	local linesbetbuttons = {}
-	for i,b in ipairs(def.linebuttons) do
+	for _, b in ipairs(def.linebuttons) do
 		onoff = "off"
 		if b*linebet > balance or string.find(state, "spinning") or string.find(state, "reels_stopping_") then onoff = "dis"
 		elseif maxlines == tonumber(b) then onoff = "on"
@@ -1471,7 +1470,7 @@ function minislots.generate_display(def, options)
 	end
 
 	onoff = "off"
-	for i,b in ipairs(def.betbuttons) do
+	for _, b in ipairs(def.betbuttons) do
 		onoff = "off"
 		if b*maxlines > balance or string.find(state, "spinning") or string.find(state, "reels_stopping_") then onoff = "dis"
 		elseif linebet == tonumber(b) then onoff = "on"
@@ -1488,7 +1487,7 @@ function minislots.generate_display(def, options)
 	if not (string.find(state, "spinning") or string.find(state, "reels_stopping_")) then
 		button_help = def.constants.buttonhelp
 		cash_slot = def.constants.buttoncashslot
-		if balance > 0  then
+		if balance > 0 then
 			spincashoutbuttons = def.constants.buttonspin..def.constants.buttoncashout
 		else
 			spincashoutbuttons = def.constants.buttonspin_dis..def.constants.buttonquit
@@ -1533,7 +1532,7 @@ function minislots.generate_display(def, options)
 		local w = minislots.str_width_pix(lastcoutstr, "bold")*pix2iu*numszy
 		local numstr_maxszx = w < maxw and w or maxw
 
-		local machinestr = "MACHINE #"..string.format("%.0f", minetest.hash_node_position(pos))
+		local machinestr = "MACHINE #"..string.format("%.0f", core.hash_node_position(pos))
 		local w = minislots.str_width_pix(machinestr, "bold")*pix2iu*mstr_sizey
 		local mstr_sizex = w < maxmw and w or maxmw
 
@@ -1588,11 +1587,11 @@ function minislots.print_string(def, str, posx, posy, sizex, sizey, weight, shad
 	end
 
 	local text = "image["..posx..","..posy..";"..sizex..","..sizey..";"..
-			minetest.formspec_escape("[combine:"..px.."x80:")..
+			core.formspec_escape("[combine:"..px.."x80:")..
 			table.concat(t, ":")..colorize.."]"
 	if shadow then
 		text = "image["..(posx+0.03)..","..(posy+0.03)..";"..sizex..","..sizey..";"..
-			minetest.formspec_escape("[combine:"..px.."x80:")..
+			core.formspec_escape("[combine:"..px.."x80:")..
 			table.concat(t, ":")..shadowcolor.."]"..text
 	end
 	return text
@@ -1602,7 +1601,7 @@ function minislots.print_number(def, num, posx, posy, sizex, sizey, cur, color)
 	local t = {}
 	local sn = tostring(num)
 	local len = string.len(sn)
-	local colorize = color and minetest.formspec_escape("^[colorize:"..color..":255").."]" or "]"
+	local colorize = color and core.formspec_escape("^[colorize:"..color..":255").."]" or "]"
 
 	for i = 1, len do
 		t[#t+1] = "image["..(posx + (i-1)*sizex * horizscale)..","..posy..";"..
@@ -1632,7 +1631,7 @@ function minislots.number_to_words(number)
 			local num = words_numbers[n]
 			if not num then -- it's > 19
 				n = tonumber(string.sub(numstr, -i, -i))
-				if n > 0 then 
+				if n > 0 then
 					words[#words+1] = words_numbers[n]
 				end
 				words[#words+1] = words_tens[tonumber(string.sub(numstr, -i-1, -i-1))]
@@ -1648,7 +1647,7 @@ function minislots.number_to_words(number)
 			end
 			i = i + 1
 		end
-		if i > numlen then break end 
+		if i > numlen then break end
 		if tonumber(string.sub(numstr, -i-2, -i)) ~= 0 then -- the magnitude is non-zero
 			if i == 4 then
 				words[#words+1] = words_magnitudes[2] -- thousand
@@ -1758,62 +1757,62 @@ function minislots.generate_paylines_form(def)
 end
 
 function minislots.generate_admin_form(def, pos, balance)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local casino = meta:get_string("casino_name")
 
-	local money_in     = meta:get_int("money_in")
-	local money_out    = meta:get_int("money_out")
-	local total_bets   = meta:get_int("total_bets")
-	local total_wins   = meta:get_int("total_wins")
-	local spin_count   = meta:get_int("spin_count")
+	local money_in = meta:get_int("money_in")
+	local money_out = meta:get_int("money_out")
+	local total_bets = meta:get_int("total_bets")
+	local total_wins = meta:get_int("total_wins")
+	local spin_count = meta:get_int("spin_count")
 	local scatter_hits = meta:get_int("scatter_hits")
-	local bonus_hits   = meta:get_int("bonus_hits")
+	local bonus_hits = meta:get_int("bonus_hits")
 	local install_date = meta:get_string("install_date")
 
-	local pay_percent  = 0
+	local pay_percent = 0
 	if total_bets > 0 then pay_percent = math.floor((total_wins/total_bets+0.0005)*1000)/10 end
 
-	local balancestr      = "Current Balance:  "..balance.." Mg"
-	local money_instr     = "Money in:  "..money_in.." Mg"
-	local money_outstr    = "Money out:  "..money_out.." Mg"
-	local total_betsstr   = "Total bets:  "..total_bets.." Mg"
-	local total_winsstr   = "Total wins:  "..total_wins.." Mg"
-	local percent_str     = "Payout percentage:  "..pay_percent.."%"
-	local spin_countstr   = "Spin count:  "..spin_count
-	local scatter_hitsstr = "Scatter wins (count):  "..scatter_hits
-	local bonus_hitsstr   = "Bonus wins (count):  "..bonus_hits
-	local install_datestr = "Install Date:  "..install_date
+	local balancestr = "Current Balance: "..balance.." Mg"
+	local money_instr = "Money in: "..money_in.." Mg"
+	local money_outstr = "Money out: "..money_out.." Mg"
+	local total_betsstr = "Total bets: "..total_bets.." Mg"
+	local total_winsstr = "Total wins: "..total_wins.." Mg"
+	local percent_str = "Payout percentage: "..pay_percent.."%"
+	local spin_countstr = "Spin count: "..spin_count
+	local scatter_hitsstr = "Scatter wins (count): "..scatter_hits
+	local bonus_hitsstr = "Bonus wins (count): "..bonus_hits
+	local install_datestr = "Install Date: "..install_date
 	local cstr = "Casino name:"
 
 	local sizey = 0.23
 
 	local balw = minislots.str_width_pix(balancestr, "regular")*pix2iu*sizey
-	local miw  = minislots.str_width_pix(money_instr, "regular")*pix2iu*sizey
-	local mow  = minislots.str_width_pix(money_outstr, "regular")*pix2iu*sizey
-	local tbw  = minislots.str_width_pix(total_betsstr, "regular")*pix2iu*sizey
-	local tww  = minislots.str_width_pix(total_winsstr, "regular")*pix2iu*sizey
+	local miw = minislots.str_width_pix(money_instr, "regular")*pix2iu*sizey
+	local mow = minislots.str_width_pix(money_outstr, "regular")*pix2iu*sizey
+	local tbw = minislots.str_width_pix(total_betsstr, "regular")*pix2iu*sizey
+	local tww = minislots.str_width_pix(total_winsstr, "regular")*pix2iu*sizey
 	local pctw = minislots.str_width_pix(percent_str, "regular")*pix2iu*sizey
 	local spcw = minislots.str_width_pix(spin_countstr, "regular")*pix2iu*sizey
 	local sccw = minislots.str_width_pix(scatter_hitsstr, "regular")*pix2iu*sizey
-	local bcw  = minislots.str_width_pix(bonus_hitsstr, "regular")*pix2iu*sizey
-	local idw  = minislots.str_width_pix(install_datestr, "regular")*pix2iu*sizey
-	local cnw  = minislots.str_width_pix(cstr, "regular")*pix2iu*sizey
+	local bcw = minislots.str_width_pix(bonus_hitsstr, "regular")*pix2iu*sizey
+	local idw = minislots.str_width_pix(install_datestr, "regular")*pix2iu*sizey
+	local cnw = minislots.str_width_pix(cstr, "regular")*pix2iu*sizey
 
 	local formspec =
 		"size[6,4.5]"..
 		"image_button_exit[5.65,-0.2;0.55,0.5;"..def.constants.button_close..";close;]"..
 		minislots.print_string(def, "Admin/configuration", 0.85, -0.15, 5, 0.4, "bold", true)..
-		minislots.print_string(def, balancestr,      0,    0.5,  balw, sizey, "regular", true)..
-		minislots.print_string(def, money_instr,     0,    0.8,  miw,  sizey, "regular", true)..
-		minislots.print_string(def, money_outstr,    0,    1.1,  mow,  sizey, "regular", true)..
-		minislots.print_string(def, total_betsstr,   0,    1.4,  tbw,  sizey, "regular", true)..
-		minislots.print_string(def, total_winsstr,   0,    1.7,  tww,  sizey, "regular", true)..
-		minislots.print_string(def, percent_str,     0,    2,    pctw, sizey, "regular", true)..
-		minislots.print_string(def, spin_countstr,   0,    2.3,  spcw, sizey, "regular", true)..
-		minislots.print_string(def, scatter_hitsstr, 0,    2.6,  sccw, sizey, "regular", true)..
-		minislots.print_string(def, bonus_hitsstr,   0,    2.9,  bcw,  sizey, "regular", true)..
-		minislots.print_string(def, install_datestr, 0,    3.2,  idw,  sizey, "regular", true)..
-		minislots.print_string(def, cstr,            1,    3.7,  cnw,  sizey, "regular", true)..
+		minislots.print_string(def, balancestr, 0, 0.5, balw, sizey, "regular", true)..
+		minislots.print_string(def, money_instr, 0, 0.8, miw, sizey, "regular", true)..
+		minislots.print_string(def, money_outstr, 0, 1.1, mow, sizey, "regular", true)..
+		minislots.print_string(def, total_betsstr, 0, 1.4, tbw, sizey, "regular", true)..
+		minislots.print_string(def, total_winsstr, 0, 1.7, tww, sizey, "regular", true)..
+		minislots.print_string(def, percent_str, 0, 2, pctw, sizey, "regular", true)..
+		minislots.print_string(def, spin_countstr, 0, 2.3, spcw, sizey, "regular", true)..
+		minislots.print_string(def, scatter_hitsstr, 0, 2.6, sccw, sizey, "regular", true)..
+		minislots.print_string(def, bonus_hitsstr, 0, 2.9, bcw, sizey, "regular", true)..
+		minislots.print_string(def, install_datestr, 0, 3.2, idw, sizey, "regular", true)..
+		minislots.print_string(def, cstr, 1, 3.7, cnw, sizey, "regular", true)..
 
 		"field[1.3,3.4;4,3;casino_input;;"..casino.."]"..
 		"field_close_on_enter[casino_input;true]"
@@ -1839,44 +1838,44 @@ function minislots.generate_cashslot_form(def, pos, balance)
 	return formspec
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if string.find(formname, "minislots:") then 
+core.register_on_player_receive_fields(function(player, formname, fields)
+	if string.find(formname, "minislots:") then
 
 		local player_name = player:get_player_name()
 		local def = minislots.player_last_machine_def[player_name]
 		local pos = minislots.player_last_machine_pos[player_name]
 		local meta
-		if pos then meta = minetest.get_meta(pos) end
+		if pos then meta = core.get_meta(pos) end
 
 		if fields.close and (formname == "minislots:cash_intake"
-		  or formname == "minislots:help_screen") then
-			minetest.close_formspec(player_name, formname)
+			or formname == "minislots:help_screen") then
+			core.close_formspec(player_name, formname)
 		elseif fields.showpaylines and formname == "minislots:help_screen" then
 			if not def then
-				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				core.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
 				return
 			end
-			minetest.show_formspec(player_name, "minislots:help_screen",
+			core.show_formspec(player_name, "minislots:help_screen",
 				minislots.generate_paylines_form(minislots.player_last_machine_def[player_name]))
 		elseif fields.showpaytable and formname == "minislots:help_screen" then
 			if not def then
-					minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+					core.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
 				return
 			end
-			minetest.show_formspec(player_name, "minislots:help_screen",
+			core.show_formspec(player_name, "minislots:help_screen",
 				minislots.generate_paytable_form(minislots.player_last_machine_def[player_name]))
 		elseif fields.key_enter_field and fields.key_enter_field == fields.key_enter_field then
 			if not def then
-				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				core.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
 				return
 			end
 			if def and pos and meta and meta:get_string("owner") == player_name then
 				meta:set_string("formspec", "")
-				meta:set_string("casino_name", minetest.formspec_escape(fields.casino_input))
+				meta:set_string("casino_name", core.formspec_escape(fields.casino_input))
 			end
 		elseif (fields.close or fields.quit) and formname == "minislots:admin_form" then
 			if not def then
-				minetest.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
+				core.show_formspec(player_name, "minislots:update_form", minislots.generate_too_old_screen())
 				return
 			end
 			if def and pos and meta and meta:get_string("owner") == player_name then
@@ -1890,7 +1889,7 @@ function minislots.generate_too_old_screen()
 		local form = "size[4,1]"..
 		"image_button_exit[3.65,-0.2;0.55,0.5;minislots_close_button.png;close;]"..
 		"label[0.32,0.2;Sorry, your client is too old to]"..
-		"label[0.15,0.5;show this screen.  Please update.]"
+		"label[0.15,0.5;show this screen. Please update.]"
 	return form
 end
 
