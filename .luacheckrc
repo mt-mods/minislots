@@ -1,4 +1,5 @@
 exclude_files = {".luacheckrc"}
+max_line_length = 200
 
 globals = {
 	"minislots"

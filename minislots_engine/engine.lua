@@ -1461,7 +1461,7 @@ function minislots.generate_display(def, options)
 
 	local onoff
 	local linesbetbuttons = {}
-	for i,b in ipairs(def.linebuttons) do
+	for _, b in ipairs(def.linebuttons) do
 		onoff = "off"
 		if b*linebet > balance or string.find(state, "spinning") or string.find(state, "reels_stopping_") then onoff = "dis"
 		elseif maxlines == tonumber(b) then onoff = "on"
@@ -1470,7 +1470,7 @@ function minislots.generate_display(def, options)
 	end
 
 	onoff = "off"
-	for i,b in ipairs(def.betbuttons) do
+	for _, b in ipairs(def.betbuttons) do
 		onoff = "off"
 		if b*maxlines > balance or string.find(state, "spinning") or string.find(state, "reels_stopping_") then onoff = "dis"
 		elseif linebet == tonumber(b) then onoff = "on"

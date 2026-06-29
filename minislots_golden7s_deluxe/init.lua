@@ -206,7 +206,7 @@ minislots.register_machine({
 	min_scatter = 3,				-- minimum number of scatter symbols needed before computing a scatter win
 	scatter_value = 3,				-- value of the scatter symbol, will be multiplied by number visible * line bet
 	min_bonus = 4,					-- minimum number of symbols needed to trigger the bonus round
-	initiate_bonus = function(spin, def)
+	initiate_bonus = function(_, _)
 		return 400
 	end,
 	wild_doesnt_match = {
